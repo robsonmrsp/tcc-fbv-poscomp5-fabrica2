@@ -1,0 +1,7 @@
+ALTER TABLE perfil CHANGE Id Id_Perfil int(11) not null auto_increment; 
+
+ALTER TABLE transacao CHANGE Id Id_Transacao int(11) not null auto_increment; 
+
+ALTER TABLE usuario CHANGE Id Id_Usuario int(11) not null auto_increment; 
+
+alterar o nome dos campos da tabela usuario_perfil para Id_Usuario e Id_Perfil
