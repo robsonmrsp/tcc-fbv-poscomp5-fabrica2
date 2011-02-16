@@ -1,5 +1,8 @@
 package sisa.com.br.entidade;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class Usuario {
  
 	private int id;
@@ -10,18 +13,31 @@ public class Usuario {
 	 
 	private String nome;
 	
+	private Set<Perfil> listaPerfil = new HashSet<Perfil>();
 	
-	
-	public Usuario(){
-		
-	}
-
 	public Usuario(int id, String login, String senha, String nome) {
 		super();
 		this.id = id;
 		this.login = login;
 		this.senha = senha;
 		this.nome = nome;
+	}
+	
+	public Usuario(int id, String login, String senha, String nome, Set<Perfil> listaPerfil) {
+		this(id,login,senha,nome);
+		this.listaPerfil = listaPerfil;
+	}
+	
+	public Set<Perfil> getListaPerfil() {
+		return listaPerfil;
+	}
+
+	public void setListaPerfil(Set<Perfil> listaPerfil) {
+		this.listaPerfil = listaPerfil;
+	}
+
+	public Usuario(){
+		
 	}
 
 	public int getId() {

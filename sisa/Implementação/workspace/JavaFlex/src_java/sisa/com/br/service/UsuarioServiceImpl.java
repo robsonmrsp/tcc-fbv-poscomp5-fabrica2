@@ -1,6 +1,8 @@
 package sisa.com.br.service;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,6 +10,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import sisa.com.br.controller.UsuarioUtils;
+import sisa.com.br.entidade.Perfil;
 import sisa.com.br.entidade.Usuario;
 import sisa.com.br.repositorio.UsuarioRepository;
 import flex.messaging.FlexContext;
@@ -28,12 +31,14 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 	public Usuario save(Usuario usuario) throws Exception {
 		try {
-			
-			System.out.println("teste");
+			Set<Perfil> perfil = usuario.getListaPerfil();
+			usuario.setListaPerfil(new HashSet<Perfil>());
+			usuario = this.usuarioRepository.save(usuario);
+			usuario.setListaPerfil(perfil);
 			this.usuarioRepository.save(usuario);
 			return usuario;
 		} catch (Exception e) {
-			throw new Exception("N‹o foi poss’vel salvar." +e.getCause());
+			throw new Exception("Não foi possível salvar." +e.getCause());
 		}
 	}
 
@@ -41,7 +46,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 		try {	
 			return this.usuarioRepository.findById(usuario);
 		} catch (Exception e) {
-			throw new Exception("N‹o foi poss’vel procurar pela ID."+e.getMessage());
+			throw new Exception("Não foi possível procurar pela ID."+e.getMessage());
 		}
 	}
 
@@ -49,7 +54,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 		try {	
 			return this.usuarioRepository.getList();
 		} catch (Exception e) {
-			throw new Exception("N‹o foi poss’vel listar."+e.getMessage());
+			throw new Exception("Não foi possível listar."+e.getMessage());
 		}
 	}
 
@@ -57,7 +62,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 		try {	
 			this.usuarioRepository.remove(usuario);
 		} catch (Exception e) {
-			throw new Exception("N‹o foi poss’vel excluir." +e.getMessage());
+			throw new Exception("Não foi possível excluir." +e.getMessage());
 		}
 		
 	}
@@ -67,7 +72,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 		try {	
 			return this.usuarioRepository.consultaUsuario(usuario);
 		} catch (Exception e) {
-			throw new Exception("N‹o foi poss’vel localizar." +e.getMessage());
+			throw new Exception("Não foi possível localizar." +e.getMessage());
 		}
 	}
 
@@ -78,13 +83,13 @@ public class UsuarioServiceImpl implements UsuarioService {
 			
 			if( usuarioLogado == null){
 				
-				throw new Exception("Usu‡rio ou senha incorreto");
+				throw new Exception("Usuário ou senha incorreto");
 			}else{
 			
 			if( utils.isUsuarioLogado(usuarioLogado.getId()))
 				{
 					  //usu‡rio j‡ est‡ logado
-					  throw new Exception("Usu‡rio j‡ logado");
+					  throw new Exception("Usuário já logado");
 				} else {
 				 
 					//usu‡rio logado com sucesso
@@ -101,7 +106,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 			}
 			
 		} catch (Exception e) {
-			throw new Exception("Nï¿½o foi possï¿½vel procurar pela ID."+e.getMessage());
+			throw new Exception("Não foi possível procurar pela ID."+e.getMessage());
 		}
 	}
 

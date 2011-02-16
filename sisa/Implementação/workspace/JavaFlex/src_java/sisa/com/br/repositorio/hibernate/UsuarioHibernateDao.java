@@ -1,6 +1,7 @@
 package sisa.com.br.repositorio.hibernate;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -30,13 +31,21 @@ public class UsuarioHibernateDao extends HibernateDaoSupport implements UsuarioR
 		usuario = (Usuario) getHibernateTemplate().get(Usuario.class, usuario.getId());
 		
 		if (usuario == null)
-			throw new Exception("O usu‡rio com a ID: "+id+" do(a) "+Usuario.class.getSimpleName()+" nï¿½o foi encontrada.");
+			throw new Exception("O usuário com a ID: "+id+" do(a) "+Usuario.class.getSimpleName()+" nï¿½o foi encontrada.");
 		return usuario;
 	}
 
 	public List<Usuario> getList() throws Exception {
-
-		return (List<Usuario>) getHibernateTemplate().loadAll(Usuario.class);
+		List<Usuario> listaUsuario = new ArrayList<Usuario>();
+		try{
+			for (Object lista : getHibernateTemplate().loadAll(Usuario.class)) {
+				listaUsuario.add((Usuario)lista);
+				
+			}
+		} catch (Exception e) {
+			throw new Exception("Não foi possível listar."+e.getMessage());
+		}
+		return listaUsuario;
 	}
 
 	public void remove(Usuario usuario) throws Exception {
