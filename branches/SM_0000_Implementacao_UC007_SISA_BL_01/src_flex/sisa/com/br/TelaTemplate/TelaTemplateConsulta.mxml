@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:fc="com.adobe.flex.extras.controls.*" creationComplete="iniciarTela()"
+				 xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" title="Tela Template"
+				width="1006" height="402" enabled="true" horizontalAlign="center" verticalAlign="middle">
+
+	<mx:Metadata>
+    	[ResourceBundle("MessagemResource_pt_BR")] //Nome do arquivo .properties
+    </mx:Metadata>
+    
+	<mx:Script>
+		<![CDATA[
+			import mx.rpc.events.ResultEvent;
+			import mx.managers.PopUpManager;
+			import mx.rpc.events.FaultEvent;
+			import mx.controls.Alert;
+			import mx.core.Application;
+			import mx.collections.ArrayCollection;
+			
+			public function iniciarTela():void{
+			}
+			
+			
+		]]>
+	</mx:Script>
+	
+	<mx:Image x="897.95" y="8.75" width="76.05" height="74.95796" source="@Embed(source='../../../../img/telas/aluno.png')"/>
+	
+	<mx:Button x="776" y="8.3" label="{resourceManager.getString('MessagemResource_pt_BR', 'tela.button.pesquisa')}" icon="@Embed(source='../../../../img/button/search.png')" width="113.95" height="24" id="btBuscar" buttonMode="true" tabIndex="4" enabled="true" styleName="Button"/>
+	
+	<mx:Panel x="10" y="91.7" width="966" height="204.25" layout="absolute" title="" horizontalAlign="center">
+		<mx:DataGrid id="idGrid" x="0" y="0" width="946" height="158.25" doubleClickEnabled="true" tabIndex="7" tabEnabled="false">
+			<mx:columns>
+				<mx:DataGridColumn headerText="" dataField="" width="50"/>
+				<mx:DataGridColumn headerText="" dataField="" width="150"/>
+				<mx:DataGridColumn headerText="" dataField="" width="90"/>
+				<mx:DataGridColumn headerText="" dataField="" width="40"/>
+			</mx:columns>
+		</mx:DataGrid>
+
+	</mx:Panel>
+	<mx:Button label="{resourceManager.getString('MessagemResource_pt_BR', 'tela.button.novo')}" id="btCadastrar" icon="@Embed(source='../../../../img/button/add.png')" x="10" y="312" width="99" buttonMode="true" tabIndex="8" enabled="true" styleName="Button" click=""/>
+	<mx:Button label="{resourceManager.getString('MessagemResource_pt_BR', 'tela.button.alterar')}" id="btAlterar" icon="@Embed('../../../../img/button/alter.png')" x="117" y="312" buttonMode="true" tabIndex="9" styleName="Button" width="99" click=""/>
+	<mx:Button label="{resourceManager.getString('MessagemResource_pt_BR', 'tela.button.excluir')}" enabled="true" id="btExcluir" icon="@Embed('../../../../img/button/cancel.png')" x="224" y="312" buttonMode="true" tabIndex="11" styleName="Button" width="99" click=""/>
+	<mx:Button label="{resourceManager.getString('MessagemResource_pt_BR', 'tela.button.fechar')}" enabled="true" id="btCancelar" x="331" y="312" buttonMode="true" tabIndex="11" styleName="Button" width="99" click=""/>
+
+</mx:TitleWindow>

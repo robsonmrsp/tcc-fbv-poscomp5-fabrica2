@@ -1,0 +1,104 @@
+<?xml version="1.0"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml"  xmlns:telaTemplate="sisa.com.br.TelaTemplate.*" creationComplete="iniciarTela()" layout="absolute" width="100%" height="100%"
+	horizontalAlign="center" backgroundImage="img/estrutura/ImgTelaLogin.png">
+
+	<mx:Metadata>
+    	[ResourceBundle("MessagemResource_pt_BR")] //Nome do arquivo .properties
+    </mx:Metadata>
+    		
+<mx:Script>
+		<![CDATA[
+			import mx.rpc.events.FaultEvent;
+			import sisa.com.br.TelaInicialSisa;
+			import sisa.com.br.entidade.UsuarioSisa;
+			import sisa.com.br.TelasAdministracao.ConsultaUsuario;
+			import mx.containers.TitleWindow;
+			import sisa.com.br.TelasAdministracao.Usuario;
+			import mx.containers.Canvas;
+			import mx.messaging.FlexClient;
+			import mx.managers.PopUpManager;
+			import mx.events.FlexEvent;
+			import mx.rpc.events.ResultEvent;
+			 import mx.events.MenuEvent;
+            import mx.controls.Alert;
+            import mx.collections.*;
+			
+            private var usuario:UsuarioSisa;
+            
+			private function iniciarTela():void
+			{
+			}
+            
+            public function efetuarLogin():void
+			{	
+				
+				if(!validarCamposObrigatorios())
+					return;
+					
+				usuarioService.consultaUsuario(idLogin.text, idSenha.text);
+				  
+			}
+			
+			private function validarCamposObrigatorios():Boolean
+			{
+				if(idLogin.text == "")
+				{
+					Alert.show("Campo login obrigatório");
+					return false;
+				}
+				
+				if(idSenha.text == "")
+				{
+					Alert.show("Campo senha obrigatório");
+					return false;
+				}
+				return true;
+				
+			}
+			
+			function onResultConsultaUsuario(event:ResultEvent):void
+			{
+				
+				usuario = event.result as UsuarioSisa;
+				
+				if(usuario == null){
+				
+				Alert.show("Usuário ou senha invlálido");
+				
+				}else{
+				
+				
+				var telaInicial:TelaInicialSisa = new TelaInicialSisa();
+				telaInicial.usuarioLogado = usuario as UsuarioSisa;
+				application.removeAllChildren();
+				application.addChild(telaInicial);
+				
+
+				}
+			}	
+			
+			//Ocorreu uma falha ao chamar algum servico servico.
+			public function onFault(event:FaultEvent):void
+			{												
+				Alert.show(event.fault.message);
+			}
+           
+			
+            
+		]]>
+	</mx:Script> 
+	
+	<mx:RemoteObject id="usuarioService" showBusyCursor="true" fault="onFault(event)" destination="usuarioService">
+		<mx:method name="consultaUsuario" result="onResultConsultaUsuario(event)" fault="onFault(event)"/>
+	</mx:RemoteObject> 
+	
+	<mx:Label x="870" y="332.35" text="{resourceManager.getString('MessagemResource_pt_BR', 'tela.login.campo.senha')}"/>
+	<mx:TextInput x="925" y="330.35" maxChars="100" id="idSenha" width="277" tabIndex="2"  enabled="true" displayAsPassword="true"/>
+	
+	<mx:Label x="870" y="292.95" text="{resourceManager.getString('MessagemResource_pt_BR', 'tela.login.campo.login')}"/>
+	<mx:TextInput x="925" y="290.95" maxChars="100" id="idLogin" width="277" tabIndex="2" enabled="true" />
+	
+	<mx:Button label="Login" enabled="true" id="botaoExcluir"  click="efetuarLogin()" x="1045" y="372" buttonMode="true" tabIndex="11" styleName="Button" width="99"/>
+	 
+       
+</mx:Application>
