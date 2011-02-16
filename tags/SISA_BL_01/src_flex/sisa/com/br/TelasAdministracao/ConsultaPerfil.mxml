@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:fc="com.adobe.flex.extras.controls.*" creationComplete="iniciarTela()"
+				 xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" title="Consulta Perfil"
+				width="1006" height="402" enabled="true" horizontalAlign="center" verticalAlign="middle">
+
+	<mx:Metadata>
+    	[ResourceBundle("MessagemResource_pt_BR")] //Nome do arquivo .properties
+    </mx:Metadata>
+    
+	<mx:Script>
+		<![CDATA[
+			import sisa.com.br.entidade.PerfilSisa;
+			import mx.rpc.events.ResultEvent;
+			import mx.managers.PopUpManager;
+			import mx.rpc.events.FaultEvent;
+			import mx.controls.Alert;
+			import mx.core.Application;
+			import mx.collections.ArrayCollection;
+			
+
+			public var telaPerfil:Perfil;
+			public var perfil:PerfilSisa;
+			public var perfilObjConsulta:PerfilSisa;
+			
+			[Bindable]
+			private var listaPerfil:ArrayCollection;
+			
+			public function iniciarTela():void{
+				getList();
+			}
+			
+			//Consulta perfils pegando os campos da tela 
+			public function consultaPerfil():void
+			{	  
+				 this.perfil = new PerfilSisa();
+				 
+				if (idDescricao.text != "")
+				{ 			 
+				  this.perfil.descricao = idDescricao.text;
+				  perfilService.consultaPerfil(perfil);
+				  
+				}else{
+					perfilService.getList();
+				} 
+				  
+			}
+			
+			//retorno do java da consulta de perfil
+			public function onResultConsultaPerfil(event:ResultEvent):void
+			{ 
+				  
+				 listaPerfil = event.result as ArrayCollection;
+			}
+			
+			//Consulta a lista de todos os perfils
+			public function getList():void
+			{
+				perfilService.getList();
+			}
+			
+			//Função que será executada após a conclusão do método getList
+			public function onResultListaPerfil(event:ResultEvent):void
+			{
+				listaPerfil = event.result as ArrayCollection;
+			}
+		
+			public function detalharPerfil():void
+			{            		
+            	telaPerfil = Perfil(PopUpManager.createPopUp(this, sisa.com.br.TelasAdministracao.Perfil, true));
+            	//Enviando objeto selecionado para tela seguinte
+            	telaPerfil.perfilObjConsulta = idGridPerfil.selectedItem as PerfilSisa;  
+            	PopUpManager.centerPopUp(telaPerfil);
+			}
+			
+			public function alterarPerfil():void
+			{   
+				    		
+            	telaPerfil = Perfil(PopUpManager.createPopUp(this, sisa.com.br.TelasAdministracao.Perfil, true));
+            	//Enviando objeto selecionado para tela seguinte
+            	telaPerfil.perfilObjConsulta = idGridPerfil.selectedItem as PerfilSisa;  
+            	PopUpManager.centerPopUp(telaPerfil);
+            	
+			}
+			
+			public function removerPerfil():void{
+				if(idGridPerfil.selectedItem != null){
+					 this.perfil = new PerfilSisa();
+					 this.perfil.id = idGridPerfil.selectedItem.id;
+					 this.perfil.descricao = idGridPerfil.selectedItem.descricao;
+					 perfilService.remove(perfil);
+				}
+			}
+			
+			//Função que será executada após a conclusão do método getList
+			public function onResultRemoverPerfil(event:ResultEvent):void
+			{
+				Alert.show("Perfil removido com sucesso");
+				getList();
+			}
+			
+			//Ocorreu uma falha ao chamar algum servico servico.
+			public function onFault(event:FaultEvent):void
+			{												
+				Alert.show(event.fault.message);
+			}
+			
+			public function cadastrarPerfil():void{
+            	
+            	telaPerfil = Perfil(PopUpManager.createPopUp(this, sisa.com.br.TelasAdministracao.Perfil, true));
+            	PopUpManager.centerPopUp(telaPerfil);
+			}
+			
+		]]>
+	</mx:Script>
+	<mx:RemoteObject id="perfilService" showBusyCursor="true" fault="onFault(event)" destination="perfilService">
+		<mx:method name="getList" result="onResultListaPerfil(event)" fault="onFault(event)"/>
+		<mx:method name="remove" result="onResultRemoverPerfil(event)" fault="onFault(event)"/>
+		<mx:method name="consultaPerfil" result="onResultConsultaPerfil(event)" fault="onFault(event)"/>
+	</mx:RemoteObject>
+	
+	<mx:Label x="24" y="10.3" text="{resourceManager.getString('MessagemResource_pt_BR', 'tela.consulta.perfil.campo.descricao')}"/>
+	<mx:TextInput x="139" y="9.95" maxChars="100" id="idDescricao" width="608" tabIndex="2" enabled="true" />
+	
+	<mx:Image x="897.95" y="8.75" width="76.05" height="74.95796" source="@Embed(source='../../../../img/telas/aluno.png')"/>
+	
+	<mx:Button x="790" y="8.3" label="{resourceManager.getString('MessagemResource_pt_BR', 'tela.button.pesquisa')}" icon="@Embed(source='../../../../img/button/search.png')" width="99.95" height="24" id="btBuscar" click="consultaPerfil();" buttonMode="true" tabIndex="4" enabled="true" styleName="Button"/>
+	
+	<mx:Panel x="10" y="91.7" width="966" height="204.25" layout="absolute" title="{resourceManager.getString('MessagemResource_pt_BR', 'tela.consulta.perfil.title.lista')}" horizontalAlign="center">
+		<mx:DataGrid id="idGridPerfil" x="0" y="0" width="946" height="158.25" dataProvider="{listaPerfil}" doubleClick="{detalharPerfil()}" doubleClickEnabled="true" tabIndex="7" tabEnabled="false">
+			<mx:columns>
+				<mx:DataGridColumn headerText="{resourceManager.getString('MessagemResource_pt_BR', 'tela.consulta.perfil.campo.grid.descricao')}" dataField="descricao" width="150"/>
+			</mx:columns>
+		</mx:DataGrid>
+
+	</mx:Panel>
+	<mx:Button label="{resourceManager.getString('MessagemResource_pt_BR', 'tela.button.novo')}" id="btCadastrar" icon="@Embed(source='../../../../img/button/add.png')" x="10" y="312" width="99" buttonMode="true" tabIndex="8" enabled="true" styleName="Button" click="cadastrarPerfil()"/>
+	<mx:Button label="{resourceManager.getString('MessagemResource_pt_BR', 'tela.button.alterar')}" id="btAlterar" icon="@Embed('../../../../img/button/alter.png')" x="117" y="312" buttonMode="true" tabIndex="9" styleName="Button" width="99" click="alterarPerfil()"/>
+	<mx:Button label="{resourceManager.getString('MessagemResource_pt_BR', 'tela.button.excluir')}" enabled="true" id="btExcluir" icon="@Embed('../../../../img/button/cancel.png')" x="224" y="312" buttonMode="true" tabIndex="11" styleName="Button" width="99" click="removerPerfil();"/>
+
+</mx:TitleWindow>
