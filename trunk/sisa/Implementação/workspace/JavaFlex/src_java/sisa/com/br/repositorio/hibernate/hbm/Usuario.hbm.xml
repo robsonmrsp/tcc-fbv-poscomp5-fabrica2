@@ -5,7 +5,9 @@
 <hibernate-mapping>
 	<class name="sisa.com.br.entidade.Usuario" table="Usuario">
 		
-		<id name="id" column="Id" type="java.lang.Integer" length="11"></id>
+		<id name="id" column="id_Usuario" type="java.lang.Integer" length="11">
+			<generator class="native" />
+		</id>
 				
 		<property name="login" column="Login" type="java.lang.String"
 			not-null="false" length="30" />
@@ -14,6 +16,12 @@
 			not-null="true" length="20" />
 			
 		<property name="nome" column="Nome" type="java.lang.String"
-			not-null="false" length="50" />							
+			not-null="false" length="50" />
+		
+		<set name="listaPerfil" table="usuario_perfil" cascade="save-update" lazy="false">
+          <key column="Id_Usuario"/>
+          <many-to-many class="sisa.com.br.entidade.Perfil" column="Id_Perfil"/>
+      	</set>
+      						
 	</class>
 </hibernate-mapping>
