@@ -38,9 +38,5 @@
 		</mx:DataGrid>
 
 	</mx:Panel>
-	<mx:Button label="{resourceManager.getString('MessagemResource_pt_BR', 'tela.button.novo')}" id="btCadastrar" icon="@Embed(source='../../../../img/button/add.png')" x="10" y="312" width="99" buttonMode="true" tabIndex="8" enabled="true" styleName="Button" click=""/>
-	<mx:Button label="{resourceManager.getString('MessagemResource_pt_BR', 'tela.button.alterar')}" id="btAlterar" icon="@Embed('../../../../img/button/alter.png')" x="117" y="312" buttonMode="true" tabIndex="9" styleName="Button" width="99" click=""/>
-	<mx:Button label="{resourceManager.getString('MessagemResource_pt_BR', 'tela.button.excluir')}" enabled="true" id="btExcluir" icon="@Embed('../../../../img/button/cancel.png')" x="224" y="312" buttonMode="true" tabIndex="11" styleName="Button" width="99" click=""/>
-	<mx:Button label="{resourceManager.getString('MessagemResource_pt_BR', 'tela.button.fechar')}" enabled="true" id="btCancelar" x="331" y="312" buttonMode="true" tabIndex="11" styleName="Button" width="99" click=""/>
-
+	
 </mx:TitleWindow>
