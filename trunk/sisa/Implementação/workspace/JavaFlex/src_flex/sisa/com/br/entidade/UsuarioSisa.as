@@ -2,7 +2,7 @@
 package sisa.com.br.entidade
 {
 	import mx.collections.ArrayCollection;
-	import sisa.com.br.TelaUsuario.Usuario;
+	import sisa.com.br.TelasAdministracao.Usuario;
 	
 
 	[RemoteClass(alias="sisa.com.br.entidade.Usuario")]

@@ -44,7 +44,7 @@
                }
             } */
             
-            private function removeListOrigem():void
+            private function removeListOrigem():ArrayCollection
 			{
 				var itemsListA:Array;
 				for each(var item:Object in listItemsDestino) {  
@@ -55,8 +55,9 @@
 					//listItemsLocal.addItem(listItemsDestino.removeItemAt(listItemsDestino.getItemIndex(item)));
 					
 				}
+				return listItemsLocal;
 				
-				this.listA.dataProvider = listItemsLocal;
+				//this.listA.dataProvider = listItemsLocal;
 
 				/* if (chServidorApache.selectedItem != null) {
 					servidorApacheAux = chServidorApache.selectedItem;
@@ -155,7 +156,7 @@
 			public function onResultListaPerfil(event:ResultEvent):void
 			{
 				listItemsLocal = event.result as ArrayCollection;
-				removeListOrigem();
+				listItemsLocal = removeListOrigem();
 			}
 			
 			public function voltar():void

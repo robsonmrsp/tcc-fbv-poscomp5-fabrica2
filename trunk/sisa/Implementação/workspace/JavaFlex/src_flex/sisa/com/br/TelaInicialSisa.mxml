@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:telaTemplate="sisa.com.br.TelaTemplate.*" creationComplete="iniciarTela()" layout="absolute" width="100%" height="100%"
-	horizontalAlign="center" backgroundImage="img/estrutura/BackGroudFBV4.png">
+	horizontalAlign="center" backgroundImage="img/estrutura/backgroundSisa.png">
 		
 <mx:Script>
 		<![CDATA[
@@ -29,6 +29,8 @@
             
             public var usuarioLogado:UsuarioSisa;
             
+            
+            
 			private function iniciarTela():void
 			{
 
@@ -41,7 +43,7 @@
 			     var mes:Number = data.getMonth() + 1; 
 			     var ano:Number = data.getFullYear(); 
 				
-				idUsuarioLogado.text = usuarioLogado.nome + " - " + dia + " / "+ mes +" / "+ ano + " " + " pm " + data.getHours() + " : "+ data.getMinutes();
+				idUsuarioLogado.text = "Usuário Logado: " + usuarioLogado.nome + "    Data do Sistema: " + dia + " / "+ mes +" / "+ ano;
 
 			}
             
@@ -89,6 +91,7 @@
 				Alert.show(event.fault.message);
 			}
 			
+			[Bindable]
             public var array:ArrayCollection = new ArrayCollection([
 	        { cd:"1", nome:"Proposta", tp:"A", tl:"", children:[{cd:"6", nome:"Proposta", tp:"B", tl:"", 
 	        										  children:[{cd:"6", nome:"Promitente", tp:"C", tl:"Promitente"}]}]},
@@ -98,7 +101,7 @@
 	        											  {cd:"9", nome:"Perfil", tp:"B", tl:"Perfil"}, 
 	        											   {cd:"10", nome:"Transacao", tp:"B", tl:"Transacao"}]}       
 	      ]);
-
+			
             
 		]]>
 	</mx:Script>
@@ -107,18 +110,18 @@
 		<mx:method name="destruirSessao" result="onResultDestruirSessao(event)" fault="onFault(event)"/>
 	</mx:RemoteObject>
 	
-      <mx:Box width="1012" height="410" x="176" y="166">
+      <mx:Box width="1012" height="410" x="176" y="173">
              <mx:ViewStack width="1006" height="402" id="myViewstack">	
 				<telaTemplate:TelaTemplateConsulta id="tela01" width="1006"/>
 				
 			</mx:ViewStack>   
         </mx:Box>      
         
-        <mx:Label x="474" y="72" id="idUsuarioLogado" text=""/>
+        <mx:Label x="474" y="100" id="idUsuarioLogado" text=""/>
         
-         <mx:MenuBar labelField="nome" itemClick="getTela(event)" dataProvider="{array}" x="0"  width="1186" y="98"/>
+         <mx:MenuBar labelField="nome" itemClick="getTela(event)" dataProvider="{array}" x="0"  width="1186" y="132" height="32"/>
 
-      <mx:Image x="1133" y="13" source="img/estrutura/logout.png" click="{sairAplicacao()}"/> 
+      <mx:Image x="1126" y="13" source="img/estrutura/logout.png" click="{sairAplicacao()}"/> 
           
        
 </mx:Application>
