@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="sisa.com.br.entidade.Lote" table="lote">
+		
+		<composite-id name="lote" class="sisa.com.br.entidade.Lote" >
+		    <key-property name="numero" column="nu_lotm" type="java.lang.String" length="3" />
+		    <key-property name="quadra" column="nu_quadra" type="java.lang.String" length="3" />
+		    <key-property name="numero" column="nu_lote" type="java.lang.String" length="3" />
+		</composite-id>
+		
+		<property name="confFrente" column="ds_conf_frente" type="java.lang.String"
+			not-null="false" length="20" />
+		<property name="confFundo" column="ds_conf_fundo" type="java.lang.String"
+			not-null="false" length="20" />
+		<property name="confDireita" column="ds_conf_direita" type="java.lang.String"
+			not-null="false" length="20" />
+		<property name="confEsquerda" column="ds_conf_esquerda" type="java.lang.String"
+			not-null="false" length="20" />
+		<property name="area" column="nu_area" type="java.lang.Double"
+			not-null="false" length="20" />
+		<property name="distanciaParaEsquina" column="nu_dist_esquina" type="java.lang.Double"
+			not-null="false" length="20" />
+		<property name="dimensaoFrente" column="ds_dim_frente" type="java.lang.String"
+			not-null="false" length="20" />
+		<property name="dimensaoFundo" column="ds_dim_fundo" type="java.lang.String"
+			not-null="false" length="20" />
+		<property name="dimensaoDireita" column="ds_dim_direita" type="java.lang.String"
+			not-null="false" length="20" />
+		<property name="dimensaoEsquerda" column="ds_dim_esquerda" type="java.lang.String"
+			not-null="false" length="20" />
+		<property name="valorM2" column="valorm2" type="java.lang.String"
+			not-null="false" length="20" />
+		
+		<set name="listaLoteamento" table="loteamento_lote" cascade="save-update" lazy="false">
+          <key column="nu_lotm"/>
+          <many-to-many class="sisa.com.br.entidade.Loteamento" column="nu_lotm"/>
+      	</set>
+      	<set name="listaQuadra" table="quadra_lote" cascade="save-update" lazy="false">
+          <key column="nu_quadra"/>
+          <many-to-many class="sisa.com.br.entidade.Loteamento" column="nu_quadra"/>
+      	</set>
+      		
+	</class>
+</hibernate-mapping>
