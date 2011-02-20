@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="sisa.com.br.entidade.Endereco" table="endereco">
+
+		<id name="codigo" column="cd_endereco" type="java.lang.Integer" unsaved-value="0">
+			<generator class="identity"/>
+		</id>
+		<property column="nu_cep" type="java.lang.String" name="cep" length="8" />
+		<property column="ds_logradouro" type="java.lang.String" name="logradouro" not-null="true" length="200" />
+		<property column="nr_endereco" type="java.lang.String" name="numero" />
+		<property column="ds_complemento" type="java.lang.String" name="complemento" length="45" />
+		<property column="ds_bairro" type="java.lang.String" name="bairro" length="100" />
+		<property column="cd_uf" type="java.lang.String" name="uf" not-null="true" length="2" />
+		<property column="no_cidade" type="java.lang.String" name="cidade" not-null="true" length="100" />
+	</class>
+</hibernate-mapping>
