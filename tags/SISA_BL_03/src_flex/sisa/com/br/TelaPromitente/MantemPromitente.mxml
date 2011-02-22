@@ -1,0 +1,502 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:fc="com.adobe.flex.extras.controls.*" creationComplete="iniciarTela()" xmlns:mx="http://www.adobe.com/2006/mxml" 
+				layout="absolute" title="Cadastro de Promitente" width="761" height="610" enabled="true">
+
+	<mx:Metadata>
+    	[ResourceBundle("MessagemResource_pt_BR")] //Nome do arquivo .properties
+    </mx:Metadata>
+    
+	<mx:Script>
+		<![CDATA[
+			import sisa.com.br.dominio.objDominio;
+			import sisa.com.br.entidade.Endereco;
+			import mx.binding.utils.BindingUtils;
+			import sisa.com.br.dominio.DominioEstadoCivil;
+			import mx.controls.Alert;
+			import mx.rpc.events.FaultEvent;
+			import mx.collections.ArrayCollection;
+			import mx.managers.PopUpManager;
+			import mx.rpc.events.ResultEvent;
+			import mx.core.Application;
+			import sisa.com.br.entidade.Promitente;
+			
+			[Bindable]
+			private var promitente:Promitente;
+			[Bindable]
+			private var listaSexo: ArrayCollection;
+			[Bindable]
+			private var listaEstadoCivil: ArrayCollection;
+			[Bindable]
+			private var listaUf: ArrayCollection = new ArrayCollection(
+				[{label: "Acre", data: "AC"}, 
+				 {label: "Alagoas", data: "AL"}, 
+				 {label: "Amazonas", data: "AM"}, 
+				 {label: "Amapá", data: "AP"}, 
+				 {label: "Bahia", data: "BA"}, 
+				 {label: "Ceára", data: "CE"}, 
+				 {label: "Distrito Federal", data: "DF"}, 
+				 {label: "Espirito Santo", data: "ES"}, 
+				 {label: "Goiás", data: "GO"}, 
+				 {label: "Maranhão", data: "MA"}, 
+				 {label: "Minas Gerais", data: "MG"}, 
+				 {label: "Mato Grosso do Sul", data: "MS"}, 
+				 {label: "Mato Grosso", data: "MT"}, 
+				 {label: "Pará", data: "PA"}, 
+				 {label: "Paraiba", data: "PB"}, 
+				 {label: "Pernambuco", data: "PE"}, 
+				 {label: "Piauí", data: "PI"}, 
+				 {label: "Paraná", data: "PR"}, 
+				 {label: "Rio de Janeiro", data: "RJ"}, 
+				 {label: "Rio Grande do Norte", data: "RN"}, 
+				 {label: "Rondônia", data: "RO"}, 
+				 {label: "Roraima", data: "RR"}, 
+				 {label: "Rio Grande do Sul", data: "RS"}, 
+				 {label: "Santa Catarina", data: "SC"}, 
+				 {label: "Sergipe", data: "SE"}, 
+				 {label: "São Paulo", data: "SP"}, 
+				 {label: "Tocantins", data: "TO"}]
+				);
+			
+			//Variavel publica para receber objeto da tela de consulta
+			public var promitenteEditar:Promitente = null;
+			
+			private var retoroDominio: int = 0;
+			
+			public function iniciarTela():void 
+			{
+				dominioService.listarTipoSexo();
+				dominioService.listarEstadoCivil();								
+			}
+			
+			private function prepararTela():void
+			{
+				
+				if(promitenteEditar != null){
+					idCodigo.text = promitenteEditar.codigo;
+					idCodigo.enabled = false;
+					idNome.text = promitenteEditar.nome;
+					idSexo.selectedIndex = getIndexListaDominio(listaSexo, promitenteEditar.sexo);
+					idEstadoCivil.selectedIndex = getIndexListaDominio(listaEstadoCivil, promitenteEditar.estadoCivil);
+					idDtNasc.selectedDate = promitenteEditar.dataNascimento;
+					idCpfCnpj.text = promitenteEditar.cpfCnpj;
+					idRG.text = promitenteEditar.numeroRG;
+					idOrgEmissor.text = promitenteEditar.orgaoEmissorRG;
+					idDtEmissao.selectedDate = promitenteEditar.dataExpedicaoRG;
+					idProfissao.text = promitenteEditar.profissao;
+					idNacionalidade.text = promitenteEditar.nacionalidade;
+					
+					if (promitenteEditar.enderecoResidencial != null){
+						idCepRes.text = promitenteEditar.enderecoResidencial.cep;
+						idLogRes.text = promitenteEditar.enderecoResidencial.logradouro;
+						idNumRes.text = promitenteEditar.enderecoResidencial.numero.toString();
+						idComplRes.text = promitenteEditar.enderecoResidencial.complemento;
+						idBairroRes.text = promitenteEditar.enderecoResidencial.bairro;
+						idCidadeRes.text = promitenteEditar.enderecoResidencial.cidade;
+						idUfRes.selectedIndex = getIndexLista(listaUf, promitenteEditar.enderecoResidencial.uf);
+					}
+					idTelefoneRes.text = promitenteEditar.telefoneResidencial;
+					
+					if (promitenteEditar.enderecoCobranca != null){
+						idCepCob.text = promitenteEditar.enderecoCobranca.cep;
+						idLogCob.text = promitenteEditar.enderecoCobranca.logradouro;
+						idNumCob.text = promitenteEditar.enderecoCobranca.numero.toString();
+						idComplCob.text = promitenteEditar.enderecoCobranca.complemento;
+						idBairroCob.text = promitenteEditar.enderecoCobranca.bairro;
+						idCidadeCob.text = promitenteEditar.enderecoCobranca.cidade;
+						idUfCob.selectedIndex = getIndexLista(listaUf, promitenteEditar.enderecoCobranca.uf);
+					}
+					idTelefoneCob.text = promitenteEditar.telefoneCobranca;
+					
+					idDependente.selected = (promitenteEditar.dependente == "S")
+					if (idDependente.selected){
+						idNomeResponsavel.text = promitenteEditar.nomeResponsavel;
+						idCpfCnpjResponsavel.text = promitenteEditar.cpfCnpjResponsavel;
+						habilitaResponsavel();
+					}
+					
+				}
+				else{
+					limparTela();
+				}
+			}
+			
+			private function getIndexLista(lista: ArrayCollection, valor: String): int{
+				for ( var cont:int = 0; cont < lista.length; cont++ ) {
+					if (lista[cont]['data'] == valor) {
+				      return cont;
+				    }
+				  }
+				  return -1;
+			}
+			
+			private function getIndexListaDominio(lista: ArrayCollection, valor: String): int{
+				try{
+					for ( var cont:int = 0; cont < lista.length; cont++ ) {
+						if (lista[cont].codigo == valor) {
+					      return cont;
+					    }
+					}
+				}
+				catch (e: Error){
+					Alert.show(e.message);
+				}
+				return -1;
+			}
+			
+			public function voltar():void
+			{
+				PopUpManager.removePopUp(this);
+				
+			}
+			
+			public function limparTela():void
+			{	
+				idCodigo.text = "";
+				idCodigo.enabled = true;
+				idNome.text = "";
+				idSexo.selectedIndex = -1;
+				idEstadoCivil.selectedIndex = -1;
+				idDtNasc.text = "";
+				idCpfCnpj.text = "";
+				idRG.text = "";
+				idOrgEmissor.text ="";
+				idDtEmissao.text = "";
+				idProfissao.text = "";
+				idNacionalidade.text = "";
+				
+				idCepRes.text ="";
+				idLogRes.text = "";
+				idNumRes.text = "";
+				idComplRes.text = "";
+				idBairroRes.text = "";
+				idCidadeRes.text = "";
+				idUfRes.selectedIndex = -1;
+				idTelefoneRes.text = "";
+				
+				idCepCob.text ="";
+				idLogCob.text = "";
+				idNumCob.text = "";
+				idComplCob.text = "";
+				idBairroCob.text = "";
+				idCidadeCob.text = "";
+				idUfCob.selectedIndex = -1;
+				idTelefoneCob.text = "";
+				
+				idDependente.selected = false;
+				habilitaResponsavel();
+				idNomeResponsavel.text = "";
+				idCpfCnpjResponsavel.text = "";				
+			}
+			
+			public function salvar(): void
+			{
+				var validacao: String = "";
+				
+				if (idCodigo.text == ""){
+					validacao =+ "- Código;";
+				}
+				if (idNome.text == ""){
+					if (validacao != ""){
+						validacao =+ "\n";
+					}
+					validacao =+ "- Nome do promitente;";
+				}
+				if (idEstadoCivil.selectedIndex == -1){
+					if (validacao != ""){
+						validacao =+ "\n";
+					}
+					validacao =+ "- Estado Civil;";
+				}
+				if (idSexo.selectedIndex == -1){
+					if (validacao != ""){
+						validacao =+ "\n";
+					}
+					validacao =+ "- Sexo;";
+				}
+				if (idRG.text == ""){
+					if (validacao != ""){
+						validacao =+ "\n";
+					}
+					validacao =+ "- RG;";
+				}
+				if (idOrgEmissor.text == ""){
+					if (validacao != ""){
+						validacao =+ "\n";
+					}
+					validacao =+ "- Órgão emissor do RG;";
+				}
+				if (idDtEmissao.selectedDate == null){
+					if (validacao != ""){
+						validacao =+ "\n";
+					}
+					validacao =+ "- Data de emissão do RG;";
+				}
+				if (idDtNasc.selectedDate = null){
+					if (validacao != ""){
+						validacao =+ "\n";
+					}
+					validacao =+ "- Data de nascimento;";
+				}
+				if (idCepRes.text == ""){
+					if (validacao != ""){
+						validacao =+ "\n";
+					}
+					validacao =+ "- CEP do endereço residencial;";
+				}
+				if (idLogRes.text == ""){
+					if (validacao != ""){
+						validacao =+ "\n";
+					}
+					validacao =+ "- Logradouro do endereço residencial;";
+				}
+				if (idCidadeRes.text == ""){
+					if (validacao != ""){
+						validacao =+ "\n";
+					}
+					validacao =+ "- Cidade do endereço residencial;";
+				}
+				if (idUfRes.selectedIndex == -1){
+					if (validacao != ""){
+						validacao =+ "\n";
+					}
+					validacao =+ "- UF do endereço residencial;";
+				}
+				if (idCepCob.text == ""){
+					if (validacao != ""){
+						validacao =+ "\n";
+					}
+					validacao =+ "- CEP do endereço de cobrança;";
+				}
+				if (idLogCob.text == ""){
+					if (validacao != ""){
+						validacao =+ "\n";
+					}
+					validacao =+ "- Logradouro do endereço de cobrança;";
+				}
+				if (idCidadeCob.text == ""){
+					if (validacao != ""){
+						validacao =+ "\n";
+					}
+					validacao =+ "- Cidade do endereço de cobrança;";
+				}
+				if (idUfCob.selectedIndex == -1){
+					if (validacao != ""){
+						validacao =+ "\n";
+					}
+					validacao =+ "- UF do endereço de cobrança;";
+				}
+				
+				if (validacao != ""){
+					Alert.show("O(s) seguinte(s) campo(s) deve(m) ser informado(s): \n" + validacao);
+				}
+				else{
+					cadastrarPromitente();
+				}
+			}
+			
+			public function cadastrarPromitente():void{
+				
+				//Alert.show("Iniciando cadastramento do promitente!");
+				
+				
+				try{
+					if(promitenteEditar != null){
+						promitente = promitenteEditar;
+						promitente.codigo = promitenteEditar.codigo;
+					}
+					else{
+						promitente = new Promitente();
+						promitente.codigo = idCodigo.text;
+						promitente.situacao = "I";			
+					}
+					//Alert.show("teste");
+						
+					promitente.nome = idNome.text;	
+					promitente.sexo = idSexo.selectedItem.codigo;		
+					promitente.estadoCivil = idEstadoCivil.selectedItem.codigo;	
+					promitente.dataNascimento = idDtNasc.selectedDate;		
+					promitente.cpfCnpj = idCpfCnpj.text;		
+					promitente.numeroRG = idRG.text;			
+					promitente.orgaoEmissorRG = idOrgEmissor.text;		
+					promitente.dataExpedicaoRG = idDtEmissao.selectedDate;	
+					promitente.profissao = idProfissao.text;	
+					promitente.nacionalidade = idNacionalidade.text;	
+					                                
+					if (promitenteEditar == null){           
+						promitente.enderecoResidencial = new Endereco();
+					}                                                                
+					promitente.enderecoResidencial.cep = idCepRes.text;			
+					promitente.enderecoResidencial.logradouro = idLogRes.text;	
+					if (idNumRes.text != "")		
+						promitente.enderecoResidencial.numero = parseInt(idNumRes.text);			
+					promitente.enderecoResidencial.complemento = idComplRes.text;		
+					promitente.enderecoResidencial.bairro = idBairroRes.text;		
+					promitente.enderecoResidencial.cidade = idCidadeRes.text;		
+					promitente.enderecoResidencial.uf = idUfRes.selectedItem.data;	
+					promitente.telefoneResidencial = idTelefoneRes.text;	
+					
+					if (promitenteEditar == null){           
+						promitente.enderecoCobranca = new Endereco();
+					}                                                             
+					promitente.enderecoCobranca = new Endereco();
+					promitente.enderecoCobranca.cep = idCepCob.text;			
+					promitente.enderecoCobranca.logradouro = idLogCob.text;			
+					if (idNumCob.text != "")		
+						promitente.enderecoCobranca.numero = parseInt(idNumCob.text);			
+					promitente.enderecoCobranca.complemento = idComplCob.text;		
+					promitente.enderecoCobranca.bairro = idBairroCob.text;		
+					promitente.enderecoCobranca.cidade = idCidadeCob.text;		
+					promitente.enderecoCobranca.uf = idUfCob.selectedItem.data;	
+					promitente.telefoneCobranca = idTelefoneCob.text;
+					
+					if (idDependente.selected){
+						promitente.dependente = "S";
+						promitente.nomeResponsavel = idNomeResponsavel.text;
+						promitente.cpfCnpjResponsavel = idCpfCnpjResponsavel.text;
+					}
+					
+					promitenteService.save(promitente);  				
+				}
+				catch (e: Error){
+					Alert.show(e.message);
+				}
+			
+			}
+			
+			//Função que será executada após a conclusão do método ListaTipoSexo
+			public function onResultListaSexo(event: ResultEvent): void
+			{
+				listaSexo = event.result as ArrayCollection;
+				retoroDominio = retoroDominio + 1;
+				if (retoroDominio == 2){
+					prepararTela(); 
+				}
+			}
+			
+			//Função que será executada após a conclusão do método ListaEstadoCivil
+			public function onResultListaEstadoCivil(event: ResultEvent): void
+			{
+				listaEstadoCivil = event.result as ArrayCollection;
+				retoroDominio = retoroDominio + 1;
+				if (retoroDominio == 2){
+					prepararTela();
+				}
+			}
+			
+			//Função que será executada após a conclusão do método remove
+			public function onResultRemove(event:ResultEvent):void
+			{
+				limparTela();
+				Alert.show("Promitente removido com sucesso");
+			}
+			
+			//Função que será executada após a conclusão do método save
+			public function onResultSave(event:ResultEvent):void
+			{	
+				limparTela();
+				Alert.show("Promitente salvo com sucesso");
+				
+			}	
+			
+			//Ocorreu uma falha ao chamar algum servico servico.
+			public function onFault(event:FaultEvent):void
+			{											
+				Alert.show(event.fault.message);
+			}
+			
+			public function habilitaResponsavel(): void
+			{
+				pnResponsavel.enabled = idDependente.selected;
+			}
+		]]>
+	</mx:Script>
+	
+	<mx:RemoteObject id="promitenteService" showBusyCursor="true" fault="onFault(event)" destination="promitenteService">
+		<mx:method name="save" result="onResultSave(event)" fault="onFault(event)"/>
+		<mx:method name="remove" result="onResultRemove(event)" fault="onFault(event)"/>
+	</mx:RemoteObject>
+
+	<mx:RemoteObject id="dominioService" showBusyCursor="true" fault="onFault(event)" destination="dominioService">
+		<mx:method name="listarTipoSexo" result="onResultListaSexo(event)" fault="onFault(event)"/>
+		<mx:method name="listarEstadoCivil" result="onResultListaEstadoCivil(event)" fault="onFault(event)"/>
+	</mx:RemoteObject>
+	
+	<mx:DateFormatter id="df" formatString="DD/MM/YYYY"/>
+	
+	<mx:Label x="17" y="44.35" text="{resourceManager.getString('MessagemResource_pt_BR', 'tela.promitente.campo.nome')}"/>
+	<mx:TextInput x="82" y="43.4" id="idNome" width="650" tabIndex="1" enabled="true" maxChars="40"/>
+	
+	
+	<mx:Button label="{resourceManager.getString('MessagemResource_pt_BR', 'tela.button.cancelar')}" click="voltar();" id="btCancelar" icon="@Embed('../../../../img/button/cancel.png')" x="631.5" y="515" buttonMode="true" styleName="Button" height="29" width="99.5"/>
+	<mx:Button label="{resourceManager.getString('MessagemResource_pt_BR', 'tela.button.salvar')}" id="btSalvar" click="salvar();" icon="@Embed('../../../../img/button/add.png')"  x="631.5" y="477.95" buttonMode="true" tabIndex="24" styleName="Button" height="29.05"  width="99.5"/>
+	<mx:Label x="17" y="14" text="{resourceManager.getString('MessagemResource_pt_BR', 'tela.promitente.campo.codigo')}"/>
+	<mx:TextInput x="82" y="13" width="86.75" height="21.969696" id="idCodigo" maxChars="5" condenseWhite="false" tabIndex="0"/>
+	<mx:ComboBox x="82" y="74" width="171.35" id="idSexo" dataProvider="{listaSexo}" labelField="descricao" tabIndex="2"></mx:ComboBox>
+	<mx:Label x="17" y="77" text="{resourceManager.getString('MessagemResource_pt_BR', 'tela.promitente.campo.sexo')}"/>
+	<mx:Label x="261.35" y="76.65" text="{resourceManager.getString('MessagemResource_pt_BR', 'tela.promitente.campo.estadoCivil')}" textAlign="right" width="97.65"/>
+	<mx:ComboBox x="367.35" y="74" width="185.4" height="24.015152" id="idEstadoCivil" dataProvider="{listaEstadoCivil}" labelField="descricao" tabIndex="3"></mx:ComboBox>
+	<mx:Label x="243" y="105" text="{resourceManager.getString('MessagemResource_pt_BR', 'tela.promitente.campo.dataNasc')}" textAlign="right" width="116"/>
+	<mx:Label x="17" y="105" text="{resourceManager.getString('MessagemResource_pt_BR', 'tela.promitente.campo.cpfCnpj')}"/>
+	<mx:TextInput x="84" y="104" width="136.75" id="idCpfCnpj" maxChars="14" tabIndex="4"/>
+	<mx:DateField x="367" y="105" width="116" showToday="false" id="idDtNasc" formatString="DD/MM/YYYY" dayNames="['D','S','T','Q','Q','S','S']" monthNames="['Janeiro','Fevereiro','Março','Abril',
+'Maio','Junho','Julho','Agosto','Setembro','Outubro',
+'Novembro','Dezembro']" disabledDays="[0,6]" yearNavigationEnabled="true" useHandCursor="true" editable="true" tabIndex="5"/>
+	<mx:Label x="17" y="133" text="{resourceManager.getString('MessagemResource_pt_BR', 'tela.promitente.campo.rg')}"/>
+	<mx:TextInput x="84" y="132" width="136.75" id="idRG" maxChars="10" tabIndex="7"/>
+	<mx:Label x="256" y="133" text="{resourceManager.getString('MessagemResource_pt_BR', 'tela.promitente.campo.orgaoEmissor')}" textAlign="right" width="103"/>
+	<mx:TextInput x="367" y="132" width="116" id="idOrgEmissor" maxChars="6" tabIndex="8"/>
+	<mx:Label x="499" y="133" text="{resourceManager.getString('MessagemResource_pt_BR', 'tela.promitente.campo.dataEmissao')}" textAlign="right"/>
+	<mx:Label x="499" y="105" text="{resourceManager.getString('MessagemResource_pt_BR', 'tela.promitente.campo.nacionalidade')}" textAlign="right"/>
+	<mx:DateField x="602" y="131" width="102" id="idDtEmissao" formatString="DD/MM/YYYY" dayNames="['D','S','T','Q','Q','S','S']" monthNames="['Janeiro','Fevereiro','Março','Abril',
+'Maio','Junho','Julho','Agosto','Setembro','Outubro',
+'Novembro','Dezembro']" disabledDays="[0,6]" yearNavigationEnabled="true" useHandCursor="true" showToday="false" editable="true" tabIndex="9"/>
+	<mx:Panel x="17" y="187" width="715" height="132" layout="absolute" title="{resourceManager.getString('MessagemResource_pt_BR', 'tela.promitente.campo.tituloRes')}" backgroundColor="#EFF5FB" fontSize="10" fontWeight="normal" borderStyle="inset" textAlign="center">
+		<mx:Label x="1" y="3" text="{resourceManager.getString('MessagemResource_pt_BR', 'tela.promitente.campo.cepRes')}"/>
+		<mx:Label x="163" y="3" text="{resourceManager.getString('MessagemResource_pt_BR', 'tela.promitente.campo.logRes')}" textAlign="right" width="97"/>
+		<mx:TextInput x="265" y="1.45" width="426" id="idLogRes" maxChars="200" tabIndex="12"/>
+		<mx:Label x="1" y="30.8" text="{resourceManager.getString('MessagemResource_pt_BR', 'tela.promitente.campo.numeroRes')}"/>
+		<mx:TextInput x="71" y="29.8" width="84" id="idNumRes" maxChars="15" tabIndex="13"/>
+		<mx:Label x="163" y="30.15" text="{resourceManager.getString('MessagemResource_pt_BR', 'tela.promitente.campo.complementoRes')}" textAlign="right" width="97"/>
+		<mx:TextInput x="265" y="29.8" width="142" id="idComplRes" maxChars="45" tabIndex="14"/>
+		<mx:Label x="415" y="30.15" text="{resourceManager.getString('MessagemResource_pt_BR', 'tela.promitente.campo.bairroRes')}" textAlign="right" width="66"/>
+		<mx:TextInput x="487" y="29.8" width="204" id="idBairroRes" maxChars="100" tabIndex="15"/>
+		<mx:TextInput x="71" y="58.15" width="240" id="idCidadeRes" maxChars="100" tabIndex="16"/>
+		<mx:Label x="1" y="58.5" text="{resourceManager.getString('MessagemResource_pt_BR', 'tela.promitente.campo.cidadeRes')}"/>
+		<mx:Label x="315" y="58.5" text="{resourceManager.getString('MessagemResource_pt_BR', 'tela.promitente.campo.ufRes')}" textAlign="right" width="33"/>
+		<mx:ComboBox x="356" y="55.5" width="136" id="idUfRes" dataProvider="{listaUf}" tabIndex="17"></mx:ComboBox>
+		<fc:MaskedTextInput x="71" y="1.65" width="108" inputMask="#####-###" cellColor="#FFFFFF" id="idCepRes" tabIndex="11"/>
+		<mx:Label x="500" y="58.5" text="{resourceManager.getString('MessagemResource_pt_BR', 'tela.promitente.campo.telefoneRes')}" textAlign="right" width="64"/>
+		<fc:MaskedTextInput x="572" y="57.15" id="idTelefoneRes" inputMask="(##) ####-####" cellColor="#FFFFFF" fontFamily="Verdana" fontSize="10" tabIndex="18"/>
+	</mx:Panel>
+	<mx:Label x="17" y="161" text="{resourceManager.getString('MessagemResource_pt_BR', 'tela.promitente.campo.profissao')}"/>
+	<mx:TextInput x="84" y="160.65" width="399" id="idProfissao" maxChars="20" tabIndex="10"/>
+	<mx:TextInput x="602" y="105" width="129" id="idNacionalidade" maxChars="50" tabIndex="6"/>
+	<mx:Panel x="16" y="327" width="715" height="132" layout="absolute" title="{resourceManager.getString('MessagemResource_pt_BR', 'tela.promitente.campo.tituloCob')}" backgroundColor="#EFF5FB" fontSize="10" fontWeight="normal" borderStyle="inset" textAlign="center">
+		<mx:Label x="1" y="3" text="{resourceManager.getString('MessagemResource_pt_BR', 'tela.promitente.campo.cepCob')}"/>
+		<mx:Label x="163" y="3" text="{resourceManager.getString('MessagemResource_pt_BR', 'tela.promitente.campo.logCob')}" textAlign="right" width="97"/>
+		<mx:TextInput x="265" y="1.45" width="426" id="idLogCob" maxChars="200" tabIndex="20"/>
+		<mx:Label x="1" y="30.8" text="{resourceManager.getString('MessagemResource_pt_BR', 'tela.promitente.campo.numeroCob')}"/>
+		<mx:TextInput x="71" y="29.8" width="84" id="idNumCob" maxChars="15" tabIndex="21"/>
+		<mx:Label x="163" y="30.15" text="{resourceManager.getString('MessagemResource_pt_BR', 'tela.promitente.campo.complementoCob')}" textAlign="right" width="97"/>
+		<mx:TextInput x="265" y="29.8" width="142" id="idComplCob" maxChars="45" tabIndex="22"/>
+		<mx:Label x="415" y="30.15" text="{resourceManager.getString('MessagemResource_pt_BR', 'tela.promitente.campo.bairroCob')}" textAlign="right" width="66"/>
+		<mx:TextInput x="487" y="29.8" width="204" id="idBairroCob" maxChars="100" tabIndex="23"/>
+		<mx:TextInput x="71" y="58.15" width="240" id="idCidadeCob" maxChars="100" tabIndex="24"/>
+		<mx:Label x="1" y="58.5" text="{resourceManager.getString('MessagemResource_pt_BR', 'tela.promitente.campo.cidadeCob')}"/>
+		<mx:Label x="315" y="58.5" text="{resourceManager.getString('MessagemResource_pt_BR', 'tela.promitente.campo.ufCob')}" textAlign="right" width="33"/>
+		<mx:ComboBox x="356" y="55.5" width="136" id="idUfCob" dataProvider="{listaUf}" tabIndex="25"></mx:ComboBox>
+		<fc:MaskedTextInput x="71" y="1.65" width="108" inputMask="#####-###" cellColor="#FFFFFF" id="idCepCob" fontFamily="Verdana" tabIndex="19"/>
+		<mx:Label x="500" y="58.5" text="{resourceManager.getString('MessagemResource_pt_BR', 'tela.promitente.campo.telefoneCob')}" textAlign="right" width="64"/>
+		<fc:MaskedTextInput x="572" y="57.15" id="idTelefoneCob" inputMask="(##) ####-####" cellColor="#FFFFFF" tabIndex="26"/>
+	</mx:Panel>
+	<mx:Panel id="pnResponsavel" enabled="false" x="17" y="467" width="606.5" height="77" layout="absolute" borderStyle="inset" backgroundColor="#EFF5FB" horizontalAlign="center" textAlign="center">
+		<mx:title>{resourceManager.getString('MessagemResource_pt_BR', 'tela.promitente.campo.tituloResp')}</mx:title>
+		<mx:Label x="0" y="2" text="{resourceManager.getString('MessagemResource_pt_BR', 'tela.promitente.campo.nome')}" textAlign="left" width="61"/>
+		<mx:TextInput x="63" y="1" width="302" id="idNomeResponsavel" maxChars="40" tabIndex="28"/>
+		<mx:Label x="378.75" y="2" text="{resourceManager.getString('MessagemResource_pt_BR', 'tela.promitente.campo.cpfCnpj')}"/>
+		<mx:TextInput x="445.75" y="1" width="136.75" id="idCpfCnpjResponsavel" maxChars="14" tabIndex="29"/>
+	</mx:Panel>
+	<mx:CheckBox id="idDependente" x="24" y="471" label="{resourceManager.getString('MessagemResource_pt_BR', 'tela.promitente.campo.dependente')}" width="118" click="habilitaResponsavel()" tabIndex="27"/>
+	<mx:CheckBox x="24" y="333" label="Mesmo Endereço Residencial" id="ckEndereco"/>
+	
+</mx:TitleWindow>
