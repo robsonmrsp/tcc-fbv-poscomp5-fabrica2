@@ -32,7 +32,18 @@
 			<source>transacaoService</source>
 		</properties>
 	</destination>
-	
+   <destination id="loteamentoService">
+		<properties>
+			<factory>spring</factory>
+			<source>loteamentoService</source>
+		</properties>
+	</destination>
+	<destination id="loteService">
+		<properties>
+			<factory>spring</factory>
+			<source>loteService</source>
+		</properties>
+	</destination>	
 	<destination id="dominioService">
 		<properties>
 			<factory>spring</factory>
