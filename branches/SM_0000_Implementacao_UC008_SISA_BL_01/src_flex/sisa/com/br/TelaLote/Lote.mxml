@@ -58,7 +58,7 @@
 				}else{
 					loteSisa = new LoteSisa();
 					loteSisa.nu_lote = numeroLote.text;
-					loteSisa.nu_lotm = numeroLoteamento.selectedItem.toString();
+					loteSisa.nu_lotm = numeroLoteamento.selectedItem.nu_lotm;
 					loteSisa.nu_quadra = numeroQuadra.text;
 					
 				}
