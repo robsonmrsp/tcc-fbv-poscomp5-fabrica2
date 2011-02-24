@@ -7,10 +7,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.view.JasperViewer;
+import sisa.com.br.relatorios.web.RelatorioProposta;
+import sisa.com.br.relatorios.web.RelatorioPropostaEspecifico;
 
 
 public class Programa {
@@ -29,10 +30,12 @@ public class Programa {
             Connection con = new ConexaoMySQL().getConnection();
             con.createStatement();
             
-            gerarRelatorioPropostas(con, "2000-01-01", "2011-12-31", "A", "003");
-            
-            gerarRelatorioPropostasEspecifico(con, "1");
-            
+//            gerarRelatorioPropostas(con, "2000-01-01", "2011-12-31", "A", "003");
+            RelatorioProposta relProp = new RelatorioProposta("2000-01-01", "2011-12-31", "A", "003");
+            relProp.gerar(con);
+//            gerarRelatorioPropostasEspecifico(con, "1");
+            RelatorioPropostaEspecifico relEspecifico = new RelatorioPropostaEspecifico("1");
+            relEspecifico.gerar(con);
             
         } catch(Exception e) {
         	e.getMessage();
