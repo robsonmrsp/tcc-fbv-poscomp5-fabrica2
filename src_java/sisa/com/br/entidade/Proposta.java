@@ -13,7 +13,7 @@ public class Proposta {
 	private Financiamento financiamento; 
 	private String observacao; 
 	private String situacao; 
-	private Vendedor vendedor; 
+	//private Vendedor vendedor; 
 	private Date dataEmissao; 
 	private Date dataPrimeiraParcela; 
 	private double valorParcela; 
@@ -71,12 +71,12 @@ public class Proposta {
 	public void setSituacao(String situacao) {
 		this.situacao = situacao;
 	}
-	public Vendedor getVendedor() {
+	/*public Vendedor getVendedor() {
 		return vendedor;
 	}
 	public void setVendedor(Vendedor vendedor) {
 		this.vendedor = vendedor;
-	}
+	}*/
 	public Date getDataEmissao() {
 		return dataEmissao;
 	}
