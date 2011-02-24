@@ -32,10 +32,10 @@ public class Programa {
             
 //            gerarRelatorioPropostas(con, "2000-01-01", "2011-12-31", "A", "003");
             RelatorioProposta relProp = new RelatorioProposta("2000-01-01", "2011-12-31", "A", "003");
-            relProp.gerar(con);
+            relProp.gerar();
 //            gerarRelatorioPropostasEspecifico(con, "1");
             RelatorioPropostaEspecifico relEspecifico = new RelatorioPropostaEspecifico("1");
-            relEspecifico.gerar(con);
+            relEspecifico.gerar();
             
         } catch(Exception e) {
         	e.getMessage();

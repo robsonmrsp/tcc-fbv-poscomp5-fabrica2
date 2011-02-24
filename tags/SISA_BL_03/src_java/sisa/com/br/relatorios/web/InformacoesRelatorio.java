@@ -2,7 +2,10 @@ package sisa.com.br.relatorios.web;
 
 import java.io.File;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Map;
+
+import sisa.com.br.relatorios.ConexaoMySQL;
 
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -70,7 +73,11 @@ public class InformacoesRelatorio {
 		this.mapaParametros = mapaParametros;
 	}
 	
-	public void gerar(Connection conexao) throws JRException {
+	public void gerar() throws JRException, SQLException {
+    	// Cria a conexão
+        Connection conexao = new ConexaoMySQL().getConnection();
+        conexao.createStatement();
+        
         File arquivoAux = new File(identicacaoRelatorio);
         
 //        arquivoAux = new File(arquivoAux.getClass().getResource("/").getPath() + complDiretorioJaspers + identicacaoRelatorio);
@@ -87,6 +94,8 @@ public class InformacoesRelatorio {
     	String arquivoSaida = caminhoProjeto + "/" + nomeArquivoSaida;
         
         System.out.println("Relatório Gerado com Sucesso em: " + arquivoSaida);
+        
+        conexao.close();
 		
 	}
 
