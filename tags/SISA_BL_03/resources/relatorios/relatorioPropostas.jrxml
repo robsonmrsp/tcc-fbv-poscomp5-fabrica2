@@ -75,6 +75,12 @@ WHERE
 	<parameter name="CODIGO_VENDEDOR" class="java.lang.String">
 		<defaultValueExpression><![CDATA["003"]]></defaultValueExpression>
 	</parameter>
+	<parameter name="CAMINHO_JASPER_CID_GARAPU" class="java.lang.String">
+		<defaultValueExpression><![CDATA["C:/eclipse-Ganymede-com-ME/workspace/TesteRelatorioJasper/src/jasper/imagens/cidade garapu.jpg"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="CAMINHO_JASPER_SISA" class="java.lang.String">
+		<defaultValueExpression><![CDATA["C:/eclipse-Ganymede-com-ME/workspace/TesteRelatorioJasper/src/jasper/imagens/logo sisa.jpg"]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[SELECT
      proposta.`nu_proposta` AS proposta_nu_proposta,
@@ -125,11 +131,11 @@ WHERE
 		<band height="150" splitType="Stretch">
 			<image>
 				<reportElement x="1" y="1" width="177" height="144"/>
-				<imageExpression class="java.lang.String"><![CDATA["D:\\JAVA\\tcc-pos\\relatórios\\cidade garapu.jpg"]]></imageExpression>
+				<imageExpression class="java.lang.String"><![CDATA[$P{CAMINHO_JASPER_CID_GARAPU}]]></imageExpression>
 			</image>
 			<image>
 				<reportElement x="396" y="68" width="150" height="77"/>
-				<imageExpression class="java.lang.String"><![CDATA["D:\\JAVA\\tcc-pos\\relatórios\\logo sisa_menor.jpg"]]></imageExpression>
+				<imageExpression class="java.lang.String"><![CDATA[$P{CAMINHO_JASPER_SISA}]]></imageExpression>
 			</image>
 		</band>
 	</title>
