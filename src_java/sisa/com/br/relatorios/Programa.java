@@ -59,7 +59,7 @@ public class Programa {
         parametros = montarParametrosRelatorioPropostas(dtInicio, dtFim, situacao, codVendedor);
 
         JasperPrint jp = JasperFillManager.fillReport(arquivoAux.getClass().getResource("/").getPath() + "/relatorios/" + nomeRelatorioPropostas , parametros, conexao);            
-        JasperExportManager.exportReportToPdfFile(jp, nomeArquivoSaida);
+//        JasperExportManager.exportReportToPdfFile(jp, nomeArquivoSaida);
         
         JasperViewer jrv = new JasperViewer(jp);
         jrv.setVisible(true);
@@ -76,13 +76,13 @@ public class Programa {
 		File arquivoAux = null;
 		arquivoAux = new File(nomeImgCidadeGarapu);
 		caminhoArquivoImgCidadeGarapu = arquivoAux.getClass().getResource("/").getPath() + "relatorios/imagens/" + nomeImgCidadeGarapu;
-		arquivoAux = new File(caminhoArquivoImgCidadeGarapu);
-		System.out.println(arquivoAux.exists());
+//		arquivoAux = new File(caminhoArquivoImgCidadeGarapu);
+//		System.out.println(arquivoAux.exists());
 		
 		arquivoAux = new File(nomeImgLogoSisa);
 		caminhoArquivoImgLogoSisa = arquivoAux.getClass().getResource("/").getPath() + "relatorios/imagens/" + nomeImgLogoSisa;
-		arquivoAux = new File(caminhoArquivoImgCidadeGarapu);
-		System.out.println(arquivoAux.exists());
+//		arquivoAux = new File(caminhoArquivoImgCidadeGarapu);
+//		System.out.println(arquivoAux.exists());
 
 		// Nome dos parãmetros
 		String paramDataInicio = "DATA_INICIO";
@@ -111,13 +111,13 @@ public class Programa {
         String nomeArquivoSaida = caminhoProjeto + "/" + "propostasEmModeloEspecifico.pdf";
 
         arquivoAux = new File(arquivoAux.getClass().getResource("/").getPath() + "relatorios/" + nomeRelatorioPropostasEspecifico);
-        System.out.println(arquivoAux.exists());
+//        System.out.println(arquivoAux.exists());
         
         Map<String, String> parametros = new HashMap<String, String>(); 
         parametros = montarParametrosRelatorioPropostasEspecifico(numeroProposta);
 
         JasperPrint jp = JasperFillManager.fillReport(arquivoAux.getClass().getResource("/").getPath() + "/relatorios/" + nomeRelatorioPropostasEspecifico , parametros, conexao);            
-        JasperExportManager.exportReportToPdfFile(jp, nomeArquivoSaida);
+//        JasperExportManager.exportReportToPdfFile(jp, nomeArquivoSaida);
         
         JasperViewer jrv = new JasperViewer(jp);
         jrv.setVisible(true);
