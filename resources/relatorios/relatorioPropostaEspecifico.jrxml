@@ -4,17 +4,8 @@
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<subDataset name="tcc">
-		<parameter name="DATA_INICIO" class="java.lang.String">
-			<defaultValueExpression><![CDATA["2000-01-01"]]></defaultValueExpression>
-		</parameter>
-		<parameter name="DATA_FIM" class="java.lang.String">
-			<defaultValueExpression><![CDATA["2011-12-31"]]></defaultValueExpression>
-		</parameter>
-		<parameter name="SITUACAO" class="java.lang.String">
-			<defaultValueExpression><![CDATA["A"]]></defaultValueExpression>
-		</parameter>
-		<parameter name="CODIGO_VENDEDOR" class="java.lang.String">
-			<defaultValueExpression><![CDATA["003"]]></defaultValueExpression>
+		<parameter name="NUMERO_PROPOSTA" class="java.lang.String">
+			<defaultValueExpression><![CDATA["1"]]></defaultValueExpression>
 		</parameter>
 		<queryString>
 			<![CDATA[SELECT
@@ -42,9 +33,8 @@ FROM
      AND lote.`nu_quadra` = lotes_proposta.`nu_quadra`
      AND lote.`nu_lote` = lotes_proposta.`nu_lote`
 WHERE
-     proposta.dt_emissao BETWEEN $P{DATA_INICIO} AND $P{DATA_FIM}
- AND proposta.situacao = $P{SITUACAO}
- AND proposta.cd_vend = $P{CODIGO_VENDEDOR}]]>
+     proposta.nu_proposta = $P{NUMERO_PROPOSTA}
+ AND proposta.situacao = 'A']]>
 		</queryString>
 		<field name="proposta_nu_proposta" class="java.lang.String"/>
 		<field name="proposta_no_conjuge" class="java.lang.String"/>
@@ -63,23 +53,8 @@ WHERE
 		<field name="promitente_nome_promitente" class="java.lang.String"/>
 		<field name="lote_nu_lote" class="java.lang.String"/>
 	</subDataset>
-	<parameter name="DATA_INICIO" class="java.lang.String">
-		<defaultValueExpression><![CDATA["2000-01-01"]]></defaultValueExpression>
-	</parameter>
-	<parameter name="DATA_FIM" class="java.lang.String">
-		<defaultValueExpression><![CDATA["2011-12-31"]]></defaultValueExpression>
-	</parameter>
-	<parameter name="SITUACAO" class="java.lang.String">
-		<defaultValueExpression><![CDATA["A"]]></defaultValueExpression>
-	</parameter>
-	<parameter name="CODIGO_VENDEDOR" class="java.lang.String">
-		<defaultValueExpression><![CDATA["003"]]></defaultValueExpression>
-	</parameter>
-	<parameter name="CAMINHO_JASPER_CID_GARAPU" class="java.lang.String">
-		<defaultValueExpression><![CDATA["C:/eclipse-Ganymede-com-ME/workspace/TesteRelatorioJasper/src/jasper/imagens/cidade garapu.jpg"]]></defaultValueExpression>
-	</parameter>
-	<parameter name="CAMINHO_JASPER_SISA" class="java.lang.String">
-		<defaultValueExpression><![CDATA["C:/eclipse-Ganymede-com-ME/workspace/TesteRelatorioJasper/src/jasper/imagens/logo sisa.jpg"]]></defaultValueExpression>
+	<parameter name="NUMERO_PROPOSTA" class="java.lang.String">
+		<defaultValueExpression><![CDATA["1"]]></defaultValueExpression>
 	</parameter>
 	<queryString>
 		<![CDATA[SELECT
@@ -107,9 +82,8 @@ FROM
      AND lote.`nu_quadra` = lotes_proposta.`nu_quadra`
      AND lote.`nu_lote` = lotes_proposta.`nu_lote`
 WHERE
-     proposta.dt_emissao BETWEEN $P{DATA_INICIO} AND $P{DATA_FIM}
- AND proposta.situacao = $P{SITUACAO}
- AND proposta.cd_vend = $P{CODIGO_VENDEDOR}]]>
+     proposta.nu_proposta = $P{NUMERO_PROPOSTA}
+ AND proposta.situacao = 'A']]>
 	</queryString>
 	<field name="proposta_nu_proposta" class="java.lang.String"/>
 	<field name="proposta_no_conjuge" class="java.lang.String"/>
@@ -131,18 +105,18 @@ WHERE
 		<band height="150" splitType="Stretch">
 			<image>
 				<reportElement x="1" y="1" width="177" height="144"/>
-				<imageExpression class="java.lang.String"><![CDATA[$P{CAMINHO_JASPER_CID_GARAPU}]]></imageExpression>
+				<imageExpression class="java.lang.String"><![CDATA["D:\\JAVA\\tcc-pos\\relatórios\\imagens\\cidade garapu.jpg"]]></imageExpression>
 			</image>
 			<image>
 				<reportElement x="396" y="68" width="150" height="77"/>
-				<imageExpression class="java.lang.String"><![CDATA[$P{CAMINHO_JASPER_SISA}]]></imageExpression>
+				<imageExpression class="java.lang.String"><![CDATA["D:\\JAVA\\tcc-pos\\relatórios\\imagens\\logo sisa.jpg"]]></imageExpression>
 			</image>
 			<staticText>
 				<reportElement x="178" y="1" width="368" height="67"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="12" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Relatório de Propostas]]></text>
+				<text><![CDATA[Relatório Propostas em Formulário Específico]]></text>
 			</staticText>
 		</band>
 	</title>
