@@ -46,4 +46,11 @@
 			<source>controleSessaoService</source>
 		</properties>
 	</destination>
+	
+	<destination id="relatoriosService">
+		<properties>
+			<factory>spring</factory>
+			<source>relatoriosService</source>
+		</properties>
+	</destination>
 </service>
