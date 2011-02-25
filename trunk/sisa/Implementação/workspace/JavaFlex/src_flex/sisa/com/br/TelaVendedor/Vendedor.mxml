@@ -8,7 +8,8 @@
     
 	<mx:Script>
 		<![CDATA[
-			import sisa.com.br.entidade.EnderecoSisa;
+			//import sisa.com.br.entidade.EnderecoSisa;			
+			import sisa.com.br.entidade.Endereco;
 			import mx.controls.Alert;
 			import mx.rpc.events.FaultEvent;
 			import mx.collections.ArrayCollection;
@@ -19,7 +20,8 @@
 			
 			[Bindable]
 			private var vendedorSisa:VendedorSisa;
-			private var enderecoSisa:EnderecoSisa;
+			//private var enderecoSisa:EnderecoSisa;
+			private var enderecoSisa:Endereco;
 			
 			//Variavel publica para receber objeto da tela de consulta
 			public var vendedor:VendedorSisa = null;
@@ -34,13 +36,13 @@
 					idNomeFantasia.text = vendedor.no_fantasia;
 					idCod.text = vendedor.cd_vend;
 					
-					idLogradouro.text = vendedor.endereco.ds_logradouro;
-					idComplemento.text = vendedor.endereco.ds_complemento;
-					idNrLogradouro.text = vendedor.endereco.nr_endereco;
-					idBairro.text = vendedor.endereco.ds_bairro;
-					idCidade.text = vendedor.endereco.no_cidade;
-					idUf.text = vendedor.endereco.cd_uf;
-					idCEP.text = vendedor.endereco.nu_cep;
+					idLogradouro.text = vendedor.endereco.logradouro;
+					idComplemento.text = vendedor.endereco.complemento;
+					idNrLogradouro.text = vendedor.endereco.numero.toString();
+					idBairro.text = vendedor.endereco.bairro;
+					idCidade.text = vendedor.endereco.cidade;
+					idUf.text = vendedor.endereco.uf;
+					idCEP.text = vendedor.endereco.cep;
 				}
 			}
 			
@@ -70,7 +72,8 @@
 			public function cadastrarVendedor():void{
 				
 				vendedorSisa = new VendedorSisa();
-				enderecoSisa = new EnderecoSisa();
+				//enderecoSisa = new EnderecoSisa();
+				enderecoSisa = new Endereco();
 				
 				if(vendedor!= null){
 					vendedorSisa.ds_razao_nome = vendedor.ds_razao_nome;
@@ -83,13 +86,13 @@
 				vendedorSisa.no_fantasia = idNomeFantasia.text;
 				vendedorSisa.situacao = idSituacao.text;
 				
-				enderecoSisa.cd_uf = idUf.text;
-				enderecoSisa.ds_bairro = idBairro.text;
-				enderecoSisa.ds_complemento = idComplemento.text;
-				enderecoSisa.ds_logradouro = idLogradouro.text;
-				enderecoSisa.no_cidade = idCidade.text;
-				enderecoSisa.nr_endereco = idNrLogradouro.text;
-				enderecoSisa.nu_cep = idCEP.text;
+				enderecoSisa.uf = idUf.text;
+				enderecoSisa.bairro = idBairro.text;
+				enderecoSisa.complemento = idComplemento.text;
+				enderecoSisa.logradouro = idLogradouro.text;
+				enderecoSisa.cidade = idCidade.text;
+				enderecoSisa.numero = parseInt(idNrLogradouro.text);
+				enderecoSisa.cep = idCEP.text;
 				
 				vendedorSisa.endereco = enderecoSisa;
 
