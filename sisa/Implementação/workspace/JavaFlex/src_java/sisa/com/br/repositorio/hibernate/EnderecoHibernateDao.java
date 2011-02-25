@@ -14,8 +14,6 @@ import org.springframework.stereotype.Repository;
 import sisa.com.br.entidade.Endereco;
 import sisa.com.br.repositorio.EnderecoRepository;
 
-
-
 @Repository(value="enderecoRepository")
 public class EnderecoHibernateDao extends HibernateDaoSupport implements EnderecoRepository {
 
@@ -26,8 +24,8 @@ public class EnderecoHibernateDao extends HibernateDaoSupport implements Enderec
 	}
 	
 	public Endereco findById(Endereco endereco) throws Exception {
-		int id = endereco.getCd_endereco();
-		endereco = (Endereco) getHibernateTemplate().get(Endereco.class, endereco.getCd_endereco());
+		int id = endereco.getCodigo();
+		endereco = (Endereco) getHibernateTemplate().get(Endereco.class, endereco.getCodigo());
 		
 		if (endereco == null)
 			throw new Exception("O vendedor com a ID: "+id+" do(a) "+Endereco.class.getSimpleName()+" não foi encontrado.");
@@ -54,7 +52,7 @@ public class EnderecoHibernateDao extends HibernateDaoSupport implements Enderec
 				"endereco");
 		if (endereco != null) {
 
-			if (endereco.getCd_endereco() != 0) {
+			if (endereco.getCodigo() != 0) {
 				//criteria.add(Restrictions.like("endereco.cd_vend", endereco.getCd_endereco(), MatchMode.START));
 			}
 		}
