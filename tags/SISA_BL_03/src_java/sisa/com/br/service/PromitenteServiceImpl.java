@@ -55,8 +55,22 @@ public class PromitenteServiceImpl implements PromitenteService {
 		}
 	}
 
-	public Promitente save(Promitente promitente) throws Exception {
+	public Promitente add(Promitente promitente) throws Exception {
 		try {
+			if (findById(promitente.getCodigo()) != null){
+				throw new Exception("Promitente com o código '" + promitente.getCodigo() + "' já cadastrado!");
+			}
+			return this.promitenteRepository.save(promitente);
+		} catch (Exception e) {
+			throw new Exception("Não foi possível salvar o promitente: " + e.getMessage());
+		}
+	}
+
+	public Promitente update(Promitente promitente) throws Exception {
+		try {
+			if (findById(promitente.getCodigo()) == null){
+				throw new Exception("Promitente com o código '" + promitente.getCodigo() + "' não cadastrado!");
+			}
 			return this.promitenteRepository.save(promitente);
 		} catch (Exception e) {
 			throw new Exception("Não foi possível salvar o promitente: " + e.getMessage());
