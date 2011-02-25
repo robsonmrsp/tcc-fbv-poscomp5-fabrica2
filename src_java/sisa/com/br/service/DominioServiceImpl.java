@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import sisa.com.br.dominio.DominioEstadoCivil;
+import sisa.com.br.dominio.DominioSituacaoProposta;
 import sisa.com.br.dominio.DominioTipoSexo;
 import sisa.com.br.dominio.objDominio;
 
@@ -27,5 +28,10 @@ public class DominioServiceImpl implements DominioService {
 		List<objDominio> estadosCivil = DominioEstadoCivil.getLista();
 		
 		return estadosCivil;
+	}
+	
+	@Override
+	public List<objDominio> listarSituacoesPropostas() throws Exception {
+		return DominioSituacaoProposta.getLista();
 	}
 }

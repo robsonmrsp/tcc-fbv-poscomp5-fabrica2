@@ -8,4 +8,5 @@ public interface DominioService {
 
 	List<objDominio> listarTipoSexo() throws Exception;
 	List<objDominio> listarEstadoCivil() throws Exception;
+	List<objDominio> listarSituacoesPropostas() throws Exception;
 }
