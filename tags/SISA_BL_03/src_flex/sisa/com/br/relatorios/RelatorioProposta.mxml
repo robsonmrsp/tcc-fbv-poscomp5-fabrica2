@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:fc="com.adobe.flex.extras.controls.*" creationComplete="iniciarTela()" xmlns:mx="http://www.adobe.com/2006/mxml" 
+				layout="absolute" title="Emissão do Relatório de Propostas" width="1009" height="316" enabled="true">
+
+	<mx:Metadata>
+    	[ResourceBundle("MessagemResource_pt_BR")] //Nome do arquivo .properties
+    </mx:Metadata>
+    
+	<mx:Script>
+		<![CDATA[
+			import mx.controls.List;
+			import sisa.com.br.dominio.DominioSituacaoProposta;
+			import mx.utils.StringUtil;
+			import mx.formatters.SwitchSymbolFormatter;
+			import mx.accessibility.ListAccImpl;
+			import mx.controls.Alert;
+			import mx.rpc.events.FaultEvent;
+			import mx.collections.ArrayCollection;
+			import mx.managers.PopUpManager;
+			import mx.rpc.events.ResultEvent;
+			import mx.core.Application;
+
+			
+			import sisa.com.br.entidade.InformacoesRelatorio
+			
+            
+            [Bindable]
+            public var listRelatorios:ArrayCollection = new ArrayCollection();
+            
+            
+            [Bindable]
+            public var listaSituacoesPropostas:ArrayCollection = new ArrayCollection();
+            
+			
+			public function iniciarTela():void 
+			{
+				//esconderCampos();	
+				carregarComboSituacoes();
+			}
+			
+			
+			public function preencheComboSituacoes(event:ResultEvent):void
+			{
+				listaSituacoesPropostas = event.result as ArrayCollection;
+			}
+			
+			public function carregarComboSituacoes():void
+			{
+				listaSituacoesPropostas = dominioService.listarSituacoesPropostas();
+			}
+			
+			private function esconderCampos():void{
+
+				lblSituacaoProposta.visible = false;
+				lblVendedorRel.visible = false;
+				lblPeriodo.visible = false;
+				lblAte.visible = false;
+				
+				cboVendedor.visible = false;
+				cboSituacaoProposta.visible = false;
+				
+				dtInicio.visible = false;
+				dtFim.visible = false;
+				
+				btGerar.visible = false;
+			}
+			
+//			public function visualizarCamposConformeRelatorio():void{
+//				
+//				var indexRelatorioEscolhido:Number = cboRelatorios.selectedItem.codigoRelatorio;
+//				
+//				esconderCampos();
+//				switch(indexRelatorioEscolhido){
+//					case 1: 
+//						visualizarCamposRelatorioProposta();
+//						break;
+//					case 2:
+//						visualizarComboProposta();
+//						break;
+//					case 3:
+//						visualizarComboProposta();
+//						break;
+//				}
+//				
+//			}
+			
+			private function visualizarCamposRelatorioProposta():void{
+				
+				lblSituacaoProposta.visible = true;
+				lblVendedorRel.visible = true;
+				lblPeriodo.visible = true;
+				lblAte.visible = true;
+				
+				cboVendedor.visible = true;
+				cboSituacaoProposta.visible = true;
+				
+				dtInicio.visible = true;
+				dtFim.visible = true;
+				
+				btGerar.visible = true;
+			}         
+            
+			public function voltar():void
+			{
+				limparTela();
+				esconderCampos();
+			}
+			
+			public function limparTela():void
+			{	
+				cboVendedor.selectedIndex = -1;
+				cboSituacaoProposta.selectedIndex = -1;
+				
+				dtInicio.text = "";
+				dtFim.text = "";
+			}
+			
+			//Função que será executada após a conclusão do método save
+			public function onRelatorioGerado(event:ResultEvent):void
+			{	
+				limparTela();
+				Alert.show("relatório gerado com sucesso!");
+				
+			}	
+			
+			//Ocorreu uma falha ao chamar algum servico servico.
+			public function onFault(event:FaultEvent):void
+			{											
+				Alert.show(event.fault.message + "/n" + event.fault.rootCause + "/n" + event.fault.getStackTrace());
+			}
+			
+			
+			private function gerarRelatorioProposta():void
+			{
+	
+				var dataInicio:String = dtInicio.text;
+				var dataFim:String = dtFim.text;
+				var situacao:String = "";
+				var codVendedor:String = "";
+				
+				if (cboSituacaoProposta.selectedItem != null && cboSituacaoProposta.selectedItem > 0){
+					situacao = cboSituacaoProposta.selectedItem.codigo;
+				} else {
+					Alert.show("Seleciona uma Situação!");
+				}
+				
+				if (cboVendedor.selectedItem != null && cboVendedor.selectedItem > 0){
+					codVendedor = cboVendedor.selectedItem.cdVendedor
+				}else {
+					Alert.show("Seleciona um vendedor!");
+				}
+				
+				relatoriosService.gerarRelatorioProposta(dataInicio, dataFim, situacao, codVendedor);
+				
+			}
+
+			
+		]]>
+	</mx:Script>
+	
+	<mx:RemoteObject id="relatoriosService" showBusyCursor="true" fault="onFault(event)" destination="relatoriosService">
+		<mx:method name="gerarRelatorioProposta" result="onRelatorioGerado(event)" fault="onFault(event)"/>
+		<mx:method name="gerarRelatorioPropostaEspecifico" result="onRelatorioGerado(event)" fault="onFault(event)"/>
+		<mx:method name="gerarBoleto" result="onRelatorioGerado(event)" fault="onFault(event)"/>
+	</mx:RemoteObject>
+	
+	<mx:RemoteObject id="dominioService" showBusyCursor="true" fault="onFault(event)" destination="dominioService">
+		<mx:method name="listarSituacoesPropostas" result="preencheComboSituacoes(event)" fault="onFault(event)"/>
+	</mx:RemoteObject>
+	
+	<mx:Button label="{resourceManager.getString('MessagemResource_pt_BR', 'tela.button.cancelar')}" click="voltar();" id="btCancelar" icon="@Embed('../../../../img/button/cancel.png')" x="720.5" y="148.5" buttonMode="true" styleName="Button" height="59" width="99.5"/>
+	<mx:Button label="{resourceManager.getString('MessagemResource_pt_BR', 'tela.button.gerar')}" id="btGerar" click="gerarRelatorioProposta();" toolTip="Gerar" icon="@Embed('../../../../img/button/imprimir.png')"  x="720.5" y="34" buttonMode="true" tabIndex="24" styleName="Button" height="59.05"  width="99.5"/>
+	<mx:Label x="67" y="37" text="Selecione o Vendedor :" id="lblVendedorRel"/>
+	<mx:Label x="10" y="114" text="Selecione a Situação da Proposta :" id="lblSituacaoProposta"/>
+	<mx:Label x="12" y="185.85" text="Informe o período de Referência :" id="lblPeriodo"/>
+	<mx:Label x="383" y="185.85" text="até" id="lblAte"/>
+	<mx:DateField x="413" y="185.5" id="dtFim" showToday="true" width="165" formatString="DD/MM/YYYY"/>
+	<mx:DateField x="210" y="185.5" id="dtInicio" showToday="true" width="165" formatString="DD/MM/YYYY"/>
+	<mx:ComboBox x="210" y="34" width="454" id="cboVendedor" selectedIndex="0" dataProvider="{}" editable="false" enabled="true"></mx:ComboBox>
+	<mx:ComboBox x="210" y="111" width="454" id="cboSituacaoProposta" selectedIndex="0" editable="false" enabled="true" 
+		dataProvider="{listaSituacoesPropostas}" labelField="descricao"></mx:ComboBox>
+	
+</mx:TitleWindow>
