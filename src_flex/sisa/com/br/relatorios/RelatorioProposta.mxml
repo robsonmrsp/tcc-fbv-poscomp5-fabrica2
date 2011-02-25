@@ -25,7 +25,7 @@
 			
             
             [Bindable]
-            public var listRelatorios:ArrayCollection = new ArrayCollection();
+            public var listaVendedores:ArrayCollection = new ArrayCollection();
             
             
             [Bindable]
@@ -64,25 +64,6 @@
 				
 				btGerar.visible = false;
 			}
-			
-//			public function visualizarCamposConformeRelatorio():void{
-//				
-//				var indexRelatorioEscolhido:Number = cboRelatorios.selectedItem.codigoRelatorio;
-//				
-//				esconderCampos();
-//				switch(indexRelatorioEscolhido){
-//					case 1: 
-//						visualizarCamposRelatorioProposta();
-//						break;
-//					case 2:
-//						visualizarComboProposta();
-//						break;
-//					case 3:
-//						visualizarComboProposta();
-//						break;
-//				}
-//				
-//			}
 			
 			private function visualizarCamposRelatorioProposta():void{
 				
@@ -176,7 +157,8 @@
 	<mx:Label x="383" y="185.85" text="até" id="lblAte"/>
 	<mx:DateField x="413" y="185.5" id="dtFim" showToday="true" width="165" formatString="DD/MM/YYYY"/>
 	<mx:DateField x="210" y="185.5" id="dtInicio" showToday="true" width="165" formatString="DD/MM/YYYY"/>
-	<mx:ComboBox x="210" y="34" width="454" id="cboVendedor" selectedIndex="0" dataProvider="{}" editable="false" enabled="true"></mx:ComboBox>
+	<mx:ComboBox x="210" y="34" width="454" id="cboVendedor" selectedIndex="0" dataProvider="{listaVendedores}" editable="false" enabled="true">
+	</mx:ComboBox>
 	<mx:ComboBox x="210" y="111" width="454" id="cboSituacaoProposta" selectedIndex="0" editable="false" enabled="true" 
 		dataProvider="{listaSituacoesPropostas}" labelField="descricao"></mx:ComboBox>
 	
