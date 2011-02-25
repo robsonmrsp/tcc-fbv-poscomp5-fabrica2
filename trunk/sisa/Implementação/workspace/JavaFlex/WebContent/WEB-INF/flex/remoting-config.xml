@@ -18,8 +18,7 @@
 			<source>usuarioService</source>
 		</properties>
 	</destination>
-	
-	<destination id="perfilService">
+		<destination id="perfilService">
 		<properties>
 			<factory>spring</factory>
 			<source>perfilService</source>
@@ -32,18 +31,17 @@
 			<source>transacaoService</source>
 		</properties>
 	</destination>
+	<destination id="vendedorService">
+		<properties>
+			<factory>spring</factory>
+			<source>vendedorService</source>
+		</properties>
+	</destination>
 	
 	<destination id="dominioService">
 		<properties>
 			<factory>spring</factory>
 			<source>dominioService</source>
-		</properties>
-	</destination>
-	
-	<destination id="controleSessaoService">
-		<properties>
-			<factory>spring</factory>
-			<source>controleSessaoService</source>
 		</properties>
 	</destination>
 </service>
