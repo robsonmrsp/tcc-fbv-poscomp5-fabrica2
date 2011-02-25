@@ -19,7 +19,8 @@ package sisa.com.br.entidade
 		public var nu_cgc_cpf:String;
 		public var no_fantasia:String;
 		public var situacao:String;
-		public var endereco:EnderecoSisa;
+		//public var endereco:EnderecoSisa;
+		public var endereco:Endereco;
 		public var vendedor:VendedorSisa;
 	}
 }
