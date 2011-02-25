@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="sisa.com.br.entidade.Vendedor" table="Vendedor">
+	
+		<id name="cd_vend" column="cd_vend" type="java.lang.String">
+<!--			<generator class="native"/> -->
+		</id>
+				
+		<property name="ds_razao_nome" column="ds_razao_nome" type="java.lang.String"
+			not-null="false" length="30" />
+			
+		<property name="nu_fone" column="nu_fone" type="java.lang.String"
+			not-null="false" length="20" />
+			
+		<property name="nu_cgc_cpf" column="nu_cgc_cpf" type="java.lang.String"
+			not-null="false" length="15" />							
+		
+		<property name="no_fantasia" column="no_fantasia" type="java.lang.String"
+			not-null="false" length="40" />
+			
+		<property name="situacao" column="situacao" type="java.lang.String"
+		not-null="false" length="1" />
+		
+<!--		<property name="cd_endereco" column="cd_endereco" type="java.lang.Integer" length="15"/>-->
+		
+		<many-to-one lazy="false" name="endereco" column="cd_endereco" class="sisa.com.br.entidade.Endereco"/>
+		
+<!--		<many-to-one name="enderecoCobranca" column="cd_end_cobr" class="sisa.com.br.entidade.Endereco" />-->
+		
+	</class>
+</hibernate-mapping>
