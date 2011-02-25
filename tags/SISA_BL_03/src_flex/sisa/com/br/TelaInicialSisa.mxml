@@ -4,9 +4,11 @@
 		
 <mx:Script>
 		<![CDATA[
+			import sisa.com.br.TelaRelatorios.RelatorioFormularioEspecifico;
+			import sisa.com.br.TelaRelatorios.RelatorioProposta;
 			import sisa.com.br.TelasAdministracao.ConsultaUsuario;
-			import sisa.com.br.TelaLoteamento.ConsultaLoteamento;
-			import sisa.com.br.TelaLote.ConsultaLote;
+//			import sisa.com.br.TelaLoteamento.ConsultaLoteamento;
+//			import sisa.com.br.TelaLote.ConsultaLote;
 			import sisa.com.br.TelasAdministracao.Usuario;
 			import mx.rpc.events.FaultEvent;
 			import sisa.com.br.entidade.UsuarioSisa;
@@ -33,8 +35,7 @@
             public var telaPromitente: MantemPromitente;
             
             public var usuarioLogado:UsuarioSisa;
-            
-            
+     
             
 			private function iniciarTela():void
 			{
@@ -72,14 +73,18 @@
 		            myViewstack.removeAllChildren();			
 					var consProm:ConsultaPromitente = new ConsultaPromitente();
 		            myViewstack.addChild(consProm);
-		        }else if(event.item.tl == "Loteamento"){
+		        }else if(event.item.tl == "Relatório Proposta"){
 		           myViewstack.removeAllChildren();			
-					var consLoteamento:ConsultaLoteamento = new ConsultaLoteamento();
-		            	myViewstack.addChild(consLoteamento);
-		        }else if(event.item.tl == "Lote"){
+					var telaRelatorios:RelatorioProposta = new RelatorioProposta();
+		            	myViewstack.addChild(telaRelatorios);
+		        }else if(event.item.tl == "Relatório Proposta em Formulário Específico"){
 		           myViewstack.removeAllChildren();			
-					var consLote:ConsultaLote = new ConsultaLote();
-		            	myViewstack.addChild(consLote);
+					var telaFormularioEspecifico:RelatorioFormularioEspecifico = new RelatorioFormularioEspecifico();
+		            	myViewstack.addChild(telaFormularioEspecifico);
+		        }else if(event.item.tl == "Boleto Bancário"){
+		           myViewstack.removeAllChildren();			
+					var telaBoleto:RelatorioProposta = new RelatorioProposta();
+		            	myViewstack.addChild(telaBoleto);
 		        }else{
 		           
 		        }
@@ -90,8 +95,6 @@
             	
             	controleSessaoService.destruirSessao(usuarioLogado);
             	Application.application.removeAllChildren();
-            	
-            	
             	
             	var telaLogin:TelaLogin= new TelaLogin();
 		        Application.application.addChild(telaLogin);
@@ -111,14 +114,16 @@
 			[Bindable]
             public var array:ArrayCollection = new ArrayCollection([
 	        { cd:"1", nome:"Proposta", tp:"A", tl:"", children:[{cd:"6", nome:"Proposta", tp:"B", tl:"", 
-	        										  children:[{cd:"6", nome:"Promitente", tp:"C", tl:"Promitente"}]}]},
-	        { cd:"2", nome:"Lote", tp:"A", tl:""},
-	        
+	        										  children:[{cd:"7", nome:"Promitente", tp:"C", tl:"Promitente"}]}]},
+	        { cd:"2", nome:"Lote", tp:"A", tl:""},        
 	        { cd:"3", nome:"Administração", tp:"A", tl:"", children:[{cd:"8", nome:"Usuario", tp:"B", tl:"Usuario"}, 
-	        											  {cd:"9", nome:"Perfil", tp:"B", tl:"Perfil"}, 
-	        											   {cd:"10", nome:"Transacao", tp:"B", tl:"Transacao"}]},
-	        { cd:"4", nome:"Loteamento", tp:"A", tl:"", children:[{cd:"11", nome:"Cadastro", tp:"B", tl:"Loteamento"},]},
-	        { cd:"5", nome:"Lote", tp:"A", tl:"", children:[{cd:"12", nome:"Cadastro", tp:"B", tl:"Lote"},]}        
+	        											  			 {cd:"9", nome:"Perfil", tp:"B", tl:"Perfil"}, 
+	        											   			 {cd:"10", nome:"Transacao", tp:"B", tl:"Transacao"}]},
+	      	{ cd:"4", nome:"Relatórios", tp:"A", tl:"", children:[{cd:"11", nome:"Relatório Proposta", tp:"B", tl:"Relatório Proposta"},
+	      														  {cd:"12", nome:"Relatório Proposta em Formulário Específico", tp:"B", tl:"Relatório Proposta em Formulário Específico"},
+	      														  {cd:"13", nome:"Boleto Bancário", tp:"B", tl:"Boleto Bancário"}]}    
+//	        { cd:"4", nome:"Loteamento", tp:"A", tl:"", children:[{cd:"11", nome:"Cadastro", tp:"B", tl:"Loteamento"},]},
+//	        { cd:"5", nome:"Lote", tp:"A", tl:"", children:[{cd:"12", nome:"Cadastro", tp:"B", tl:"Lote"},]}, 
 	      ]);
 			
             
