@@ -16,7 +16,7 @@ public class RelatorioProposta extends InformacoesRelatorio {
 
 	}
 	
-	public static HashMap<String, Object> montarParametrosRelatorioPropostas(String dtInicio, String dtFim, String situacao, String codVendedor){
+	private HashMap<String, Object> montarParametrosRelatorioPropostas(String dtInicio, String dtFim, String situacao, String codVendedor){
 		String caminhoArquivoImgCidadeGarapu = "";
 		String caminhoArquivoImgLogoSisa = "";
 		
@@ -40,14 +40,23 @@ public class RelatorioProposta extends InformacoesRelatorio {
 		String paramImgLogo = "CAMINHO_JASPER_SISA";
 		
         HashMap<String, Object> parametros = new HashMap<String, Object>(6);
-        parametros.put(paramDataInicio, dtInicio);
-        parametros.put(paramDataFim, dtFim);
+        parametros.put(paramDataInicio, formatarData(dtInicio));
+        parametros.put(paramDataFim, formatarData(dtFim));
         parametros.put(paramSituacao, situacao);
         parametros.put(paramCodigoVendedor, codVendedor);
         parametros.put(paramImgCidadeGarapu, caminhoArquivoImgCidadeGarapu);
         parametros.put(paramImgLogo, caminhoArquivoImgLogoSisa);
         
         return parametros;
+	}
+	
+	private String formatarData(String pData){
+		String retorno = pData;
+		if (pData != null && pData != "" && pData.contains("/")){
+			String[] arrayAux = pData.split("/", 3);
+			retorno = arrayAux[2] + "-" + arrayAux[1] + "-" + arrayAux[0];
+		}
+		return retorno;
 	}
 
 }
