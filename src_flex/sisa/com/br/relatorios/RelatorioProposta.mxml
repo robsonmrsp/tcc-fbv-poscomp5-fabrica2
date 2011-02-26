@@ -116,19 +116,50 @@
 	
 				var dataInicio:String = dtInicio.text;
 				var dataFim:String = dtFim.text;
+				var dt_Inicio:Date = null;
+				var dt_Fim:Date = null;
 				var situacao:String = "";
 				var codVendedor:String = "";
 				
 				if (cboSituacaoProposta.selectedItem != null && cboSituacaoProposta.selectedItem > 0){
 					situacao = cboSituacaoProposta.selectedItem.codigo;
 				} else {
-					Alert.show("Seleciona uma Situação!");
+					Alert.show("Selecione uma Situação!");
 				}
 				
 				if (cboVendedor.selectedItem != null && cboVendedor.selectedItem > 0){
 					codVendedor = cboVendedor.selectedItem.cdVendedor
 				}else {
-					Alert.show("Seleciona um vendedor!");
+					Alert.show("Selecione um vendedor!");
+				}
+				
+				if (dataInicio != null && dataInicio != ""){
+					var valores:Array = dataInicio.split("/", 3);
+//					Alert.show(valores[0] + valores[1] + valores[2]);
+					dt_Inicio = new Date(new Number(valores[0]), new Number(valores[1]), new Number(valores[2]));
+				} else {
+					Alert.show("Selecione a data de início do período!");
+				}
+				
+				if (dataFim != null && dataFim != ""){
+					var valor:Array = dataFim.split("/", 3);
+					dt_Fim = new Date(dataFim);
+				} else {
+					Alert.show("Selecione a data final do período!");
+				}
+				
+				if(dt_Fim != null && dt_Inicio != null){
+					if (dt_Fim.valueOf() < dt_Inicio.valueOf()){
+						Alert.show("A data final deve ser menor ou igual a data inicial!");
+					} else {
+						dataInicio = dt_Inicio.getFullYear().toString() + "-" + (dt_Inicio.getMonth()).toString() + "-" + dt_Inicio.getDay().toString();
+						dataFim = dt_Fim.getFullYear().toString() + "-" + (dt_Fim.getMonth()).toString() + "-" + dt_Fim.getDay().toString();
+						
+//						Alert.show(dataInicio + " até " + dataFim);
+					}
+
+				} else{
+					Alert.show("datas inválidas");
 				}
 				
 				relatoriosService.gerarRelatorioProposta(dataInicio, dataFim, situacao, codVendedor);
