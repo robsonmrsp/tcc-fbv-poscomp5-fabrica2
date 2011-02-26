@@ -4,6 +4,7 @@
 		
 <mx:Script>
 		<![CDATA[
+			import sisa.com.br.TelaRelatorios.RelatorioBoletoBancario;
 			import sisa.com.br.TelaRelatorios.RelatorioFormularioEspecifico;
 			import sisa.com.br.TelaRelatorios.RelatorioProposta;
 			import sisa.com.br.TelasAdministracao.ConsultaUsuario;
@@ -39,8 +40,11 @@
             
 			private function iniciarTela():void
 			{
+				
+				if (myViewstack.getChildren() != null && myViewstack.getChildren().length > 0){
+					myViewstack.removeAllChildren();
+				}
 
-			   	myViewstack.removeAllChildren();
 				this.tela01 = new TelaTemplateConsulta();
 				myViewstack.addChild(tela01);
  
@@ -56,34 +60,48 @@
             private function getTela(event:MenuEvent):void{
             
 	            if(event.item.tl == "Usuario"){
-		            myViewstack.removeAllChildren();			
+		            if (myViewstack.getChildren() != null && myViewstack.getChildren().length > 0){
+						myViewstack.removeAllChildren();
+					}			
 					var consUsuario:ConsultaUsuario = new ConsultaUsuario();
 		            	myViewstack.addChild(consUsuario);
 		            	
 		        }else if(event.item.tl == "Perfil"){
-		            myViewstack.removeAllChildren();			
+		            if (myViewstack.getChildren() != null && myViewstack.getChildren().length > 0){
+						myViewstack.removeAllChildren();
+					}				
 					var consPerfil:ConsultaPerfil= new ConsultaPerfil();
 		            	myViewstack.addChild(consPerfil);
 		            	
 		         }else if(event.item.tl == "Transacao"){
-		            myViewstack.removeAllChildren();			
+		            if (myViewstack.getChildren() != null && myViewstack.getChildren().length > 0){
+						myViewstack.removeAllChildren();
+					}				
 					var consTransacao:ConsultaTransacao= new ConsultaTransacao();
 		            	myViewstack.addChild(consTransacao);
 		        }else if(event.item.tl == "Promitente"){
-		            myViewstack.removeAllChildren();			
+		            if (myViewstack.getChildren() != null && myViewstack.getChildren().length > 0){
+						myViewstack.removeAllChildren();
+					}				
 					var consProm:ConsultaPromitente = new ConsultaPromitente();
 		            myViewstack.addChild(consProm);
 		        }else if(event.item.tl == "Relatório Proposta"){
-		           myViewstack.removeAllChildren();			
+		           	if (myViewstack.getChildren() != null && myViewstack.getChildren().length > 0){
+						myViewstack.removeAllChildren();
+					}				
 					var telaRelatorios:RelatorioProposta = new RelatorioProposta();
 		            	myViewstack.addChild(telaRelatorios);
 		        }else if(event.item.tl == "Relatório Proposta em Formulário Específico"){
-		           myViewstack.removeAllChildren();			
+		           	if (myViewstack.getChildren() != null && myViewstack.getChildren().length > 0){
+						myViewstack.removeAllChildren();
+					}				
 					var telaFormularioEspecifico:RelatorioFormularioEspecifico = new RelatorioFormularioEspecifico();
 		            	myViewstack.addChild(telaFormularioEspecifico);
 		        }else if(event.item.tl == "Boleto Bancário"){
-		           myViewstack.removeAllChildren();			
-					var telaBoleto:RelatorioProposta = new RelatorioProposta();
+		           	if (myViewstack.getChildren() != null && myViewstack.getChildren().length > 0){
+						myViewstack.removeAllChildren();
+					}				
+					var telaBoleto:RelatorioBoletoBancario = new RelatorioBoletoBancario();
 		            	myViewstack.addChild(telaBoleto);
 		        }else{
 		           
@@ -94,7 +112,10 @@
             private function sairAplicacao():void{
             	
             	controleSessaoService.destruirSessao(usuarioLogado);
-            	Application.application.removeAllChildren();
+            	if (Application.application.getChildren() != null && Application.application.getChildren().length > 0){
+            		Application.application.removeAllChildren();
+				}	
+
             	
             	var telaLogin:TelaLogin= new TelaLogin();
 		        Application.application.addChild(telaLogin);
