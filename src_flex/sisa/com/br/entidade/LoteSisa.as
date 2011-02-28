@@ -21,7 +21,7 @@ package sisa.com.br.entidade
 		public var ds_dim_fundo:String;
 		public var ds_dim_direita:String;
 		public var ds_dim_esquerda:String;
-		public var valorm2:String;
+		public var valorm2:Number;
 		public var lote:LoteSisa;
 
 	}

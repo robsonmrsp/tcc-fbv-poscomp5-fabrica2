@@ -9,6 +9,7 @@
     
 	<mx:Script>
 		<![CDATA[
+			import sisa.com.br.entidade.LoteSisa;
 			import mx.core.EventPriority;
 			import mx.events.CloseEvent;
 			import sisa.com.br.entidade.LoteamentoSisa;
@@ -21,9 +22,10 @@
 			
 			public var telaLoteamento:Loteamento;
 			public var loteamento:LoteamentoSisa;
+			public var telaDetalhamento:Detalhamento;
 			[Bindable]
 			private var listaLoteamento:ArrayCollection;
-			
+						
 			public function iniciarTela():void{
 				getList();
 			}
@@ -32,13 +34,21 @@
 			public function consultaLoteamento():void
 			{	  
 				 this.loteamento = new LoteamentoSisa();
-				 				 
+				var setouFiltro:Boolean = false;  				 
+				
 				if (codigoLoteamento.text != "")
 				{ 			 
 				  loteamento.nu_lotm = codigoLoteamento.text;
-				  loteamentoService.consultaLoteamento(loteamento);
-				  
-				}else{
+				  setouFiltro = true;
+				}
+				if(nomeLoteamento.text != ""){
+				  loteamento.ds_lotm = nomeLoteamento.text;
+				  setouFiltro = true;
+				}
+				if(setouFiltro){
+					loteamentoService.consultaLoteamento(loteamento);
+				}
+				else{
 					loteamentoService.getList();
 				} 
 				  
@@ -61,36 +71,39 @@
 			{
 				listaLoteamento = event.result as ArrayCollection;
 			}
-		
+					
 			public function detalharLoteamento():void
 			{            		
-            	telaLoteamento = Loteamento(PopUpManager.createPopUp(this, sisa.com.br.TelaLoteamento.Loteamento, true));
+            	telaDetalhamento = Detalhamento(PopUpManager.createPopUp(this, sisa.com.br.TelaLoteamento.Detalhamento, true));
             	//Enviando objeto selecionado para tela seguinte
-            	telaLoteamento.loteamento = idGridLoteamento.selectedItem as LoteamentoSisa;  
-            	PopUpManager.centerPopUp(telaLoteamento);
+            	telaDetalhamento.loteamento = idGridLoteamento.selectedItem as LoteamentoSisa;  
+            	PopUpManager.centerPopUp(telaDetalhamento);
 			}
 			
 			public function alterarLoteamento():void
 			{   
-				    		
-            	telaLoteamento = Loteamento(PopUpManager.createPopUp(this, sisa.com.br.TelaLoteamento.Loteamento, true));
-            	//Enviando objeto selecionado para tela seguinte
-            	telaLoteamento.loteamento = idGridLoteamento.selectedItem as LoteamentoSisa;  
-            	PopUpManager.centerPopUp(telaLoteamento);
+				if(idGridLoteamento.selectedItem != null){    		
+	            	telaLoteamento = Loteamento(PopUpManager.createPopUp(this, sisa.com.br.TelaLoteamento.Loteamento, true));
+	            	//Enviando objeto selecionado para tela seguinte
+	            	telaLoteamento.loteamento = idGridLoteamento.selectedItem as LoteamentoSisa;  
+	            	PopUpManager.centerPopUp(telaLoteamento);
+    			}
             	
 			}
 			
 			public function removerLoteamento():void{
 				
 				if(idGridLoteamento.selectedItem != null){
-					 
+										 
 					 this.loteamento = new LoteamentoSisa();
 					 this.loteamento.nu_lotm = idGridLoteamento.selectedItem.nu_lotm;
 					 this.loteamento.ds_lotm = idGridLoteamento.selectedItem.ds_lotm;
+					 var lote:LoteSisa = new LoteSisa();
+					 lote.nu_lotm = idGridLoteamento.selectedItem.nu_lotm;
 					 loteamentoService.remove(loteamento);
 				}
 			}
-			
+						
 			//Função que será executada após a conclusão do método getList
 			public function onResultRemoverLoteamento(event:ResultEvent):void
 			{
@@ -100,8 +113,11 @@
 			
 			//Ocorreu uma falha ao chamar algum servico servico.
 			public function onFault(event:FaultEvent):void
-			{												
-				Alert.show(event.fault.message);
+			{		
+				var mensagemErro:String = event.fault.faultString;
+				var posicao:Number = mensagemErro.indexOf(":");	
+				posicao = posicao + 1;							
+				Alert.show(mensagemErro.substring(posicao));
 			}
 			
 			public function cadastrarLoteamento():void{
@@ -118,7 +134,7 @@
 		<mx:method name="remove" result="onResultRemoverLoteamento(event)" fault="onFault(event)"/>
 		<mx:method name="consultaLoteamento" result="onResultConsultaLoteamento(event)" fault="onFault(event)"/>
 	</mx:RemoteObject>
-	
+		
 	<mx:Label x="24" y="10.3" text="{resourceManager.getString('MessagemResource_pt_BR', 'tela.consulta.loteamento.campo.codigo')}"/>
 	<mx:TextInput x="139" y="9.95" maxChars="3" id="codigoLoteamento" width="50" tabIndex="2" enabled="true" />
 	
