@@ -9,5 +9,9 @@
 				
 		<property name="ds_lotm" column="ds_lotm" type="java.lang.String"
 			not-null="true" length="100" />
+		 <set name="lotes" inverse="false" cascade="all" lazy="false">  
+             <key column="nu_lotm"/>  
+             <one-to-many class="sisa.com.br.entidade.Lote"/>  
+         </set>  
 	</class>
 </hibernate-mapping>

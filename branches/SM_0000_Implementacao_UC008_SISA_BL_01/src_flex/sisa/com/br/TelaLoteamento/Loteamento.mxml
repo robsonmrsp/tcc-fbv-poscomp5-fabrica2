@@ -28,7 +28,6 @@
 					
 					codigoLoteamento.text = loteamento.nu_lotm;
 					nomeLoteamento.text = loteamento.ds_lotm;
-					Alert.show('aqui');
 					codigoLoteamento.enabled = false;
 				}
 			}
@@ -48,9 +47,7 @@
 			}
 			
 			public function cadastrarLoteamento():void{
-				
-				
-				
+								
 				if(loteamento!= null){
 					loteamentoSisa = loteamento;
 										
@@ -61,7 +58,27 @@
 				
 				loteamentoSisa.ds_lotm = nomeLoteamento.text;
 				
-				loteamentoService.save(loteamentoSisa);  			
+				if(codigoLoteamento.enabled == true){
+					if(codigoLoteamento.text == ""){
+						codigoLoteamento.setFocus();
+						Alert.show("Campos Obrigatórios");
+						return;
+					}
+					if(nomeLoteamento.text == ""){
+						nomeLoteamento.setFocus();
+						Alert.show("Campos Obrigatórios");
+						return;
+					}
+					loteamentoService.save(loteamentoSisa);
+				}else{
+					if(nomeLoteamento.text == ""){
+						nomeLoteamento.setFocus();
+						Alert.show("Campos Obrigatórios");
+						return;
+					}
+					loteamentoService.update(loteamentoSisa);
+				}
+				  			
 				
 			}
 			
@@ -78,12 +95,22 @@
 				limparTela();
 				Alert.show("Loteamento salvo com sucesso");
 				voltar();
-			}	
+			}
+			//Função que será executada após a conclusão do método update
+			public function onResultUpdate(event:ResultEvent):void
+			{	
+				limparTela();
+				Alert.show("Loteamento alterado com sucesso");
+				voltar();
+			}		
 			
 			//Ocorreu uma falha ao chamar algum servico servico.
 			public function onFault(event:FaultEvent):void
-			{											
-				Alert.show(event.fault.message);
+			{		
+				var mensagemErro:String = event.fault.faultString;
+				var posicao:Number = mensagemErro.indexOf(":");	
+				posicao = posicao + 1;							
+				Alert.show(mensagemErro.substring(posicao));
 			}
 			
 		]]>
@@ -92,22 +119,23 @@
 	<mx:RemoteObject id="loteamentoService" showBusyCursor="true" fault="onFault(event)" destination="loteamentoService">
 		<mx:method name="save" result="onResultSave(event)" fault="onFault(event)"/>
 		<mx:method name="remove" result="onResultRemove(event)" fault="onFault(event)"/>
+		<mx:method name="update" result="onResultUpdate(event)" fault="onFault(event)"/>
 	</mx:RemoteObject>
 	
 	
 	<mx:DateFormatter id="df" formatString="DD/MM/YYYY"/>
 	
-	<mx:Label x="25" y="16" text="{resourceManager.getString('MessagemResource_pt_BR', 'tela.loteamento.campo.codigo')}"/>
+	<mx:Label x="25" y="16" text="{resourceManager.getString('MessagemResource_pt_BR', 'tela.loteamento.campo.codigo')} *"/>
 	<mx:TextInput x="83" y="15.65" id="codigoLoteamento" width="50" tabIndex="2" enabled="true" maxChars="3"/>
 		
 	
-	<mx:Label x="25"   y="74.65"  text="{resourceManager.getString('MessagemResource_pt_BR', 'tela.loteamento.campo.nome')}"/>
+	<mx:Label x="25"   y="74.65"  text="{resourceManager.getString('MessagemResource_pt_BR', 'tela.loteamento.campo.nome')} *"/>
 	<mx:TextInput x="83"  y="74.3" id="nomeLoteamento" width="650" tabIndex="18"  enabled="true"  height="22"  maxChars="100"/>
 
 	
 	
 	
-	<mx:Button label="{resourceManager.getString('MessagemResource_pt_BR', 'tela.button.cancelar')}" click="voltar();" id="btCancelar" icon="@Embed('../../../../img/button/cancel.png')" x="623.5" y="287.3" buttonMode="true" styleName="Button" height="59" width="99.5"/>
-	<mx:Button label="{resourceManager.getString('MessagemResource_pt_BR', 'tela.button.salvar')}" id="btSalvar" click="cadastrarLoteamento();" icon="@Embed('../../../../img/button/add.png')"  x="516" y="287.3" buttonMode="true" tabIndex="24" styleName="Button" height="59.05"  width="99.5"/>
+	<mx:Button label="{resourceManager.getString('MessagemResource_pt_BR', 'tela.button.cancelar')}" click="voltar();" id="btCancelar" icon="@Embed('../../../../img/button/cancel.png')" x="623.5" y="316.3" buttonMode="true" styleName="Button" height="30" width="99.5"/>
+	<mx:Button label="{resourceManager.getString('MessagemResource_pt_BR', 'tela.button.salvar')}" id="btSalvar" click="cadastrarLoteamento();" icon="@Embed('../../../../img/button/add.png')"  x="516" y="316.3" buttonMode="true" tabIndex="24" styleName="Button" height="30.05"  width="99.5"/>
 	
 </mx:TitleWindow>

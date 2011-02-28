@@ -30,7 +30,16 @@ public class LoteServiceImpl implements LoteService {
 			this.loteRepository.save(lote);
 			return lote;
 		} catch (Exception e) {
-			throw new Exception("N‹o foi poss’vel salvar." +e.getCause());
+			throw new Exception("Não foi possível salvar. Verifique se já existe lote com esse Número,Quadra e Loteamento.");
+		}
+	}
+	public Lote update(Lote lote) throws Exception {
+		try {
+			
+			this.loteRepository.update(lote);
+			return lote;
+		} catch (Exception e) {
+			throw new Exception("Não foi possível salvar." +e.getCause());
 		}
 	}
 
@@ -38,7 +47,7 @@ public class LoteServiceImpl implements LoteService {
 		try {	
 			return this.loteRepository.findById(lote);
 		} catch (Exception e) {
-			throw new Exception("N‹o foi poss’vel procurar pela ID."+e.getMessage());
+			throw new Exception("Não foi possível procurar pela ID."+e.getMessage());
 		}
 	}
 
@@ -46,7 +55,7 @@ public class LoteServiceImpl implements LoteService {
 		try {	
 			return this.loteRepository.getList();
 		} catch (Exception e) {
-			throw new Exception("N‹o foi poss’vel listar."+e.getMessage());
+			throw new Exception("Não foi possível listar."+e.getMessage());
 		}
 	}
 
@@ -54,7 +63,7 @@ public class LoteServiceImpl implements LoteService {
 		try {	
 			this.loteRepository.remove(lote);
 		} catch (Exception e) {
-			throw new Exception("N‹o foi poss’vel excluir." +e.getMessage());
+			throw new Exception("Não foi possível excluir." +e.getMessage());
 		}
 		
 	}
@@ -64,24 +73,16 @@ public class LoteServiceImpl implements LoteService {
 		try {	
 			return this.loteRepository.consultaLote(lote);
 		} catch (Exception e) {
-			throw new Exception("N‹o foi poss’vel localizar." +e.getMessage());
+			throw new Exception("Não foi possível localizar." +e.getMessage());
 		}
 	}
 	
-	public Lote consultaLote(String cd_lote,String nu_lotm,String nu_quadra) throws Exception {
+	public List<Lote> consultaLote(String nu_lote,String nu_lotm,String nu_quadra,String situacao) throws Exception {
 		try {	
-			Lote loteConsulta = null;
-			loteConsulta =  this.loteRepository.consultaLote(cd_lote,nu_lotm,nu_quadra);
-			
-			if( loteConsulta == null){
-				
-				throw new Exception("Código,loteamento ou quadra incorreto(s)");
-			}else{
-				return loteConsulta;
-			}
-			
+			return this.loteRepository.consultaLote(nu_lote,nu_lotm,nu_quadra,situacao);
+									
 		} catch (Exception e) {
-			throw new Exception("Nï¿½o foi possï¿½vel procurar pela ID."+e.getMessage());
+			throw new Exception("Não foi possível procurar pela ID."+e.getMessage());
 		}
 	}
 

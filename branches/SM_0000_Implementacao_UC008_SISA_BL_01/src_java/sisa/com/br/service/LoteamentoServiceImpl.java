@@ -1,12 +1,15 @@
 package sisa.com.br.service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import sisa.com.br.entidade.Lote;
 import sisa.com.br.entidade.Loteamento;
 import sisa.com.br.repositorio.LoteamentoRepository;
 
@@ -30,7 +33,16 @@ public class LoteamentoServiceImpl implements LoteamentoService {
 			this.loteamentoRepository.save(loteamento);
 			return loteamento;
 		} catch (Exception e) {
-			throw new Exception("N‹o foi poss’vel salvar." +e.getCause());
+			throw new Exception("Não foi possível salvar. Verifique se já existe loteamento com esse código");
+		}
+	}
+	public Loteamento update(Loteamento loteamento) throws Exception {
+		try {
+			
+			this.loteamentoRepository.update(loteamento);
+			return loteamento;
+		} catch (Exception e) {
+			throw new Exception("Não foi possível atualizar.");
 		}
 	}
 
@@ -38,7 +50,7 @@ public class LoteamentoServiceImpl implements LoteamentoService {
 		try {	
 			return this.loteamentoRepository.findById(loteamento);
 		} catch (Exception e) {
-			throw new Exception("N‹o foi poss’vel procurar pela ID."+e.getMessage());
+			throw new Exception("Não foi possível procurar pela ID."+e.getMessage());
 		}
 	}
 
@@ -46,15 +58,26 @@ public class LoteamentoServiceImpl implements LoteamentoService {
 		try {	
 			return this.loteamentoRepository.getList();
 		} catch (Exception e) {
-			throw new Exception("N‹o foi poss’vel listar."+e.getMessage());
+			throw new Exception("N‹o foi possível listar."+e.getMessage());
 		}
 	}
 
-	public void remove(Loteamento loteamento) throws Exception {
+	public void remove(Loteamento pLoteamento) throws Exception {
 		try {	
+			
+			ArrayList<Loteamento> array = (ArrayList<Loteamento>) this.loteamentoRepository.consultaLoteamento(pLoteamento);
+			
+			Loteamento loteamento = array.get(0);
+			
+			Set<Lote> hashLote = (Set<Lote>) loteamento.getLotes();
+						
+			if(!hashLote.isEmpty()){
+				throw new Exception();
+			}
+			
 			this.loteamentoRepository.remove(loteamento);
 		} catch (Exception e) {
-			throw new Exception("N‹o foi poss’vel excluir." +e.getMessage());
+			throw new Exception("Não foi possível excluir. Existe Lote(s) Associados a esse Loteamento");
 		}
 		
 	}
@@ -64,7 +87,7 @@ public class LoteamentoServiceImpl implements LoteamentoService {
 		try {	
 			return this.loteamentoRepository.consultaLoteamento(loteamento);
 		} catch (Exception e) {
-			throw new Exception("N‹o foi poss’vel localizar." +e.getMessage());
+			throw new Exception("Não foi possível localizar." +e.getMessage());
 		}
 	}
 	
@@ -81,7 +104,7 @@ public class LoteamentoServiceImpl implements LoteamentoService {
 			}
 			
 		} catch (Exception e) {
-			throw new Exception("Nï¿½o foi possï¿½vel procurar pela ID."+e.getMessage());
+			throw new Exception("Não foi possível procurar pela ID."+e.getMessage());
 		}
 	}
 
