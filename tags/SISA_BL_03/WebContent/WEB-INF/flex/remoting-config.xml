@@ -53,4 +53,18 @@
 			<source>relatoriosService</source>
 		</properties>
 	</destination>
+	
+    <destination id="vendedorService">
+    	<properties>
+            <factory>spring</factory>
+            <source>vendedorService</source>
+        </properties>
+    </destination>
+    
+    <destination id="propostaService">
+    	<properties>
+            <factory>spring</factory>
+            <source>propostaService</source>
+        </properties>
+   </destination>
 </service>
