@@ -30,8 +30,7 @@
 			
 			public function iniciarTela():void 
 			{
-				//esconderCampos();	
-				//carregarComboSituacoes();
+				carregarComboProposta();
 			}
 			
 			private function esconderCampos():void{
@@ -50,7 +49,7 @@
 			public function voltar():void
 			{
 				limparTela();
-				esconderCampos();
+				//esconderCampos();
 			}
 			
 			public function limparTela():void
@@ -76,28 +75,41 @@
 			private function gerarRelatorioFormularioEspecifico():void
 			{
 				var numeroProposta:String = "";
-				if (cboProposta.selectedItem != null && cboProposta.selectedItem > 0){
+				if (cboProposta.selectedIndex.valueOf() > -1){
 					numeroProposta = cboProposta.selectedItem.numero;
+					relatoriosService.gerarBoleto(numeroProposta);
 				} else {
 					Alert.show("Seleciona uma proposta!");
 				}
-				relatoriosService.gerarRelatorioPropostaEspecifico(numeroProposta);
 			}
 
+			// ---------------------------------------------------------------------			
+			// Carregando o combo de situações com os valores d banco
+			public function preencheComboProposta(event:ResultEvent):void
+			{
+				listaPropostas = event.result as ArrayCollection;
+			}
 			
+			public function carregarComboProposta():void
+			{
+				listaPropostas = propostaService.getList();
+			}
+			// ---------------------------------------------------------------------
 		]]>
 	</mx:Script>
 	
 	<mx:RemoteObject id="relatoriosService" showBusyCursor="true" fault="onFault(event)" destination="relatoriosService">
-		<mx:method name="gerarRelatorioProposta" result="onRelatorioGerado(event)" fault="onFault(event)"/>
 		<mx:method name="gerarRelatorioPropostaEspecifico" result="onRelatorioGerado(event)" fault="onFault(event)"/>
-		<mx:method name="gerarBoleto" result="onRelatorioGerado(event)" fault="onFault(event)"/>
+	</mx:RemoteObject>
+	
+	<mx:RemoteObject id="propostaService" showBusyCursor="true" fault="onFault(event)" destination="propostaService">
+		<mx:method name="getList" result="preencheComboProposta(event)" fault="onFault(event)"/>
 	</mx:RemoteObject>
 	
 	<mx:Button label="{resourceManager.getString('MessagemResource_pt_BR', 'tela.button.cancelar')}" click="voltar();" id="btCancelar" icon="@Embed('../../../../img/button/cancel.png')" x="524.5" y="142.5" buttonMode="true" styleName="Button" height="59" width="99.5"/>
 	<mx:Button label="{resourceManager.getString('MessagemResource_pt_BR', 'tela.button.gerar')}" id="btGerar" click="gerarRelatorioFormularioEspecifico();" toolTip="Gerar" icon="@Embed('../../../../img/button/imprimir.png')"  x="256" y="142.5" buttonMode="true" tabIndex="24" styleName="Button" height="59.05"  width="99.5"/>
 	<mx:Label x="121" y="48" text="Selcione a Proposta : " id="lblProposta"/>
 	<mx:ComboBox x="256" y="48" id="cboProposta" width="368" height="23" editable="false" selectedIndex="0" enabled="true"
-		dataProvider="listaPropostas"></mx:ComboBox>
+		dataProvider="listaPropostas" labelField="numero"></mx:ComboBox>
 	
 </mx:TitleWindow>
