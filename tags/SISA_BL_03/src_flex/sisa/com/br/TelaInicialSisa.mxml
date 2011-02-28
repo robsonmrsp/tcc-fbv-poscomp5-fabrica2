@@ -79,10 +79,14 @@
 					}				
 					var consTransacao:ConsultaTransacao= new ConsultaTransacao();
 		            	myViewstack.addChild(consTransacao);
-		        }else if(event.item.tl == "Promitente"){
+		        }else if(event.item.tl == "Vendedor"){
+                            myViewstack.removeAllChildren();                    
+                            var consVendedor:ConsultaVendedor = new ConsultaVendedor();
+                            myViewstack.addChild(consVendedor);
+             }else if(event.item.tl == "Promitente"){
 		            if (myViewstack.getChildren() != null && myViewstack.getChildren().length > 0){
-						myViewstack.removeAllChildren();
-					}				
+                      myViewstack.removeAllChildren();
+                   }				
 					var consProm:ConsultaPromitente = new ConsultaPromitente();
 		            myViewstack.addChild(consProm);
 		        }else if(event.item.tl == "Relatório Proposta"){
@@ -138,9 +142,10 @@
 	        										  children:[{cd:"7", nome:"Promitente", tp:"C", tl:"Promitente"}]}]},
 	        { cd:"2", nome:"Lote", tp:"A", tl:""},        
 	        { cd:"3", nome:"Administração", tp:"A", tl:"", children:[{cd:"8", nome:"Usuario", tp:"B", tl:"Usuario"}, 
-	        											  			 {cd:"9", nome:"Perfil", tp:"B", tl:"Perfil"}, 
-	        											   			 {cd:"10", nome:"Transacao", tp:"B", tl:"Transacao"}]},
-	      	{ cd:"4", nome:"Relatórios", tp:"A", tl:"", children:[{cd:"11", nome:"Relatório Proposta", tp:"B", tl:"Relatório Proposta"},
+	        											  			             {cd:"9", nome:"Perfil", tp:"B", tl:"Perfil"}, 
+                                                                    {cd:"10", nome:"Transacao", tp:"B", tl:"Transacao"},
+                                                                    {cd:"11", nome:"Vendedor", tp:"B", tl:"Vendedor"}]},
+	      	{ cd:"4", nome:"Relatórios", tp:"A", tl:"", children:[{cd:"12", nome:"Relatório Proposta", tp:"B", tl:"Relatório Proposta"},
 	      														  {cd:"12", nome:"Relatório Proposta em Formulário Específico", tp:"B", tl:"Relatório Proposta em Formulário Específico"},
 	      														  {cd:"13", nome:"Boleto Bancário", tp:"B", tl:"Boleto Bancário"}]}    
 //	        { cd:"4", nome:"Loteamento", tp:"A", tl:"", children:[{cd:"11", nome:"Cadastro", tp:"B", tl:"Loteamento"},]},
