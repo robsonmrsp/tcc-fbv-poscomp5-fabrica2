@@ -78,7 +78,17 @@
 		<servlet-name>MessageBrokerServlet</servlet-name>
 		<url-pattern>/messagebroker/*</url-pattern>
 	</servlet-mapping>
-
+	
+	<servlet>
+		<display-name>InformacoesRelatorio</display-name>
+		<servlet-name>InformacoesRelatorio</servlet-name>
+		<servlet-class>sisa\com\br\relatorios\web\InformacoesRelatorio</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>InformacoesRelatorio</servlet-name>
+	    <url-pattern>/InformacoesRelatorio</url-pattern>
+	</servlet-mapping>
 
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>

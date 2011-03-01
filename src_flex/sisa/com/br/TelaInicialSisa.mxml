@@ -4,6 +4,7 @@
 		
 <mx:Script>
 		<![CDATA[
+			import sisa.com.br.TelaVendedor.ConsultaVendedor;
 			import sisa.com.br.TelaRelatorios.RelatorioBoletoBancario;
 			import sisa.com.br.TelaRelatorios.RelatorioFormularioEspecifico;
 			import sisa.com.br.TelaRelatorios.RelatorioProposta;
@@ -83,7 +84,7 @@
                             myViewstack.removeAllChildren();                    
                             var consVendedor:ConsultaVendedor = new ConsultaVendedor();
                             myViewstack.addChild(consVendedor);
-             }else if(event.item.tl == "Promitente"){
+             	}else if(event.item.tl == "Promitente"){
 		            if (myViewstack.getChildren() != null && myViewstack.getChildren().length > 0){
                       myViewstack.removeAllChildren();
                    }				
