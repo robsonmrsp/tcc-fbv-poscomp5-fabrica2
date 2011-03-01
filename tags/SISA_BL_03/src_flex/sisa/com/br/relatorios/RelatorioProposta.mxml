@@ -23,16 +23,20 @@
 			
 			import sisa.com.br.entidade.InformacoesRelatorio
 			
+            [Bindable]
+            public var listaVendedores:ArrayCollection;  
             
             [Bindable]
-            public var listaVendedores:ArrayCollection;
-            [Bindable]
-            public var vendedorSelecionado:Object;    
+            public var listaSituacoesPropostas:ArrayCollection; 
             
             [Bindable]
-            public var listaSituacoesPropostas:ArrayCollection;
-           	[Bindable]
-            public var situacaoSelecionada:Object;    
+            public var dataInicio:String;
+            [Bindable]
+			public var dataFim:String;
+			[Bindable]
+			public var situacao:String;
+			[Bindable]
+			public var codVendedor:String;
 			
 			public function iniciarTela():void 
 			{
@@ -42,8 +46,8 @@
 			// ---------------------------------------------------------------------
 			public function carregarCombos():void
 			{
-				listaSituacoesPropostas = dominioService.listarSituacoesPropostas();
-				listaVendedores = vendedorService.getList();
+				dominioService.listarSituacoesPropostas();
+				vendedorService.getList();
 			}
 			// ---------------------------------------------------------------------			
 			// Carregando o combo de situações com os valores d banco
@@ -105,9 +109,10 @@
 				dtFim.text = "";
 			}
 			
-			//Função que será executada após a conclusão do método save
-			public function onRelatorioGerado(event:ResultEvent):void
+			//Função que será executada após a conclusão do método gerarRelatorioProposta
+			public function onGerarRelatorioProposta(event:ResultEvent):void
 			{	
+				relatoriosService.gerarRelatorioProposta(dtInicio, dtFim, situacao, codVendedor);
 				limparTela();
 				Alert.show("relatório gerado com sucesso!");
 				
@@ -122,25 +127,26 @@
 			
 			private function gerarRelatorioProposta():void
 			{
-				Alert.show("entrou aqui!");
-				var dataInicio:String = dtInicio.text;
-				var dataFim:String = dtFim.text;
-				var situacao:String = "";
-				var codVendedor:String = "";
-				
 				if (cboVendedor.selectedIndex.valueOf() > -1){
 					codVendedor = cboVendedor.selectedItem.cd_vend
 					if (cboSituacaoProposta.selectedIndex.valueOf() > -1){
 						situacao = cboSituacaoProposta.selectedItem.codigo;
-						if (dataInicio == null || dataInicio == ""){
+						if (dtInicio.text == null || dtInicio.text == ""){
 							Alert.show("Selecione a data de início do período!");
-						} else if (dataFim == null || dataFim == ""){
+						} else if (dtFim.text == null || dtFim.text == ""){
 							Alert.show("Selecione a data final do período!");
-						} else if (new Date(dataFim).valueOf() < new Date(dataInicio).valueOf()){
-							Alert.show("A data final deve ser maior ou igual a data inicial!");
 						} else {
-							relatoriosService.gerarRelatorioProposta(dataInicio, dataFim, situacao, codVendedor);
-						}						
+							dataInicio = dtInicio.text;
+							dataFim = dtFim.text;
+							// Alert.show(dataInicio + " até " + dataFim);
+							if (new Date(dataFim).valueOf() < new Date(dataInicio).valueOf()){
+								Alert.show("A data final deve ser maior ou igual a data inicial!");
+								dtFim.text = "";
+							} else {
+								Alert.show("dataInicio:" + dataInicio + "dataFim:" + dataFim + "situacao:" + situacao + "codVendedor:" + codVendedor);
+								gerarRelatorioProposta();
+							}
+						} 						
 					} else {
 						Alert.show("Selecione uma Situação!");
 					}
@@ -155,7 +161,7 @@
 	</mx:Script>
 	
 	<mx:RemoteObject id="relatoriosService" showBusyCursor="true" fault="onFault(event)" destination="relatoriosService">
-		<mx:method name="gerarRelatorioProposta" result="onRelatorioGerado(event)" fault="onFault(event)"/>
+		<mx:method name="gerarRelatorioProposta" result="onGerarRelatorioProposta(event)" fault="onFault(event)"/>
 	</mx:RemoteObject>
 	
 	<mx:RemoteObject id="dominioService" showBusyCursor="true" fault="onFault(event)" destination="dominioService">
@@ -175,9 +181,9 @@
 	<mx:DateField x="413" y="185.5" id="dtFim" showToday="true" width="165" formatString="DD/MM/YYYY"/>
 	<mx:DateField x="210" y="185.5" id="dtInicio" showToday="true" width="165" formatString="DD/MM/YYYY"/>
 	<mx:ComboBox x="210" y="34" width="454" id="cboVendedor" selectedIndex="0" dataProvider="{listaVendedores}" labelField="ds_razao_nome" 
-		editable="false" enabled="true" close="vendedorSelecionado=ComboBox(event.target).selectedItem">
+		editable="false" enabled="true">
 	</mx:ComboBox>
 	<mx:ComboBox x="210" y="111" width="454" id="cboSituacaoProposta" selectedIndex="1" editable="false" enabled="true" 
-		dataProvider="{listaSituacoesPropostas}" labelField="descricao" close="situacaoSelecionada=ComboBox(event.target).selectedItem"></mx:ComboBox>
+		dataProvider="{listaSituacoesPropostas}" labelField="descricao"></mx:ComboBox>
 	
 </mx:TitleWindow>

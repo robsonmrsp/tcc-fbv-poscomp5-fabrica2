@@ -93,7 +93,7 @@
 			
 			public function carregarComboProposta():void
 			{
-				listaPropostas = propostaService.getList();
+				propostaService.getList();
 			}
 			// ---------------------------------------------------------------------
 			
