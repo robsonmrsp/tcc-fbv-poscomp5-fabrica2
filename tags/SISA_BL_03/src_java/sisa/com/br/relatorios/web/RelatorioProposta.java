@@ -1,13 +1,16 @@
 package sisa.com.br.relatorios.web;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
 public class RelatorioProposta extends InformacoesRelatorio {
 	
-//	private static String identificacao = "relatorioPropostas.jasper";
-	private static String identificacao = "D:/JAVA/EclipseFlex/worspace/JavaFlex/build/classes/relatorios/relatorioPropostas.jasper";
+/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	//	private static String identificacao = "relatorioPropostas.jasper";
+	private static String identificacao = "D:/JAVA/EclipseFlex/worspace/JavaFlex/resources/relatorios/relatorioPropostas.jasper";
 	
 	public RelatorioProposta(String dtInicio, String dtFim, String situacao, String codVendedor) {
 		super(identificacao, "propostas.pdf");
@@ -21,8 +24,8 @@ public class RelatorioProposta extends InformacoesRelatorio {
 		String caminhoArquivoImgCidadeGarapu = "";
 		String caminhoArquivoImgLogoSisa = "";
 		
-		File arquivoAux = null;
-		arquivoAux = new File(nomeImgCidadeGarapu);
+//		File arquivoAux = null;
+//		arquivoAux = new File(nomeImgCidadeGarapu);
 		
 //		caminhoArquivoImgCidadeGarapu = arquivoAux.getClass().getResource("/").getPath() + nomeImgCidadeGarapu;
 		caminhoArquivoImgCidadeGarapu = "D:/JAVA/EclipseFlex/worspace/JavaFlex/build/classes/relatorios/imagens/cidade_garapu.jpg";
@@ -30,7 +33,7 @@ public class RelatorioProposta extends InformacoesRelatorio {
 //		arquivoAux = new File(caminhoArquivoImgCidadeGarapu);
 //		System.out.println(arquivoAux.exists());
 		
-		arquivoAux = new File(nomeImgLogoSisa);
+//		arquivoAux = new File(nomeImgLogoSisa);
 //		caminhoArquivoImgLogoSisa = arquivoAux.getClass().getResource("/").getPath() + nomeImgLogoSisa;
 		caminhoArquivoImgLogoSisa ="D:/JAVA/EclipseFlex/worspace/JavaFlex/build/classes/relatorios/imagens/logo_sisa.jpg";
 //		caminhoArquivoImgLogoSisa = this.getServletContext().getContextPath() + nomeImgLogoSisa;
