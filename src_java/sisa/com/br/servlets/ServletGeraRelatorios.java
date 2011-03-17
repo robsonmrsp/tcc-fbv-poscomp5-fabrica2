@@ -37,7 +37,12 @@ public class ServletGeraRelatorios extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		RelatorioProposta relatorioProposta = new RelatorioProposta("2010-01-01", "2011-01-01", "A", "003");
+		String dtIni = request.getParameter("dtini");
+		String dtFim = request.getParameter("dtfim");
+		String sit = request.getParameter("sit");
+		String cdVend = request.getParameter("cdvend");
+		//RelatorioProposta relatorioProposta = new RelatorioProposta("2011-01-01", "2011-01-01", "1", "1");
+		RelatorioProposta relatorioProposta = new RelatorioProposta(dtIni, dtFim, sit, cdVend);
         try {
         	byte[] relatorio = relatorioProposta.gerar();
         	
