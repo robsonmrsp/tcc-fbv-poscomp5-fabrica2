@@ -8,6 +8,8 @@
     
 	<mx:Script>
 		<![CDATA[
+			import flash.net.navigateToURL;
+			
 			import mx.controls.List;
 			import sisa.com.br.dominio.DominioSituacaoProposta;
 			import mx.utils.StringUtil;
@@ -19,7 +21,6 @@
 			import mx.managers.PopUpManager;
 			import mx.rpc.events.ResultEvent;
 			import mx.core.Application;
-
 			
 			import sisa.com.br.entidade.InformacoesRelatorio
 			
@@ -37,6 +38,10 @@
 			public var situacao:String;
 			[Bindable]
 			public var codVendedor:String;
+			
+			private	var url:String;
+			private	var variables:URLVariables;
+		    private var request:URLRequest;
 			
 			public function iniciarTela():void 
 			{
@@ -102,8 +107,8 @@
 			
 			public function limparTela():void
 			{	
-				cboVendedor.selectedIndex = -1;
-				cboSituacaoProposta.selectedIndex = -1;
+				cboVendedor.selectedIndex = 0;
+				cboSituacaoProposta.selectedIndex = 1;
 				
 				dtInicio.text = "";
 				dtFim.text = "";
@@ -112,7 +117,7 @@
 			//Função que será executada após a conclusão do método gerarRelatorioProposta
 			public function onGerarRelatorioProposta(event:ResultEvent):void
 			{	
-				relatoriosService.gerarRelatorioProposta(dtInicio, dtFim, situacao, codVendedor);
+				//relatoriosService.gerarRelatorioProposta(dtInicio, dtFim, situacao, codVendedor);
 				limparTela();
 				Alert.show("relatório gerado com sucesso!");
 				
@@ -143,8 +148,12 @@
 								Alert.show("A data final deve ser maior ou igual a data inicial!");
 								dtFim.text = "";
 							} else {
-								Alert.show("dataInicio:" + dataInicio + "dataFim:" + dataFim + "situacao:" + situacao + "codVendedor:" + codVendedor);
-								gerarRelatorioProposta();
+								url =  Application.application.url;			
+								url = url.substr(0,31) + "ServletGeraRelatorios?dtini="+dataInicio+"&dtfim="+dataFim+"&sit="+situacao+"&cdvend="+codVendedor;
+								
+								request = new URLRequest(url);
+								request.method = URLRequestMethod.POST;				
+								navigateToURL(request);
 							}
 						} 						
 					} else {
