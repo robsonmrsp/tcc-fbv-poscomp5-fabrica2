@@ -43,6 +43,18 @@
 				getList();
 			}
 			
+			private function removeListOrigem():void
+			{
+				var itemsListA:Array;
+				for each(var item:TransacaoSisa in listItemsDestino) {  
+					for each(var itemLocal:TransacaoSisa in listItemsLocal) {
+						if(item.id == itemLocal.id){
+							listItemsLocal.removeItemAt(listItemsLocal.getItemIndex(itemLocal));
+						}
+					}
+				}
+			}
+			
 			private function moveRight():void
             {            	
             	var itemsListA:Array;
@@ -154,6 +166,7 @@
 			public function onResultListaTransacao(event:ResultEvent):void
 			{
 				listItemsLocal = event.result as ArrayCollection;
+				removeListOrigem();
 			}
 			
 			//Função que será executada após a conclusão do método remove

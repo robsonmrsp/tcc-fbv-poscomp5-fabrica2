@@ -9,7 +9,7 @@
 	
 	<!--Hibernate OpenSession Filter-->
 	<session-config>  
-      <session-timeout>1</session-timeout>  <!-- Tempo em minutos -->
+      <session-timeout>900</session-timeout>  <!-- Tempo em minutos -->
 	</session-config>
 	
 <!--	<filter>-->

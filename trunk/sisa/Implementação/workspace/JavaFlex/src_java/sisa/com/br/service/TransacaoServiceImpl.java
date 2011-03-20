@@ -29,7 +29,7 @@ public class TransacaoServiceImpl implements TransacaoService {
 			this.transacaoRepository.save(transacao);
 			return transacao;
 		} catch (Exception e) {
-			throw new Exception("N‹o foi poss’vel salvar." +e.getCause());
+			throw new Exception("Não foi possível salvar." +e.getCause());
 		}
 	}
 
@@ -37,7 +37,7 @@ public class TransacaoServiceImpl implements TransacaoService {
 		try {	
 			return this.transacaoRepository.findById(transacao);
 		} catch (Exception e) {
-			throw new Exception("N‹o foi poss’vel procurar pela ID."+e.getMessage());
+			throw new Exception("Não foi possível procurar pela ID."+e.getMessage());
 		}
 	}
 
@@ -45,7 +45,7 @@ public class TransacaoServiceImpl implements TransacaoService {
 		try {	
 			return this.transacaoRepository.getList();
 		} catch (Exception e) {
-			throw new Exception("N‹o foi poss’vel listar."+e.getMessage());
+			throw new Exception("Não foi possível listar."+e.getMessage());
 		}
 	}
 
@@ -53,7 +53,7 @@ public class TransacaoServiceImpl implements TransacaoService {
 		try {	
 			this.transacaoRepository.remove(transacao);
 		} catch (Exception e) {
-			throw new Exception("N‹o foi poss’vel excluir." +e.getMessage());
+			throw new Exception("Não foi possível excluir." +e.getMessage());
 		}
 		
 	}
@@ -63,7 +63,18 @@ public class TransacaoServiceImpl implements TransacaoService {
 		try {	
 			return this.transacaoRepository.consultaTransacao(transacao);
 		} catch (Exception e) {
-			throw new Exception("N‹o foi poss’vel localizar." +e.getMessage());
+			throw new Exception("Não foi possível localizar." +e.getMessage());
+		}
+	}
+	
+	public List<Transacao> getListMenu(int id) throws Exception{
+		List<Transacao> lista = null;
+		try {	
+			lista =this.transacaoRepository.getListMenu(id);
+			
+			return lista;
+		} catch (Exception e) {
+			throw new Exception("Não foi possível localizar." +e.getMessage());
 		}
 	}
 
