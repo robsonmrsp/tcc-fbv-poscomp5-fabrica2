@@ -11,4 +11,5 @@ public interface TransacaoRepository {
 	List<Transacao> getList() throws Exception;
 	List<Transacao> consultaTransacao(Transacao transacao)throws Exception;
 	void remove(Transacao transacao) throws Exception;
+	List<Transacao> getListMenu(int id) throws Exception;
 }

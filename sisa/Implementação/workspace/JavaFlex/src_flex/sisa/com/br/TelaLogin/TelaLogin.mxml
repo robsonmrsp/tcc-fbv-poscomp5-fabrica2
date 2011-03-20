@@ -63,15 +63,15 @@
 				
 				if(usuario == null){
 				
-				Alert.show("Usuário ou senha invlálido");
+					Alert.show("Usuário ou senha invlálido");
 				
 				}else{
 				
 				
-				var telaInicial:TelaInicialSisa = new TelaInicialSisa();
-				telaInicial.usuarioLogado = usuario as UsuarioSisa;
-				application.removeAllChildren();
-				application.addChild(telaInicial);
+					var telaInicial:TelaInicialSisa = new TelaInicialSisa();
+					telaInicial.usuarioLogado = usuario as UsuarioSisa;
+					application.removeAllChildren();
+					application.addChild(telaInicial);
 				
 
 				}

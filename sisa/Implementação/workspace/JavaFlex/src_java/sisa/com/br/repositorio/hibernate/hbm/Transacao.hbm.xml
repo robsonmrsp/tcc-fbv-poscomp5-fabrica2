@@ -24,6 +24,9 @@
 		<property name="ativa" column="ativa" type="java.lang.String"
 			not-null="true" length="1" />
 			
+		<property name="idPai" column="idPai" type="java.lang.Integer"
+			not-null="false" length="3" />
+			
 <!--   		<bag name="listaTransacoes" inverse="true" cascade="none" lazy="true">  
             <key> 
             <column name="idPai" not-null="false" />

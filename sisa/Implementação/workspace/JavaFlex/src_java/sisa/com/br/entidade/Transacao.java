@@ -1,9 +1,7 @@
 package sisa.com.br.entidade;
 
-import java.util.Collection;
-import java.util.List;
 
-public class Transacao{
+public class Transacao {
  
 	private int Id_Transacao;
 	
@@ -32,6 +30,13 @@ public class Transacao{
 		this.Url = Url;
 		this.Ordem = Ordem;
 		this.ativa = ativa;
+		this.idPai = idPai;
+	}
+	
+	public Transacao(int Id_Transacao, String Nome, int idPai) {
+		super();
+		this.Id_Transacao = Id_Transacao;
+		this.Nome = Nome;
 		this.idPai = idPai;
 	}
 	

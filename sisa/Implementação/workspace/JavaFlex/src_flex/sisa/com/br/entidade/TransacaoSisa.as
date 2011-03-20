@@ -13,7 +13,7 @@ package sisa.com.br.entidade
 		public var url:String;
 		public var ordem:Number;
 		public var ativa:String;
-		public var idPai:TransacaoSisa;
+		public var idPai:Number;
 		public var transacao:TransacaoSisa;
 	}
 }

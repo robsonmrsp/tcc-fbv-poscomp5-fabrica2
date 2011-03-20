@@ -4,7 +4,6 @@
 		
 <mx:Script>
 		<![CDATA[
-			import sisa.com.br.TelaVendedor.ConsultaVendedor;
 			import sisa.com.br.entidade.TransacaoSisa;
 			import sisa.com.br.TelasAdministracao.ConsultaUsuario;
 			import sisa.com.br.TelasAdministracao.Usuario;
@@ -63,10 +62,6 @@
 					var consUsuario:ConsultaUsuario = new ConsultaUsuario();
 		            	myViewstack.addChild(consUsuario);
 		            	
-		        }else if(event.item.tl == "Vendedor"){
-		            myViewstack.removeAllChildren();			
-					var consVendedor:ConsultaVendedor = new ConsultaVendedor();
-		            	myViewstack.addChild(consVendedor);
 		        }else if(event.item.nome == "Perfil"){
 		            myViewstack.removeAllChildren();			
 					var consPerfil:ConsultaPerfil= new ConsultaPerfil();
@@ -102,6 +97,8 @@
 			{	
 				listaMenu = event.result as ArrayCollection;
 				listaMenuPrincipal = new ArrayCollection();
+				Alert.show("bbb");
+				Alert.show(listaMenu + "");
 				
 				for each(var objTransacao:TransacaoSisa in listaMenu){
 					if(objTransacao.idPai == 0){
@@ -148,6 +145,17 @@
 			{											
 				Alert.show(event.fault.message);
 			}
+			
+			[Bindable]
+            public var array:ArrayCollection = new ArrayCollection([
+	        { cd:"1", nome:"Proposta", tp:"A", tl:"", children:[{cd:"6", nome:"Proposta", tp:"B", tl:"", 
+	        										  children:[{cd:"6", nome:"Promitente", tp:"C", tl:"Promitente"}]}]},
+	        { cd:"2", nome:"Lote", tp:"A", tl:""},
+	        
+	        { cd:"3", nome:"Administração", tp:"A", tl:"", children:[{cd:"8", nome:"Usuario", tp:"B", tl:"Usuario"}, 
+	        											  {cd:"9", nome:"Perfil", tp:"B", tl:"Perfil"}, 
+	        											   {cd:"10", nome:"Transacao", tp:"B", tl:"Transacao"}]}       
+	      ]);
 			
             
 		]]>

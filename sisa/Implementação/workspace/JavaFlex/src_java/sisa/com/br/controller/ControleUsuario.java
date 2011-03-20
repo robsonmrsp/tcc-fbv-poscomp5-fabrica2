@@ -27,7 +27,7 @@ public class ControleUsuario extends AbstractBootstrapService
 			session.addSessionDestroyedListener(this);
 			System.out.println("Sessão destruida: " + new Date().toString());
 			
-			throw new Exception("Sess‹o expirada!");
+			throw new Exception("Sessão expirada!");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
