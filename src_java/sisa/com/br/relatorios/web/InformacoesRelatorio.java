@@ -30,7 +30,7 @@ public class InformacoesRelatorio extends HttpServlet{
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private String identicacaoRelatorio;	
+	private String identificador;	
 
 	private Map<String, Object> mapaParametros;
 	
@@ -48,7 +48,7 @@ public class InformacoesRelatorio extends HttpServlet{
 	}
 	
 	public InformacoesRelatorio(String pIdenticacaoRelatorio, String pNomeArquivoSaida, Map<String, Object> pMapaParametros){
-		identicacaoRelatorio = pIdenticacaoRelatorio;
+		identificador = pIdenticacaoRelatorio;
 		nomeArquivoSaida = pNomeArquivoSaida;
 		mapaParametros = pMapaParametros;
 	}
@@ -57,7 +57,7 @@ public class InformacoesRelatorio extends HttpServlet{
 	 * @return O identicacaoRelatorio a ser recuperado.
 	 */
 	public String getIdenticacaoRelatorio() {
-		return identicacaoRelatorio;
+		return identificador;
 	}
 
 	/**
@@ -65,7 +65,7 @@ public class InformacoesRelatorio extends HttpServlet{
 	 *            O valor a ser atribuido em identicacaoRelatorio.
 	 */
 	public void setIdenticacaoRelatorio(String identicacaoRelatorio) {
-		this.identicacaoRelatorio = identicacaoRelatorio;
+		this.identificador = identicacaoRelatorio;
 	}
 
 
@@ -133,13 +133,13 @@ public class InformacoesRelatorio extends HttpServlet{
         Connection conexao = new ConexaoMySQL().getConnection();
         conexao.createStatement();
         
-        File arquivoAux = new File(identicacaoRelatorio);
+        File arquivoAux = new File(identificador);
         
 //        arquivoAux = new File(arquivoAux.getClass().getResource("/").getPath() + complDiretorioJaspers + identicacaoRelatorio);
 //        System.out.println(arquivoAux.exists());
         
         JasperPrint jp = 
-        	JasperFillManager.fillReport(arquivoAux.getClass().getResource("/").getPath() + "/" + complDiretorioJaspers + identicacaoRelatorio , 
+        	JasperFillManager.fillReport(arquivoAux.getClass().getResource("/").getPath() + "/" + complDiretorioJaspers + identificador , 
         			getMapaParametros(), conexao);            
         jp.setName(nomeArquivoSaida);
         xmlRetorno = JasperExportManager.exportReportToXml(jp);

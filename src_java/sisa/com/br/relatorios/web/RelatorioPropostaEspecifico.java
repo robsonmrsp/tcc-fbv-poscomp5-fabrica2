@@ -6,6 +6,10 @@ import java.util.Map;
 
 public class RelatorioPropostaEspecifico extends InformacoesRelatorio {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private static String identificacao = "relatorioPropostaEspecifico.jasper";
 	
 	public RelatorioPropostaEspecifico(String numeroProposta) {
