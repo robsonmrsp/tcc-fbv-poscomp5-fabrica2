@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="354" height="246" 
+	title="Editar Parcela do Sinal" creationComplete="CreationComplete()" verticalAlign="middle" 
+	horizontalAlign="center" showCloseButton="true" close="titleWindow_close(event)">
+
+	<mx:Metadata>
+    	[ResourceBundle("MessagemResource_pt_BR")] //Nome do arquivo .properties
+    </mx:Metadata>
+
+	<mx:Script>
+	<![CDATA[
+		import mx.rpc.events.ResultEvent;
+		import sisa.com.br.componentes.Utils;
+		import mx.controls.Alert;
+		import mx.rpc.events.FaultEvent;
+		import mx.managers.PopUpManager;
+		import mx.events.CloseEvent;
+		import mx.collections.ArrayCollection;
+		import sisa.com.br.entidade.ParcelaSinal;
+	
+		public var parcelaSinal: ParcelaSinal;
+		public static const OK:String = "BotaoParcela_OK";
+		
+		[Bindable]
+		private var listaTipoPagto: ArrayCollection;
+		
+        private function CreationComplete():void{
+        	
+        	dominioService.listarTipoPagto();
+        	
+        	txParcela.text = parcelaSinal.parcelaSinalPK.parcela.toString();
+        	txNumeroDoc.text = parcelaSinal.numeroDocumento;
+        	txValor.text = nf.format(parcelaSinal.valor);
+        	dtVencimento.data = parcelaSinal.dataVencimento;
+        	
+        	
+            // Centraliza o pop-up.
+            PopUpManager.centerPopUp(this);
+        }
+        
+		private function btnOk_Click(e: MouseEvent):void
+		{
+			parcelaSinal.tipoPagto = cbTipoPagto.selectedItem.codigo;
+			parcelaSinal.numeroDocumento = txNumeroDoc.text;
+			parcelaSinal.valor = parseFloat(txValor.text.replace(".", "").replace(",","."));
+			parcelaSinal.dataVencimento = dtVencimento.selectedDate;
+			
+			dispatchEvent(new Event(OK))
+		}
+          
+        // Este metodo é usado para fechar o pop-up.
+        private function btnCancelar_Click(e:MouseEvent):void
+        {
+            PopUpManager.removePopUp(this);
+        }
+        
+		//chamado ao clicar no icone de fachar a janela
+		private function titleWindow_close(evt:CloseEvent):void 
+		{
+			btnCancelar_Click(null);
+		}
+
+		//método de retorno do serviço de Tipo de Pagto
+		private function onResultListaTipoPagto(e: ResultEvent): void
+		{
+			listaTipoPagto = e.result as ArrayCollection;
+			
+			cbTipoPagto.selectedIndex = Utils.getIndexListaDominio(listaTipoPagto, parcelaSinal.tipoPagto);
+		}
+        
+		//método de retorno das falhas nos serviços
+		private function onFault(event:FaultEvent):void
+		{												
+			Alert.show(Utils.mensagemErro(event));
+		}
+
+	]]>
+	</mx:Script>
+
+	<mx:NumberFormatter id="nf"  precision="2" decimalSeparatorTo="," thousandsSeparatorTo="." useThousandsSeparator="true" />
+
+	<mx:DateFormatter id="df" formatString="DD/MM/YYYY"/>
+
+	<mx:RemoteObject id="dominioService" showBusyCursor="true" fault="onFault(event)" destination="dominioService">
+		<mx:method name="listarTipoPagto" result="onResultListaTipoPagto(event)" fault="onFault(event)"/>
+	</mx:RemoteObject>
+	
+	<mx:Form x="0" y="0" width="100%" paddingLeft="8" paddingRight="8" paddingTop="8" paddingBottom="8">
+		<mx:FormItem label="Parcela:">
+			<mx:Text text="00" id="txParcela"/>
+		</mx:FormItem>
+		<mx:FormItem label="Tipo de Pagto.:">
+			<mx:ComboBox id="cbTipoPagto" dataProvider="{listaTipoPagto}" labelField="descricao"></mx:ComboBox>
+		</mx:FormItem>
+		<mx:FormItem label="Núm. do Documento:">
+			<mx:TextInput id="txNumeroDoc" maxChars="10" width="120"/>
+		</mx:FormItem>
+		<mx:FormItem label="Valor:">
+			<mx:TextInput width="102" id="txValor" maxChars="13" textAlign="right"/>
+		</mx:FormItem>
+		<mx:FormItem label="Data de Vencimento:">
+			<mx:DateField width="103" id="dtVencimento" showToday="true" dayNames="['D','S','T','Q','Q','S','S']" monthNames="['Janeiro','Fevereiro','Março','Abril',
+'Maio','Junho','Julho','Agosto','Setembro','Outubro',
+'Novembro','Dezembro']" disabledDays="[0,6]" editable="true" yearNavigationEnabled="true" restrict="0-9/" formatString="DD/MM/YYYY"/>
+		</mx:FormItem>
+	</mx:Form>
+	<mx:Button x="230" y="158" label="Cancelar" width="96" id="btCancelar" height="24" click="btnCancelar_Click(event)">
+		<mx:icon>@Embed(source='../../../../img/button/cancel.png')</mx:icon>
+	</mx:Button>
+	<mx:Button x="126" y="158" label="Ok" width="96" id="btOk" height="24" click="btnOk_Click(event)">
+		<mx:icon>@Embed(source='../../../../img/button/10.png')</mx:icon>
+	</mx:Button>
+	
+</mx:TitleWindow>
