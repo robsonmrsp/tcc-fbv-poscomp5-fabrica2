@@ -9,6 +9,7 @@
     
 	<mx:Script>
 		<![CDATA[
+			import mx.core.UIComponent;
 			import sisa.com.br.entidade.Promitente;
 			import mx.rpc.events.ResultEvent;
 			import mx.managers.PopUpManager;
@@ -34,7 +35,7 @@
 				if (idNomePromitente.text != "")
 				{ 			 
 				  promitente.nome = idNomePromitente.text;
-				  promitenteService.consultaPromitente(promitente);
+				  promitenteService.find(promitente);
 				  
 				}else{
 					promitenteService.getList();
@@ -101,7 +102,7 @@
 			
 			public function cadastrarPromitente():void{
             	
-            	telaPromitente = MantemPromitente(PopUpManager.createPopUp(this, sisa.com.br.TelaPromitente.MantemPromitente, true));
+            	telaPromitente = MantemPromitente(PopUpManager.createPopUp(UIComponent(this.parentApplication), sisa.com.br.TelaPromitente.MantemPromitente, true));
             	PopUpManager.centerPopUp(telaPromitente);
 			}
 			
@@ -110,7 +111,8 @@
 	<mx:RemoteObject id="promitenteService" showBusyCursor="true" fault="onFault(event)" destination="promitenteService">
 		<mx:method name="getList" result="onResultListaPromitente(event)" fault="onFault(event)"/>
 		<mx:method name="remove" result="onResultRemoverPromitente(event)" fault="onFault(event)"/>
-		<mx:method name="consultaPromitente" result="onResultConsultaPromitente(event)" fault="onFault(event)"/>
+		<mx:method name="find" result="onResultConsultaPromitente(event)" fault="onFault(event)">
+		</mx:method>
 	</mx:RemoteObject>
 	
 	<mx:Label x="24" y="10.3" text="{resourceManager.getString('MessagemResource_pt_BR', 'tela.promitente.campo.nome')}"/>
