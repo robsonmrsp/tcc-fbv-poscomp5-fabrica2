@@ -7,7 +7,7 @@ package sisa.com.br.entidade
 		public var codigo: Number; 
 		public var cep: String;
 		public var logradouro: String; 
-		public var numero: Number; 
+		public var numero: String; 
 		public var complemento: String; 
 		public var bairro: String; 
 		public var cidade: String; 		
