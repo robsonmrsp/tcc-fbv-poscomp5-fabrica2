@@ -49,7 +49,12 @@ public class LoteHibernateDao extends HibernateDaoSupport implements
 		getHibernateTemplate().saveOrUpdate(lote);
 		return lote;
 	}
-	
+
+    public Lote update(Lote lote) throws Exception {
+        getHibernateTemplate().update(lote);
+        return lote;
+    }
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Lote> consultaLote(Lote lote)
@@ -66,6 +71,9 @@ public class LoteHibernateDao extends HibernateDaoSupport implements
 			}
 			if(lote.getNu_quadra() != null){
 				criteria.add(Restrictions.like("lote.nu_quadra",lote.getNu_quadra(), MatchMode.ANYWHERE));
+			}
+			if(lote.getSituacao() != null){
+				criteria.add(Restrictions.eq("lote.situacao", lote.getSituacao()));
 			}
 		}
 		return criteria.list();
