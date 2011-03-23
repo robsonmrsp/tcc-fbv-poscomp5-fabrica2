@@ -7,8 +7,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import sisa.com.br.entidade.Lote;
 import sisa.com.br.entidade.Proposta;
-import sisa.com.br.repositorio.PropostaRepository;;
+import sisa.com.br.repositorio.PropostaRepository;
 
 @Service(value="propostaService")
 @Transactional(propagation=Propagation.REQUIRED, rollbackFor=Exception.class)
@@ -20,12 +21,16 @@ public class PropostaServiceImpl implements PropostaService {
 	public void setPropostaRepository(PropostaRepository propostaRepository) {
 		this.propostaRepository = propostaRepository;
 	}
-
+	
 	@Override
-	public Proposta add(Proposta proposta) throws Exception {
+	public Proposta insert(Proposta proposta) throws Exception {
 		try {
 			if (findById(proposta.getNumero()) != null){
 				throw new Exception("Proposta com o número '" + proposta.getNumero() + "' já cadastrada!");
+			}
+			for(Lote lote: proposta.getLotes())
+			{
+				lote.setSituacao("P");
 			}
 			return this.propostaRepository.save(proposta);
 		} catch (Exception e) {
@@ -34,9 +39,9 @@ public class PropostaServiceImpl implements PropostaService {
 	}
 
 	@Override
-	public List<Proposta> consultaProposta(Proposta proposta) throws Exception {
+	public List<Proposta> find(Proposta proposta) throws Exception {
 		try{
-			return this.propostaRepository.consultaProposta(proposta);
+			return this.propostaRepository.find(proposta);
 		}
 		catch (Exception e) {
 			throw new Exception("Não foi possível localizar a proposta: " + e.getMessage());
