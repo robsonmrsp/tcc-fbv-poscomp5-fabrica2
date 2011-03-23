@@ -4,13 +4,14 @@
 		
 <mx:Script>
 		<![CDATA[
+			import sisa.com.br.relatorios.RelatorioBoletoBancario;
+			import sisa.com.br.relatorios.RelatorioFormularioEspecifico;
+			import sisa.com.br.relatorios.RelatorioProposta;
+			import sisa.com.br.TelaProposta.ConsultaProposta;
 			import sisa.com.br.TelaVendedor.ConsultaVendedor;
-			import sisa.com.br.TelaRelatorios.RelatorioBoletoBancario;
-			import sisa.com.br.TelaRelatorios.RelatorioFormularioEspecifico;
-			import sisa.com.br.TelaRelatorios.RelatorioProposta;
 			import sisa.com.br.TelasAdministracao.ConsultaUsuario;
-//			import sisa.com.br.TelaLoteamento.ConsultaLoteamento;
-//			import sisa.com.br.TelaLote.ConsultaLote;
+			import sisa.com.br.TelaLoteamento.ConsultaLoteamento;
+			import sisa.com.br.TelaLote.ConsultaLote;
 			import sisa.com.br.TelasAdministracao.Usuario;
 			import mx.rpc.events.FaultEvent;
 			import sisa.com.br.entidade.UsuarioSisa;
@@ -37,7 +38,8 @@
             public var telaPromitente: MantemPromitente;
             
             public var usuarioLogado:UsuarioSisa;
-     
+            
+            
             
 			private function iniciarTela():void
 			{
@@ -108,6 +110,18 @@
 					}				
 					var telaBoleto:RelatorioBoletoBancario = new RelatorioBoletoBancario();
 		            	myViewstack.addChild(telaBoleto);
+		        }else if(event.item.tl == "Proposta"){
+		            myViewstack.removeAllChildren();			
+					var consProp:ConsultaProposta = new ConsultaProposta();
+		            myViewstack.addChild(consProp);
+		        }else if(event.item.tl == "Loteamento"){
+		           myViewstack.removeAllChildren();			
+					var consLoteamento:ConsultaLoteamento = new ConsultaLoteamento();
+		            	myViewstack.addChild(consLoteamento);
+		        }else if(event.item.tl == "Lote"){
+		           myViewstack.removeAllChildren();			
+					var consLote:ConsultaLote = new ConsultaLote();
+		            	myViewstack.addChild(consLote);
 		        }else{
 		           
 		        }
@@ -139,9 +153,10 @@
 			
 			[Bindable]
             public var array:ArrayCollection = new ArrayCollection([
-	        { cd:"1", nome:"Proposta", tp:"A", tl:"", children:[{cd:"6", nome:"Proposta", tp:"B", tl:"", 
-	        										  children:[{cd:"7", nome:"Promitente", tp:"C", tl:"Promitente"}]}]},
-	        { cd:"2", nome:"Lote", tp:"A", tl:""},        
+	        { cd:"1", nome:"Proposta", tp:"A", tl:"", children:[{cd:"6", nome:"Cadastro Proposta", tp:"B", tl:"Proposta"}, 
+	        										  			{cd:"7", nome:"Promitente", tp:"B", tl:"Promitente"}]},
+	        { cd:"2", nome:"Lote", tp:"A", tl:""},
+	        
 	        { cd:"3", nome:"Administração", tp:"A", tl:"", children:[{cd:"8", nome:"Usuario", tp:"B", tl:"Usuario"}, 
 	        											  			             {cd:"9", nome:"Perfil", tp:"B", tl:"Perfil"}, 
                                                                     {cd:"10", nome:"Transacao", tp:"B", tl:"Transacao"},
