@@ -21,10 +21,10 @@ public class PromitenteServiceImpl implements PromitenteService {
 		this.promitenteRepository = promitenteRepository;
 	}
 
-	public List<Promitente> consultaPromitente(Promitente promitente)
+	public List<Promitente> find(Promitente promitente)
 			throws Exception {
 		try{
-			return this.promitenteRepository.consultaPromitente(promitente);
+			return this.promitenteRepository.find(promitente);
 		}
 		catch (Exception e) {
 			throw new Exception("Não foi possível localizar o promitente: " + e.getMessage());
@@ -35,7 +35,7 @@ public class PromitenteServiceImpl implements PromitenteService {
 		try {
 			return this.promitenteRepository.findById(id);
 		} catch (Exception e) {
-			throw new Exception("Não foi possível procurar pelo ID: " + e.getMessage());
+			throw e;
 		}
 	}
 
