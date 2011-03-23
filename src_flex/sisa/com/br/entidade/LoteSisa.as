@@ -1,6 +1,5 @@
 package sisa.com.br.entidade
 {
-	import sisa.com.br.TelaLote.Lote;
 	
 	[RemoteClass(alias="sisa.com.br.entidade.Lote")]
 	[Bindable]
