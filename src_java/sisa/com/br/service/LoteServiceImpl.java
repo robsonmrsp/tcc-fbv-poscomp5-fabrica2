@@ -15,7 +15,6 @@ import sisa.com.br.repositorio.LoteRepository;
 @Transactional(propagation=Propagation.REQUIRED, rollbackFor=Exception.class)
 public class LoteServiceImpl implements LoteService {
 	
-	
 	private LoteRepository loteRepository;
 	
 
@@ -33,6 +32,16 @@ public class LoteServiceImpl implements LoteService {
 			throw new Exception("N‹o foi poss’vel salvar." +e.getCause());
 		}
 	}
+
+    public Lote update(Lote lote) throws Exception {
+        try {
+                
+                this.loteRepository.update(lote);
+                return lote;
+        } catch (Exception e) {
+                throw new Exception("Não foi possível salvar." +e.getCause());
+        }
+    }
 
 	public Lote findById(Lote lote) throws Exception {
 		try {	
