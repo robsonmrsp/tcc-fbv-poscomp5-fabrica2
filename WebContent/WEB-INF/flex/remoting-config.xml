@@ -10,7 +10,6 @@
     <default-channels>
         <channel ref="channel-amf"/>
     </default-channels>
-
 	
 	<destination id="usuarioService">
 		<properties>
@@ -32,6 +31,19 @@
 			<source>transacaoService</source>
 		</properties>
 	</destination>
+
+   <destination id="loteamentoService">
+		<properties>
+			<factory>spring</factory>
+			<source>loteamentoService</source>
+		</properties>
+	</destination>
+	<destination id="loteService">
+		<properties>
+			<factory>spring</factory>
+			<source>loteService</source>
+		</properties>
+	</destination>	
 	
 	<destination id="dominioService">
 		<properties>
@@ -40,12 +52,34 @@
 		</properties>
 	</destination>
 	
+	<destination id="promitenteService">
+		<properties>
+			<factory>spring</factory>
+			<source>promitenteService</source>
+		</properties>
+	</destination>
+
+	<destination id="propostaService">
+		<properties>
+			<factory>spring</factory>
+			<source>propostaService</source>
+		</properties>
+	</destination>
+
+	<destination id="financiamentoService">
+		<properties>
+			<factory>spring</factory>
+			<source>financiamentoService</source>
+		</properties>
+	</destination>
+		
 	<destination id="controleSessaoService">
 		<properties>
 			<factory>spring</factory>
 			<source>controleSessaoService</source>
 		</properties>
 	</destination>
+
 	
 	<destination id="relatoriosService">
 		<properties>
@@ -60,11 +94,4 @@
             <source>vendedorService</source>
         </properties>
     </destination>
-    
-    <destination id="propostaService">
-    	<properties>
-            <factory>spring</factory>
-            <source>propostaService</source>
-        </properties>
-   </destination>
 </service>
