@@ -9,4 +9,6 @@ public interface DominioService {
 	List<objDominio> listarTipoSexo() throws Exception;
 	List<objDominio> listarEstadoCivil() throws Exception;
 	List<objDominio> listarSituacoesPropostas() throws Exception;
+	List<objDominio> listarTipoPagto() throws Exception;
+	List<objDominio> listarSituacaoProposta() throws Exception;
 }

@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import sisa.com.br.dominio.DominioEstadoCivil;
 import sisa.com.br.dominio.DominioSituacaoProposta;
+import sisa.com.br.dominio.DominioTipoPagto;
 import sisa.com.br.dominio.DominioTipoSexo;
 import sisa.com.br.dominio.objDominio;
 
@@ -17,19 +18,21 @@ import sisa.com.br.dominio.objDominio;
 public class DominioServiceImpl implements DominioService {
 	
 	public List<objDominio> listarTipoSexo() {
-		
-		List<objDominio> sexos = DominioTipoSexo.getListaSexo();
-		
-		return sexos;	
+		return DominioTipoSexo.getListaSexo();
 	}
 
 	public List<objDominio> listarEstadoCivil() throws Exception {
-		
-		List<objDominio> estadosCivil = DominioEstadoCivil.getLista();
-		
-		return estadosCivil;
+		return DominioEstadoCivil.getLista();
 	}
-	
+
+	public List<objDominio> listarTipoPagto() throws Exception {
+		return DominioTipoPagto.getLista();
+	}
+
+	public List<objDominio> listarSituacaoProposta() throws Exception {
+		return DominioSituacaoProposta.getLista();
+	}
+
 	@Override
 	public List<objDominio> listarSituacoesPropostas() throws Exception {
 		return DominioSituacaoProposta.getLista();
