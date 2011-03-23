@@ -22,7 +22,7 @@ public class PropostaHibernateDao extends HibernateDaoSupport implements Propost
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Proposta> consultaProposta(Proposta proposta)
+	public List<Proposta> find(Proposta proposta)
 			throws Exception {
 		Criteria criteria = getSession().createCriteria(Proposta.class,
 		"proposta");
@@ -33,12 +33,8 @@ public class PropostaHibernateDao extends HibernateDaoSupport implements Propost
 			if (proposta.getPromitente() != null){
 				criteria.add(Restrictions.eq("proposta.promitente", proposta.getPromitente()));
 			}
-			/*if (proposta.getCpfCnpj() != null) {
-				criteria.add(Restrictions.eq("proposta.cpfCnpj", proposta.getCpfCnpj()));
-			}
-			if (proposta.getNome() != null) {
-				criteria.add(Restrictions.like("proposta.nome", proposta
-						.getNome(), MatchMode.START));
+			/*if (proposta.getVendedor != null){
+				criteria.add(Restrictions.eq("proposta.vendedor", proposta.getVendedor()));
 			}*/
 		}
 		//	        
