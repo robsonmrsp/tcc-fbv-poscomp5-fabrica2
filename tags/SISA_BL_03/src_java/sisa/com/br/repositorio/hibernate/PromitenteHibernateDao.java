@@ -23,7 +23,7 @@ public class PromitenteHibernateDao extends HibernateDaoSupport implements Promi
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Promitente> consultaPromitente(Promitente promitente)
+	public List<Promitente> find(Promitente promitente)
 			throws Exception {
 		Criteria criteria = getSession().createCriteria(Promitente.class,
 		"promitente");
@@ -44,8 +44,8 @@ public class PromitenteHibernateDao extends HibernateDaoSupport implements Promi
 	public Promitente findById(String id) throws Exception {
 		Promitente promitente = (Promitente) getHibernateTemplate().get(Promitente.class, id);
 		
-		if (promitente == null)
-			throw new Exception("O Promitente com a código: "+id+" do(a) "+Promitente.class.getSimpleName()+" não foi encontrado.");
+		/*if (promitente == null)
+			throw new Exception("Promitente não cadastrado!");*/
 		return promitente;
 	}
 
