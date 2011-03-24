@@ -35,10 +35,12 @@
 			{	  
 				 this.transacaoSisa = new TransacaoSisa();
 				 
-				if (idNome.text != "")
-				{ 			 
+				if (idNome.text != "" || idTitulo.text != "" || idAtiva.text != ""){
+					if (idNome.text != "")
+					{ 			 
 				  	this.transacaoSisa.nome = idNome.text;
-				  
+				 	}
+				 	
 					if(idTitulo.text != ""){
 						this.transacaoSisa.titulo = idTitulo.text;
 					} 
@@ -46,8 +48,8 @@
 					 if(idAtiva.text != ""){
 						this.transacaoSisa.ativa = idAtiva.text;
 					}  
-					  transacaoService.consultaTransacao(transacaoSisa);
-				  
+					transacaoService.consultaTransacao(transacaoSisa);
+					  
 				}else{
 					transacaoService.getList();
 				} 

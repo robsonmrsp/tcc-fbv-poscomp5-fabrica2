@@ -29,13 +29,18 @@
 			//Consulta usuarios pegando os campos da tela 
 			public function consultaUsuario():void
 			{	  
-				 this.usuario = new UsuarioSisa();
+				this.usuario = new UsuarioSisa();
 				 
-				if (idNomeUsuario.text != "")
-				{ 			 
-				  usuario.nome = idNomeUsuario.text;
-				  usuarioService.consultaUsuario(usuario);
-				  
+				if(idNomeUsuario.text != "" || idLogin.text != ""){
+					if (idNomeUsuario.text != "")
+					{ 			 
+					  usuario.nome = idNomeUsuario.text;
+					}
+					if (idLogin.text != ""){
+						usuario.login = idLogin.text;
+					}
+					usuarioService.consultaUsuario(usuario);
+				
 				}else{
 					usuarioService.getList();
 				} 
