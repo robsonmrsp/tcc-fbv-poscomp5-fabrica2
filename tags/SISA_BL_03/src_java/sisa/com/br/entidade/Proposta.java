@@ -1,7 +1,8 @@
 package sisa.com.br.entidade;
 
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Proposta {
 
@@ -21,8 +22,8 @@ public class Proposta {
 	private String cpfCnpjResponsavel; 
 	private String pagamentoVista;  //S: Sim - N: Não
 	private Loteamento loteamento;
-	private ArrayList<Lote> lotes;
-	private ArrayList<ParcelaSinal> parcelasSinal;
+	private Set<Lote> lotes = new HashSet<Lote>();
+	private Set<ParcelaSinal> parcelasSinal = new HashSet<ParcelaSinal>();
 	
 	public String getNumero() {
 		return numero;
@@ -121,16 +122,16 @@ public class Proposta {
 	public void setLoteamento(Loteamento loteamento) {
 		this.loteamento = loteamento;
 	}
-	public ArrayList<Lote> getLotes() {
+	public Set<Lote> getLotes() {
 		return lotes;
 	}
-	public void setLotes(ArrayList<Lote> lotes) {
+	public void setLotes(Set<Lote> lotes) {
 		this.lotes = lotes;
 	}
-	public ArrayList<ParcelaSinal> getParcelasSinal() {
+	public Set<ParcelaSinal> getParcelasSinal() {
 		return parcelasSinal;
 	}
-	public void setParcelasSinal(ArrayList<ParcelaSinal> parcelasSinal) {
+	public void setParcelasSinal(Set<ParcelaSinal> parcelasSinal) {
 		this.parcelasSinal = parcelasSinal;
 	} 		
 
