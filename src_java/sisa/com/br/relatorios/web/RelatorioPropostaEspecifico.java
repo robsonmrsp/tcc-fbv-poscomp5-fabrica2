@@ -6,14 +6,21 @@ import java.util.Map;
 
 public class RelatorioPropostaEspecifico extends InformacoesRelatorio {
 	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private static String identificacao = "relatorioPropostaEspecifico.jasper";
+	//private static String identificacao = "relatorioPropostaEspecifico.jasper";
+	private static String identificacao = DIR_JASPERS + "relatorioPropostaEspecifico.jasper";
+	private static String caminhoImgRel = "";
 	
 	public RelatorioPropostaEspecifico(String numeroProposta) {
 		super(identificacao, "propostasEmModeloEspecifico.pdf");
+        Map<String, Object> parametros = new HashMap<String, Object>(); 
+        parametros = montarParametrosRelatorioPropostas(numeroProposta);
+        this.setMapaParametros(parametros);
+
+	}
+	
+	public RelatorioPropostaEspecifico(String caminhoRel, String numeroProposta) {
+		super(caminhoRel + identificacao, "propostasEmModeloEspecifico.pdf");
+		caminhoImgRel = caminhoRel + DIR_JASPERS + "imagens/";
         Map<String, Object> parametros = new HashMap<String, Object>(); 
         parametros = montarParametrosRelatorioPropostas(numeroProposta);
         this.setMapaParametros(parametros);
@@ -26,12 +33,14 @@ public class RelatorioPropostaEspecifico extends InformacoesRelatorio {
 		
 		File arquivoAux = null;
 		arquivoAux = new File(nomeImgCidadeGarapu);
-		caminhoArquivoImgCidadeGarapu = arquivoAux.getClass().getResource("/").getPath() + nomeImgCidadeGarapu;
+//		caminhoArquivoImgCidadeGarapu = arquivoAux.getClass().getResource("/").getPath() + nomeImgCidadeGarapu;
+		caminhoArquivoImgCidadeGarapu = caminhoImgRel + "cidade_garapu.jpg";
 //		arquivoAux = new File(caminhoArquivoImgCidadeGarapu);
 //		System.out.println(arquivoAux.exists());
 		
 		arquivoAux = new File(nomeImgLogoSisa);
-		caminhoArquivoImgLogoSisa = arquivoAux.getClass().getResource("/").getPath() + nomeImgLogoSisa;
+//		caminhoArquivoImgLogoSisa = arquivoAux.getClass().getResource("/").getPath() + nomeImgLogoSisa;
+		caminhoArquivoImgLogoSisa = caminhoImgRel + "logo_sisa.jpg";
 //		arquivoAux = new File(caminhoArquivoImgCidadeGarapu);
 //		System.out.println(arquivoAux.exists());
 
