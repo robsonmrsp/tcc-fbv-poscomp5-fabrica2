@@ -22,12 +22,11 @@
 		<property column="fl_dep" type="java.lang.String" name="dependente" not-null="true" length="1" />
 		<property column="nu_cgc_cpf_menor" type="java.lang.String" name="cpfCnpjResponsavel" length="15" />
 		<property column="fl_pagto_avista" type="java.lang.String" name="pagamentoVista" not-null="true" length="1" />
-		<many-to-one name="loteamento" column="nu_lotm" class="sisa.com.br.entidade.Loteamento" />
-		<set name="lotes" table="lotes_proposta" cascade="all" lazy="true">
+		<set name="lotes" table="lotes_proposta" cascade="all" lazy="false">
 			<key column="nu_proposta"/>
 			<many-to-many class="sisa.com.br.entidade.Lote" column="cd_lote"/>
 		</set>		
-		<set name="parcelasSinal" table="parcelas_sinal_proposta" cascade="all" lazy="true">
+		<set name="parcelasSinal" table="parcelas_sinal_proposta" cascade="all" lazy="false" inverse="false">
 			<key column="nu_proposta"/>
 			<one-to-many entity-name="sisa.com.br.entidade.ParcelaSinal" />
 		</set>
