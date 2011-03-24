@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.sf.jasperreports.engine.JRException;
 import sisa.com.br.relatorios.web.RelatorioProposta;
+import sisa.com.br.relatorios.web.RelatorioPropostaEspecifico;
 
 /**
  * Servlet implementation class ServletGeraRelatorios
@@ -37,14 +38,31 @@ public class ServletGeraRelatorios extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String dtIni = request.getParameter("dtini");
-		String dtFim = request.getParameter("dtfim");
-		String sit = request.getParameter("sit");
-		String cdVend = request.getParameter("cdvend");
-		//RelatorioProposta relatorioProposta = new RelatorioProposta("2011-01-01", "2011-01-01", "1", "1");
-		RelatorioProposta relatorioProposta = new RelatorioProposta(dtIni, dtFim, sit, cdVend);
-        try {
-        	byte[] relatorio = relatorioProposta.gerar();
+		String pathJasper = getServletContext().getRealPath("/WEB-INF/") + "/";
+		String tpRelatorio = request.getParameter("tpRel");
+		byte[] relatorio = null;
+		
+		try {
+			if(tpRelatorio.equals("1")){
+				String dtIni = request.getParameter("dtini");
+				String dtFim = request.getParameter("dtfim");
+				String sit = request.getParameter("sit");
+				String cdVend = request.getParameter("cdvend");
+
+				RelatorioProposta relatorioProposta = new RelatorioProposta(pathJasper, dtIni, dtFim, sit, cdVend);
+				
+				relatorio = relatorioProposta.gerar();
+			}else if(tpRelatorio.equals("2")){
+				String numeroProposta = request.getParameter("nrProp");
+				
+				RelatorioPropostaEspecifico relatorioPropostaEspecifico = new RelatorioPropostaEspecifico(numeroProposta);
+				
+				relatorio = relatorioPropostaEspecifico.gerar();
+			}else if(tpRelatorio.equals("3")){
+				String numeroProposta = request.getParameter("nrProp");
+				
+				
+			}
         	
         	if (relatorio != null && relatorio.length > 0) {  
                 response.setContentType("application/pdf");  

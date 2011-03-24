@@ -8,7 +8,6 @@ import java.sql.SQLException;
 import java.util.Map;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -22,7 +21,7 @@ import sisa.com.br.relatorios.ConexaoMySQL;
  * Classe responsável por armazenar as informações referente ao relatório.
  * 
  */
-public class InformacoesRelatorio extends HttpServlet{
+public class InformacoesRelatorio{
 	
 
 	/**
@@ -30,11 +29,13 @@ public class InformacoesRelatorio extends HttpServlet{
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private String identificador;	
+	private String identicacaoRelatorio;	
 
 	private Map<String, Object> mapaParametros;
 	
 	private static String nomeArquivoSaida = "";
+	
+	protected static final String DIR_JASPERS = "classes/relatorios/";
 	
 	static String complDiretorioJaspers = "relatorios/";
 	static String complDiretorioImagens = "relatorios/imagens/";
@@ -48,7 +49,7 @@ public class InformacoesRelatorio extends HttpServlet{
 	}
 	
 	public InformacoesRelatorio(String pIdenticacaoRelatorio, String pNomeArquivoSaida, Map<String, Object> pMapaParametros){
-		identificador = pIdenticacaoRelatorio;
+		identicacaoRelatorio = pIdenticacaoRelatorio;
 		nomeArquivoSaida = pNomeArquivoSaida;
 		mapaParametros = pMapaParametros;
 	}
@@ -57,7 +58,7 @@ public class InformacoesRelatorio extends HttpServlet{
 	 * @return O identicacaoRelatorio a ser recuperado.
 	 */
 	public String getIdenticacaoRelatorio() {
-		return identificador;
+		return identicacaoRelatorio;
 	}
 
 	/**
@@ -65,7 +66,7 @@ public class InformacoesRelatorio extends HttpServlet{
 	 *            O valor a ser atribuido em identicacaoRelatorio.
 	 */
 	public void setIdenticacaoRelatorio(String identicacaoRelatorio) {
-		this.identificador = identicacaoRelatorio;
+		this.identicacaoRelatorio = identicacaoRelatorio;
 	}
 
 
@@ -133,13 +134,13 @@ public class InformacoesRelatorio extends HttpServlet{
         Connection conexao = new ConexaoMySQL().getConnection();
         conexao.createStatement();
         
-        File arquivoAux = new File(identificador);
+        File arquivoAux = new File(identicacaoRelatorio);
         
 //        arquivoAux = new File(arquivoAux.getClass().getResource("/").getPath() + complDiretorioJaspers + identicacaoRelatorio);
 //        System.out.println(arquivoAux.exists());
         
         JasperPrint jp = 
-        	JasperFillManager.fillReport(arquivoAux.getClass().getResource("/").getPath() + "/" + complDiretorioJaspers + identificador , 
+        	JasperFillManager.fillReport(arquivoAux.getClass().getResource("/").getPath() + "/" + complDiretorioJaspers + identicacaoRelatorio , 
         			getMapaParametros(), conexao);            
         jp.setName(nomeArquivoSaida);
         xmlRetorno = JasperExportManager.exportReportToXml(jp);

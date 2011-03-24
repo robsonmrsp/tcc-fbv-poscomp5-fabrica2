@@ -34,7 +34,7 @@
 			
 			public function iniciarTela():void 
 			{
-				carregarComboProposta();
+				getList();
 			}
 			
 			private function esconderCampos():void{
@@ -58,7 +58,7 @@
 			
 			public function limparTela():void
 			{	
-				cboProposta.selectedIndex = -1;
+				cboProposta.selectedIndex = 0;
 			}
 			
 			//Função que será executada após a conclusão do método save
@@ -95,12 +95,13 @@
 
 			// ---------------------------------------------------------------------			
 			// Carregando o combo de situações com os valores d banco
-			public function preencheComboProposta(event:ResultEvent):void
+			public function onResultListaProposta(event:ResultEvent):void
 			{
 				listaPropostas = event.result as ArrayCollection;
 			}
 			
-			public function carregarComboProposta():void
+			//Consulta a lista de todos as propostas
+			public function getList():void
 			{
 				propostaService.getList();
 			}
@@ -113,7 +114,7 @@
 	</mx:RemoteObject>
 	
 	<mx:RemoteObject id="propostaService" showBusyCursor="true" fault="onFault(event)" destination="propostaService">
-		<mx:method name="getList" result="preencheComboProposta(event)" fault="onFault(event)"/>
+		<mx:method name="getList" result="onResultListaProposta(event)" fault="onFault(event)"/>
 	</mx:RemoteObject>
 	
 	<mx:Button label="{resourceManager.getString('MessagemResource_pt_BR', 'tela.button.cancelar')}" click="voltar();" id="btCancelar" icon="@Embed('../../../../img/button/cancel.png')" x="524.5" y="142.5" buttonMode="true" styleName="Button" height="59" width="99.5"/>

@@ -149,8 +149,8 @@
 								dtFim.text = "";
 							} else {
 								url =  Application.application.url;			
-								//url = url.substr(0,31) + "ServletGeraRelatorios?tpRel=1&dtini="+dataInicio+"&dtfim="+dataFim+"&sit="+situacao+"&cdvend="+codVendedor;
-								url = url.substr(0,31) + "ServletGeraRelatorios?tpRel=1";
+								url = url.substr(0,31) + "ServletGeraRelatorios?tpRel=1&dtini="+dataInicio+"&dtfim="+dataFim+"&sit="+situacao+"&cdvend="+codVendedor;
+								//url = url.substr(0,31) + "ServletGeraRelatorios?tpRel=1";
 								
 								request = new URLRequest(url);
 								request.method = URLRequestMethod.POST;				
