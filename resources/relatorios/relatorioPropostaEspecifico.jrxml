@@ -16,22 +16,22 @@
      proposta.`qt_prest` AS proposta_qt_prest,
      proposta.`vl_prest` AS proposta_vl_prest,
      proposta.`ds_obs` AS proposta_ds_obs,
+     proposta.`situacao` AS proposta_situacao,
      proposta.`dt_emissao` AS proposta_dt_emissao,
      proposta.`dt_pri_prest` AS proposta_dt_pri_prest,
      proposta.`fl_dep` AS proposta_fl_dep,
      proposta.`nu_cgc_cpf_menor` AS proposta_nu_cgc_cpf_menor,
      proposta.`fl_pagto_avista` AS proposta_fl_pagto_avista,
-     proposta.`situacao` AS proposta_situacao,
      vendedor.`ds_razao_nome` AS vendedor_ds_razao_nome,
      promitente.`nome_promitente` AS promitente_nome_promitente,
+     lotes_proposta.`nu_proposta` AS lotes_proposta_nu_proposta,
+     lotes_proposta.`cd_lote` AS lotes_proposta_cd_lote,
      lote.`nu_lote` AS lote_nu_lote
 FROM
      `vendedor` vendedor INNER JOIN `proposta` proposta ON vendedor.`cd_vend` = proposta.`cd_vend`
      INNER JOIN `promitente` promitente ON proposta.`cd_promitente` = promitente.`cd_pro`
      INNER JOIN `lotes_proposta` lotes_proposta ON proposta.`nu_proposta` = lotes_proposta.`nu_proposta`
-     INNER JOIN `lote` lote ON lotes_proposta.`nu_lotm` = lote.`nu_lotm`
-     AND lote.`nu_quadra` = lotes_proposta.`nu_quadra`
-     AND lote.`nu_lote` = lotes_proposta.`nu_lote`
+     INNER JOIN `lote` lote ON lotes_proposta.`cd_lote` = lote.`cd_lote`
 WHERE
      proposta.nu_proposta = $P{NUMERO_PROPOSTA}
  AND proposta.situacao = 'A']]>
@@ -43,14 +43,16 @@ WHERE
 		<field name="proposta_qt_prest" class="java.lang.Integer"/>
 		<field name="proposta_vl_prest" class="java.math.BigDecimal"/>
 		<field name="proposta_ds_obs" class="java.lang.String"/>
+		<field name="proposta_situacao" class="java.lang.String"/>
 		<field name="proposta_dt_emissao" class="java.sql.Timestamp"/>
 		<field name="proposta_dt_pri_prest" class="java.sql.Timestamp"/>
 		<field name="proposta_fl_dep" class="java.lang.String"/>
 		<field name="proposta_nu_cgc_cpf_menor" class="java.lang.String"/>
 		<field name="proposta_fl_pagto_avista" class="java.lang.String"/>
-		<field name="proposta_situacao" class="java.lang.String"/>
 		<field name="vendedor_ds_razao_nome" class="java.lang.String"/>
 		<field name="promitente_nome_promitente" class="java.lang.String"/>
+		<field name="lotes_proposta_nu_proposta" class="java.lang.String"/>
+		<field name="lotes_proposta_cd_lote" class="java.lang.Integer"/>
 		<field name="lote_nu_lote" class="java.lang.String"/>
 	</subDataset>
 	<parameter name="NUMERO_PROPOSTA" class="java.lang.String">
@@ -65,22 +67,22 @@ WHERE
      proposta.`qt_prest` AS proposta_qt_prest,
      proposta.`vl_prest` AS proposta_vl_prest,
      proposta.`ds_obs` AS proposta_ds_obs,
+     proposta.`situacao` AS proposta_situacao,
      proposta.`dt_emissao` AS proposta_dt_emissao,
      proposta.`dt_pri_prest` AS proposta_dt_pri_prest,
      proposta.`fl_dep` AS proposta_fl_dep,
      proposta.`nu_cgc_cpf_menor` AS proposta_nu_cgc_cpf_menor,
      proposta.`fl_pagto_avista` AS proposta_fl_pagto_avista,
-     proposta.`situacao` AS proposta_situacao,
      vendedor.`ds_razao_nome` AS vendedor_ds_razao_nome,
      promitente.`nome_promitente` AS promitente_nome_promitente,
+     lotes_proposta.`nu_proposta` AS lotes_proposta_nu_proposta,
+     lotes_proposta.`cd_lote` AS lotes_proposta_cd_lote,
      lote.`nu_lote` AS lote_nu_lote
 FROM
      `vendedor` vendedor INNER JOIN `proposta` proposta ON vendedor.`cd_vend` = proposta.`cd_vend`
      INNER JOIN `promitente` promitente ON proposta.`cd_promitente` = promitente.`cd_pro`
      INNER JOIN `lotes_proposta` lotes_proposta ON proposta.`nu_proposta` = lotes_proposta.`nu_proposta`
-     INNER JOIN `lote` lote ON lotes_proposta.`nu_lotm` = lote.`nu_lotm`
-     AND lote.`nu_quadra` = lotes_proposta.`nu_quadra`
-     AND lote.`nu_lote` = lotes_proposta.`nu_lote`
+     INNER JOIN `lote` lote ON lotes_proposta.`cd_lote` = lote.`cd_lote`
 WHERE
      proposta.nu_proposta = $P{NUMERO_PROPOSTA}
  AND proposta.situacao = 'A']]>
@@ -92,14 +94,16 @@ WHERE
 	<field name="proposta_qt_prest" class="java.lang.Integer"/>
 	<field name="proposta_vl_prest" class="java.math.BigDecimal"/>
 	<field name="proposta_ds_obs" class="java.lang.String"/>
+	<field name="proposta_situacao" class="java.lang.String"/>
 	<field name="proposta_dt_emissao" class="java.sql.Timestamp"/>
 	<field name="proposta_dt_pri_prest" class="java.sql.Timestamp"/>
 	<field name="proposta_fl_dep" class="java.lang.String"/>
 	<field name="proposta_nu_cgc_cpf_menor" class="java.lang.String"/>
 	<field name="proposta_fl_pagto_avista" class="java.lang.String"/>
-	<field name="proposta_situacao" class="java.lang.String"/>
 	<field name="vendedor_ds_razao_nome" class="java.lang.String"/>
 	<field name="promitente_nome_promitente" class="java.lang.String"/>
+	<field name="lotes_proposta_nu_proposta" class="java.lang.String"/>
+	<field name="lotes_proposta_cd_lote" class="java.lang.Integer"/>
 	<field name="lote_nu_lote" class="java.lang.String"/>
 	<title>
 		<band height="150" splitType="Stretch">
