@@ -155,6 +155,9 @@
 				
 				usuarioSisa = new UsuarioSisa();
 				
+				if(!validarCamposObrigatorios())
+					return;
+				
 				if(usuario!= null){
 					usuarioSisa.id = usuario.id;
 				}
@@ -198,6 +201,26 @@
 				Alert.show(event.fault.message);
 			}
 			
+			//validar os campos obrigatórios
+			public function validarCamposObrigatorios():Boolean{
+				if(idNome.text == ""){
+					Alert.show("Campo nome obrigatório");
+					return false;
+				}
+				
+				if(idLogin.text == ""){
+					Alert.show("Campo login obrigatório");
+					return false;
+				}
+				
+				if(idSenha.text == ""){
+					Alert.show("Campo senha obrigatório");
+					return false;
+				}
+				
+				return true;
+			}
+			
 		]]>
 	</mx:Script>
 	
@@ -213,18 +236,22 @@
 	<mx:DateFormatter id="df" formatString="DD/MM/YYYY"/>
 	
 	<mx:Label x="25" y="16" text="{resourceManager.getString('MessagemResource_pt_BR', 'tela.usuario.campo.nome')}"/>
-	<mx:TextInput x="73" y="15.65" id="idNome" width="650" tabIndex="2" enabled="true" maxChars="100"/>
+	<mx:FormItem id="idNomeItem" top="10" left="68" width="655" required="true" errorString="Campo Obrigatório">
+		<mx:TextInput x="73" y="15.65" id="idNome" width="639" tabIndex="2" enabled="true" maxChars="100"/>
+	</mx:FormItem>
 	<mx:Image x="858" y="2" width="126" height="120" source="@Embed(source='../../../../img/telas/aluno.png')"/>
 	
 	
 	<mx:Label x="25"   y="74.65"  text="{resourceManager.getString('MessagemResource_pt_BR', 'tela.usuario.campo.login')}"/>
-	
-	<mx:TextInput x="83"  y="74.3" id="idLogin" width="256" tabIndex="18"  enabled="true"  height="22"  maxChars="20"/>
-
-	<mx:Label x="362"  y="74.65"  text="{resourceManager.getString('MessagemResource_pt_BR', 'tela.usuario.campo.senha')}"/>
-	<mx:TextInput x="412" y="74.3"  id="idSenha" width="311" tabIndex="1" enabled="true" displayAsPassword="true" maxChars="100"/>
-	
+	<mx:FormItem id="idLoginItem" top="76.3" left="68" width="297" required="true" errorString="Campo Obrigatório">
+		<mx:TextInput x="465"  y="74.3" id="idLogin" width="283" tabIndex="18"  enabled="true"  height="22"  maxChars="20"/>
+	</mx:FormItem>
+	<mx:Label x="370"  y="74.65"  text="{resourceManager.getString('MessagemResource_pt_BR', 'tela.usuario.campo.senha')}"/>
+	<mx:FormItem id="idSenhaItem" top="76.3" left="408" width="315" required="true" height="22" errorString="Campo Obrigatório">
+		<mx:TextInput x="474" y="76.3"  id="idSenha" width="299" tabIndex="1" enabled="true" displayAsPassword="true" maxChars="100"/>
+	</mx:FormItem>
 	<mx:Label x="25"   y="113"  text="{resourceManager.getString('MessagemResource_pt_BR', 'tela.consulta.perfil.title.lista')}"/>
+	
 	<mx:Button label="{resourceManager.getString('MessagemResource_pt_BR', 'tela.button.cancelar')}" click="voltar();" id="btCancelar" icon="@Embed('../../../../img/button/cancel.png')" x="623.5" y="287.3" buttonMode="true" styleName="Button" height="59" width="99.5"/>
 	<mx:Button label="{resourceManager.getString('MessagemResource_pt_BR', 'tela.button.salvar')}" id="btSalvar" click="cadastrarUsuario();" icon="@Embed('../../../../img/button/add.png')"  x="516" y="287.3" buttonMode="true" tabIndex="24" styleName="Button" height="59.05"  width="99.5"/>
 	<mx:List width="271" id="listA" showDataTips="true"  dataProvider="{listItemsLocal}"  labelField="descricao" allowMultipleSelection="true" x="68" y="141" height="137"/>

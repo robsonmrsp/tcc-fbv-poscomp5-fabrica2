@@ -54,6 +54,9 @@
 			public function cadastrarTransacao():void{
 				transacaoSisa = new TransacaoSisa();
 				
+				if(!validarCamposObrigatorios())
+					return;
+					
 				if(transacao != null){
 					transacaoSisa.id = transacao.id;
 				}
@@ -90,6 +93,38 @@
 				Alert.show(event.fault.message);
 			}
 			
+			 private function validarCamposObrigatorios():Boolean
+			{
+				if(idNome.text == "")
+				{
+					Alert.show("Campo nome obrigatório");
+					return false;
+				}
+				 if(idTitulo.text == "")
+				{
+					Alert.show("Campo titulo obrigatório");
+					return false;
+				} 
+				if(idUrl.text == "")
+				{
+					Alert.show("Campo url obrigatório");
+					return false;
+				}
+				if(idAtiva.text == "")
+				{
+					Alert.show("Campo ativo obrigatório");
+					return false;
+				}
+
+				if(idOrdem.text == "")
+				{
+					Alert.show("Campo ordem obrigatório");
+					return false;
+				}
+				
+				return true;
+			}
+			
 		]]>
 	</mx:Script>
 	
@@ -100,20 +135,30 @@
 	
 	<mx:DateFormatter id="df" formatString="DD/MM/YYYY"/>
 	
-	<mx:Label x="25" y="16" text="{resourceManager.getString('MessagemResource_pt_BR', 'tela.transacao.campo.nome')}"/>
-	<mx:TextInput x="73" y="55.65" id="idNome" width="552" tabIndex="2" enabled="true" maxChars="100"/>
+	<mx:Label x="25" y="16" text="{resourceManager.getString('MessagemResource_pt_BR', 'tela.transacao.campo.nome')}" />
+	<mx:FormItem id="idNomeItem" width="552" required="true" x="73" y="16" errorString="Campo Obrigatório">
+		<mx:TextInput x="73" y="55.65" id="idNome" width="537" tabIndex="2" enabled="true" maxChars="100"/>
+	</mx:FormItem>
 	
 	<mx:Label x="25" y="56" text="{resourceManager.getString('MessagemResource_pt_BR', 'tela.transacao.campo.titulo')}"/>
-	<mx:TextInput x="73" y="15.65" id="idTitulo" width="777" tabIndex="2" enabled="true" maxChars="100"/>
-	
+	<mx:FormItem id="idTituloItem" width="552" required="true" x="73" y="56" errorString="Campo Obrigatório">	
+		<mx:TextInput x="73" y="15.65" id="idTitulo" width="539" tabIndex="2" enabled="true" maxChars="100"/>
+	</mx:FormItem>
+		
 	<mx:Label x="25" y="100.35" text="{resourceManager.getString('MessagemResource_pt_BR', 'tela.transacao.campo.url')}"/>
-	<mx:TextInput x="73" y="100" id="idUrl" width="552" tabIndex="2" enabled="true" maxChars="100"/>
+	<mx:FormItem id="idUrlItem" width="552" required="true" x="73" y="98.35" errorString="Campo Obrigatório">		
+		<mx:TextInput x="73" y="100" id="idUrl" width="536" tabIndex="2" enabled="true" maxChars="100"/>
+	</mx:FormItem>
 	
 	<mx:Label x="661" y="100.35" text="{resourceManager.getString('MessagemResource_pt_BR', 'tela.transacao.campo.ordem')}"/>
-	<mx:TextInput x="720.5" y="100" id="idOrdem" width="129.5" tabIndex="2" enabled="true" maxChars="100"/>
+	<mx:FormItem id="idOrdemItem" width="129.5" required="true" x="720.5" y="98.35" errorString="Campo Obrigatório">
+		<mx:TextInput x="720.5" y="100" id="idOrdem" width="115" tabIndex="2" enabled="true" maxChars="100" restrict="0-9"/>
+	</mx:FormItem>
 	
 	<mx:Label x="661" y="56" text="{resourceManager.getString('MessagemResource_pt_BR', 'tela.transacao.campo.ativa')}"/>
-	<mx:TextInput x="720.5" y="55.65" id="idAtiva" width="129.5" tabIndex="2" enabled="true" maxChars="100"/>
+	<mx:FormItem id="idAtivaItem" width="129.5" required="true" x="720.5" y="54" errorString="Campo Obrigatório">
+		<mx:TextInput x="720.5" y="55.65" id="idAtiva" width="115" tabIndex="2" enabled="true" maxChars="100"/>
+	</mx:FormItem>
 	
 	<mx:Image x="858" y="2" width="126" height="120" source="@Embed(source='../../../../img/telas/aluno.png')"/>
 	

@@ -136,6 +136,9 @@
 			public function cadastrarPerfil():void{
 				perfil = new PerfilSisa();
 				
+				if(!validarCamposObrigatorios())
+					return;
+				
 				if(perfilObjConsulta != null){
 					perfil.id = perfilObjConsulta.id;
 				}
@@ -182,7 +185,16 @@
 				limparTela();
 				Alert.show("Perfil salvo com sucesso");
 				
-			}	
+			}
+			
+			//validar os campos obrigatórios
+			public function validarCamposObrigatorios():Boolean{
+				if(idDescricao.text == ""){
+					Alert.show("Campo descrição obrigatório");
+					return false;
+				}
+				return true;
+			}
 			
 			//Ocorreu uma falha ao chamar algum servico servico.
 			public function onFault(event:FaultEvent):void
@@ -205,7 +217,9 @@
 	<mx:DateFormatter id="df" formatString="DD/MM/YYYY"/>
 	
 	<mx:Label x="25" y="16" text="{resourceManager.getString('MessagemResource_pt_BR', 'tela.perfil.campo.Descricao')}"/>
-	<mx:TextInput x="73" y="15.65" id="idDescricao" width="650" tabIndex="2" enabled="true" maxChars="100"/>
+	<mx:FormItem id="idDescricaoItem" top="15.65" left="80" width="643" required="true" height="22" errorString="Campo Obrigatório">
+		<mx:TextInput x="73" y="15.65" id="idDescricao" width="628" tabIndex="2" enabled="true" maxChars="100" />
+	</mx:FormItem>
 	<mx:Image x="858" y="2" width="126" height="120" source="@Embed(source='../../../../img/telas/aluno.png')"/>
 	
 	<mx:Label x="25"   y="55"  text="{resourceManager.getString('MessagemResource_pt_BR', 'tela.consulta.transacao.title.lista')}" width="319"/>
