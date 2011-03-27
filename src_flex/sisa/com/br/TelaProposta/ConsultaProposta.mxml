@@ -39,6 +39,7 @@
 				getList();
 				loteamentoService.getList();
 				vendedorService.getList();
+				dominioService.listarSituacaoProposta();
 			}
 			
 			//Consulta promitentes pegando os campos da tela 
@@ -49,14 +50,24 @@
 				
 				if (cbLoteamento.selectedIndex != 0)
 				{ 			 
-					proposta.loteamento = new LoteamentoSisa();
-					proposta.loteamento.nu_lotm = cbLoteamento.selectedItem.nu_lotm;
+					proposta.loteamento = cbLoteamento.selectedItem as LoteamentoSisa;
+					//proposta.loteamento.nu_lotm = cbLoteamento.selectedItem.nu_lotm;
 					filtrar = true;
 				}
 				if (txNomePromitente.text != "")
 				{
 					proposta.promitente = new Promitente();
 					proposta.promitente.codigo = txCodigoPromitente.text;
+					filtrar = true;
+				}
+				if (cbVendedor.selectedIndex != 0)
+				{ 			 
+					proposta.vendedor = cbVendedor.selectedItem as VendedorSisa;
+					filtrar = true;
+				}
+				if (cbSituacao.selectedIndex != 0)
+				{ 			 
+					proposta.situacao = cbSituacao.selectedItem.codigo;
 					filtrar = true;
 				}
 				  
@@ -100,6 +111,14 @@
 			{
 				listaProposta = event.result as ArrayCollection;
 			}
+			
+//			private function getCodigoLoteamento(item: Object, column:DataGridColumn): String
+//			{
+//				//var lotes: ArrayCollection = item["lotes"] as ArrayCollection;
+//				//Alert.show(lotes.length.toString());
+//				return "";
+//			}
+			
 		
 			public function detalharProposta():void
 			{            		
@@ -154,6 +173,11 @@
 			public function onResultListaVendedor(e: ResultEvent): void
 			{
 				listaVendedor = e.result as ArrayCollection;
+				var vendedor: VendedorSisa = new VendedorSisa();
+				vendedor.cd_vend = "0";
+				vendedor.ds_razao_nome = "{Todos}";
+				listaVendedor.addItemAt(vendedor, 0);
+				cbVendedor.selectedIndex = 0;
 			}
 			
 			public function onResultListaSituacao(e: ResultEvent): void
@@ -208,8 +232,8 @@
 		<mx:DataGrid id="grProposta" x="0" y="0" width="100%" height="100%" dataProvider="{listaProposta}" doubleClick="{detalharProposta()}" doubleClickEnabled="true" tabIndex="7" tabEnabled="false" sortableColumns="true" editable="false">
 			<mx:columns>
 				<mx:DataGridColumn headerText="{resourceManager.getString('MessagemResource_pt_BR', 'tela.consulta.proposta.campo.grid.numero')}" dataField="numero" width="80"/>
-				<mx:DataGridColumn headerText="{resourceManager.getString('MessagemResource_pt_BR', 'tela.consulta.proposta.campo.grid.loteamento')}" dataField="loteamento.codigo" width="80" />
-				<mx:DataGridColumn headerText="{resourceManager.getString('MessagemResource_pt_BR', 'tela.consulta.proposta.campo.grid.qtdeLote')}" dataField="lotes.size" width="100" />
+				<mx:DataGridColumn headerText="{resourceManager.getString('MessagemResource_pt_BR', 'tela.consulta.proposta.campo.grid.loteamento')}" dataField="loteamento.nu_lotm" width="80" />
+				<mx:DataGridColumn headerText="{resourceManager.getString('MessagemResource_pt_BR', 'tela.consulta.proposta.campo.grid.qtdeLote')}" width="100" dataField="lotes.length" />
 				<mx:DataGridColumn headerText="{resourceManager.getString('MessagemResource_pt_BR', 'tela.consulta.proposta.campo.grid.valorTotal')}" dataField="valorVista" width="100" />
 			</mx:columns>
 		</mx:DataGrid>
@@ -225,7 +249,7 @@
 	<mx:ComboBox x="84" y="7" width="199" id="cbLoteamento" dataProvider="{listaLoteamento}" labelField="ds_lotm"></mx:ComboBox>
 	<mx:Label x="10" y="68" text="Vendedor:" width="66"/>
 	<mx:Label x="271" y="10" text="Situação:" width="82" textAlign="right"/>
-	<mx:ComboBox x="361" y="7" width="143" id="cbSituacao" dataProvider="{listaSituacao}"/>
+	<mx:ComboBox x="361" y="7" width="143" id="cbSituacao" dataProvider="{listaSituacao}" labelField="descricao"/>
 	<mx:ComboBox x="84" y="65" width="391" id="cbVendedor" dataProvider="{listaVendedor}" labelField="ds_razao_nome"></mx:ComboBox>
 
 </mx:TitleWindow>

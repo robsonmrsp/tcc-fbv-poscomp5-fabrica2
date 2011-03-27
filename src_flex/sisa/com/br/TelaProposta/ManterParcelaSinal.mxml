@@ -28,7 +28,7 @@
         	
         	dominioService.listarTipoPagto();
         	
-        	txParcela.text = parcelaSinal.parcelaSinalPK.parcela.toString();
+        	txParcela.text = parcelaSinal.parcela.toString();
         	txNumeroDoc.text = parcelaSinal.numeroDocumento;
         	txValor.text = nf.format(parcelaSinal.valor);
         	dtVencimento.data = parcelaSinal.dataVencimento;

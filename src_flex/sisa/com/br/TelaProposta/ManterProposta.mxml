@@ -12,7 +12,6 @@
 			import sisa.com.br.entidade.Financiamento;
 			import mx.controls.Image;
 			import sisa.com.br.dominio.objDominio;
-			import sisa.com.br.entidade.ParcelaSinalPK;
 			import sisa.com.br.entidade.ParcelaSinal;
 			import sisa.com.br.TelaPromitente.SelecionarPromitente;
 			import mx.core.UIComponent;
@@ -434,8 +433,10 @@
 			
 			for (var i: int = 1; i <= qtdParcela; i++)
 			{
-				var parcela: ParcelaSinal = new ParcelaSinal(new ParcelaSinalPK(proposta, i));
+				var parcela: ParcelaSinal = new ParcelaSinal();
 				
+				parcela.proposta = proposta;
+				parcela.parcela = i;
 				parcela.tipoPagto = "B";
 				parcela.valor = valorParcela;
 				parcela.dataVencimento = dataVenc;
@@ -632,7 +633,7 @@
 	<mx:Panel x="10" y="319" width="666" layout="absolute" headerHeight="15" title="Plano de Pagamento" backgroundColor="#EFF5FB" height="192" enabled="false" id="pnPlanoPagto">
 		<mx:DataGrid x="0" y="26" width="100%" height="100" id="grParcelaSinal" dataProvider="{listaParcelasSinal}">
 			<mx:columns>
-				<mx:DataGridColumn headerText="Parcela" dataField="parcelaSinalPK.parcela" width="70" headerStyleName="CenterHeader"/>
+				<mx:DataGridColumn headerText="Parcela" dataField="parcela" width="70" headerStyleName="CenterHeader"/>
 				<mx:DataGridColumn headerText="Tipo de Pagto." dataField="tipoPagto" labelFunction="formatarTipoPagto" width="120" headerStyleName="CenterHeader" />
 				<mx:DataGridColumn headerText="Documento" dataField="numeroDoc" width="100" headerStyleName="CenterHeader"/>
 				<mx:DataGridColumn headerText="Valor" dataField="valor" width="100" headerStyleName="CenterHeader" labelFunction="formatarValor"  textAlign="right"/>
