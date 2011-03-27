@@ -8,15 +8,16 @@
 		<id name="numero" column="nu_proposta" type="java.lang.String">
 			<generator class="assigned"/>
 		</id>
-		<many-to-one name="promitente" column="cd_promitente" class="sisa.com.br.entidade.Promitente" />
+		<many-to-one name="loteamento" column="nu_lotm" class="sisa.com.br.entidade.Loteamento" fetch="join" />
+		<many-to-one name="promitente" column="cd_promitente" class="sisa.com.br.entidade.Promitente" fetch="join" />
 		<property column="no_conjuge" type="java.lang.String" name="nomeConjuge" length="40" />
 		<property column="vl_vista" type="java.lang.Double" name="valorVista" />
 		<property column="vl_sinal" type="java.lang.Double" name="valorSinal" />
-		<many-to-one name="financiamento" column="qt_prest" class="sisa.com.br.entidade.Financiamento" />
+		<many-to-one name="financiamento" column="qt_prest" class="sisa.com.br.entidade.Financiamento" fetch="join" />
 		<property column="vl_prest" type="java.lang.Double" name="valorParcela" />
 		<property column="ds_obs" type="java.lang.String" name="observacao" length="60" />
 		<property column="situacao" type="java.lang.String" name="situacao" not-null="true" length="1" />
-		<many-to-one name="vendedor" column="cd_vend" class="sisa.com.br.entidade.Vendedor" />
+		<many-to-one name="vendedor" column="cd_vend" class="sisa.com.br.entidade.Vendedor" fetch="join"/>
 		<property column="dt_emissao" type="java.sql.Date" name="dataEmissao" not-null="true" />
 		<property column="dt_pri_prest" type="java.sql.Date" name="dataPrimeiraParcela" />
 		<property column="fl_dep" type="java.lang.String" name="dependente" not-null="true" length="1" />
