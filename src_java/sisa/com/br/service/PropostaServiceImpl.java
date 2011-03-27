@@ -60,7 +60,8 @@ public class PropostaServiceImpl implements PropostaService {
 	@Override
 	public List<Proposta> getList() throws Exception {
 		try {
-			return this.propostaRepository.getList();
+			List<Proposta> lista = this.propostaRepository.getList();
+			return lista;
 		} catch (Exception e) {
 			throw new Exception("Não foi possível listar as propostas: " + e.getMessage());
 		}
