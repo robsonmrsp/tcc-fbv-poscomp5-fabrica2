@@ -3,8 +3,10 @@ package sisa.com.br.entidade;
 import java.util.Date;
 
 public class ParcelaSinal {
-
-	private ParcelaSinalPK parcelaSinalPK;
+	
+	private int id;
+	private Proposta proposta;
+	private int parcela;
 	private String tipoPagto;
 	private String numeroDocumento;
 	private double valor;
@@ -12,18 +14,29 @@ public class ParcelaSinal {
 	
 	public ParcelaSinal(){
 	}
-	
-	public ParcelaSinal(ParcelaSinalPK pk)
-	{
-		this.parcelaSinalPK = pk;
+
+	public int getId() {
+		return id;
 	}
 
-	public ParcelaSinalPK getParcelaSinalPK() {
-		return parcelaSinalPK;
+	public void setId(int id) {
+		this.id = id;
 	}
 
-	public void setParcelaSinalPK(ParcelaSinalPK parcelaSinalPK) {
-		this.parcelaSinalPK = parcelaSinalPK;
+	public Proposta getProposta() {
+		return proposta;
+	}
+
+	public void setProposta(Proposta proposta) {
+		this.proposta = proposta;
+	}
+
+	public int getParcela() {
+		return parcela;
+	}
+
+	public void setParcela(int parcela) {
+		this.parcela = parcela;
 	}
 
 	public String getTipoPagto() {
