@@ -33,9 +33,12 @@ public class PropostaHibernateDao extends HibernateDaoSupport implements Propost
 			if (proposta.getPromitente() != null){
 				criteria.add(Restrictions.eq("proposta.promitente", proposta.getPromitente()));
 			}
-			/*if (proposta.getVendedor != null){
+			if (proposta.getVendedor() != null){
 				criteria.add(Restrictions.eq("proposta.vendedor", proposta.getVendedor()));
-			}*/
+			}
+			if (proposta.getSituacao() != null){
+				criteria.add(Restrictions.eq("proposta.situacao", proposta.getSituacao()));
+			}
 		}
 		//	        
 		return criteria.list();
