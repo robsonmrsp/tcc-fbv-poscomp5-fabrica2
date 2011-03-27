@@ -4,16 +4,14 @@
 	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
 	<class name="sisa.com.br.entidade.ParcelaSinal" table="parcelas_sinal_proposta">
-
-		<composite-id name="parcelaSinalPK" class="sisa.com.br.entidade.ParcelaSinalPK">
-			<key-many-to-one name="proposta" column="nu_proposta" class="sisa.com.br.entidade.Proposta" />
-			<key-property name="parcela" column="nu_parcela" />
-		</composite-id>
-		
+		<id name="id" column="id" type="java.lang.Integer" unsaved-value="0">
+			<generator class="identity"/>
+		</id>
+		<many-to-one name="proposta"  column="nu_proposta" class="sisa.com.br.entidade.Proposta" fetch="join" />
+		<property column="nu_parcela" name="parcela" type="java.lang.Integer" />
 		<property column="tipo_pagto" type="java.lang.String" name="tipoPagto" length="1" />
 		<property column="num_doc" type="java.lang.String" name="numeroDocumento" not-null="true" length="10" />
 		<property column="valor" type="java.lang.Double" name="valor" />
 		<property column="data_vencimento" type="java.sql.Date" name="dataVencimento" />
-		
 	</class>
 </hibernate-mapping>
