@@ -1,6 +1,5 @@
 package sisa.com.br.relatorios.web;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,23 +28,8 @@ public class RelatorioProposta extends InformacoesRelatorio {
 		String caminhoArquivoImgCidadeGarapu = "";
 		String caminhoArquivoImgLogoSisa = "";
 		
-		File arquivoAux = null;
-		arquivoAux = new File(nomeImgCidadeGarapu);
-		
-//		caminhoArquivoImgCidadeGarapu = arquivoAux.getClass().getResource("/").getPath() + nomeImgCidadeGarapu;
-//		caminhoArquivoImgCidadeGarapu = "H:/workspace_sisa/JavaFlex/build/classes/relatorios/imagens/cidade_garapu.jpg";
 		caminhoArquivoImgCidadeGarapu = caminhoImgRel + "cidade_garapu.jpg";
-//		caminhoArquivoImgCidadeGarapu = this.getServletContext().getContextPath() + nomeImgCidadeGarapu;
-//		arquivoAux = new File(caminhoArquivoImgCidadeGarapu);
-//		System.out.println(arquivoAux.exists());
-		
-		arquivoAux = new File(nomeImgLogoSisa);
-//		caminhoArquivoImgLogoSisa = arquivoAux.getClass().getResource("/").getPath() + nomeImgLogoSisa;
-//		caminhoArquivoImgLogoSisa ="H:/workspace_sisa/JavaFlex/build/classes/relatorios/imagens/logo_sisa.jpg";
 		caminhoArquivoImgLogoSisa = caminhoImgRel + "logo_sisa.jpg";
-//		caminhoArquivoImgLogoSisa = this.getServletContext().getContextPath() + nomeImgLogoSisa;
-//		arquivoAux = new File(caminhoArquivoImgCidadeGarapu);
-//		System.out.println(arquivoAux.exists());
 
 		// Nome dos parãmetros
 		String paramDataInicio = "DATA_INICIO";

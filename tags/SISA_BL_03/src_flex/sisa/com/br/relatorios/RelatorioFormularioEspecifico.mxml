@@ -121,6 +121,6 @@
 	<mx:Button label="{resourceManager.getString('MessagemResource_pt_BR', 'tela.button.gerar')}" id="btGerar" click="gerarRelatorioFormularioEspecifico();" toolTip="Gerar" icon="@Embed('../../../../img/button/imprimir.png')"  x="256" y="142.5" buttonMode="true" tabIndex="24" styleName="Button" height="59.05"  width="99.5"/>
 	<mx:Label x="121" y="48" text="Selcione a Proposta : " id="lblProposta"/>
 	<mx:ComboBox x="256" y="48" id="cboProposta" width="368" height="23" editable="false" selectedIndex="0" enabled="true"
-		dataProvider="listaPropostas" labelField="numero"></mx:ComboBox>
+		dataProvider="{listaPropostas}" labelField="numero"></mx:ComboBox>
 	
 </mx:TitleWindow>

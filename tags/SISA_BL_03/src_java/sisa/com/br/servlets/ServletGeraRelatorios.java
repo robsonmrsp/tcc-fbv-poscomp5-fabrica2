@@ -55,7 +55,7 @@ public class ServletGeraRelatorios extends HttpServlet {
 			}else if(tpRelatorio.equals("2")){
 				String numeroProposta = request.getParameter("nrProp");
 				
-				RelatorioPropostaEspecifico relatorioPropostaEspecifico = new RelatorioPropostaEspecifico(numeroProposta);
+				RelatorioPropostaEspecifico relatorioPropostaEspecifico = new RelatorioPropostaEspecifico(pathJasper, numeroProposta);
 				
 				relatorio = relatorioPropostaEspecifico.gerar();
 			}else if(tpRelatorio.equals("3")){
