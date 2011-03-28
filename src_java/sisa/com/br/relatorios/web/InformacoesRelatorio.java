@@ -91,31 +91,11 @@ public class InformacoesRelatorio{
         Connection conexao = new ConexaoMySQL().getConnection();
         conexao.createStatement();
         
-//        File arquivoAux = new File(identicacaoRelatorio);
-        
-//        arquivoAux = new File(arquivoAux.getClass().getResource("/").getPath() + complDiretorioJaspers + identicacaoRelatorio);
-//        System.out.println(arquivoAux.exists());
-        /*JasperDesign jd = JasperManager.loadDesign(getIdenticacaoRelatorio());
-        JasperReport jr = JasperManager.compileReport(jd);
-        byte[] r = JasperManager.runReportToPdf(jr, getMapaParametros(), conexao);*/
-        
         //JasperPrint jp = JasperFillManager.fillReport(identicacaoRelatorio ,getMapaParametros(), conexao);            
         JasperPrint jp = JasperFillManager.fillReport(getIdenticacaoRelatorio() ,getMapaParametros(), conexao);
         
         // Exporta para PDF
-//        JasperExportManager.exportReportToPdfFile(jp, nomeArquivoSaida);
         byte[] array =  JasperExportManager.exportReportToPdf(jp);
-//        ServletOutputStream out = response.getOutputStream();
-//		byte abyte0[] = new byte[4096];  
-//		BufferedInputStream bufferedinputstream = new BufferedInputStream(new FileInputStream(localReportGerado));
-//		int i;  
-//		while((i = bufferedinputstream.read(abyte0, 0, 4096)) != -1)  
-//			out.write(abyte0, 0, i);  
-//		bufferedinputstream.close();
-//		out.close();
-        
-//        JasperViewer jrv = new JasperViewer(jp, false);
-//        jrv.setVisible(true);
         
     	String arquivoSaida = caminhoProjeto + "/" + nomeArquivoSaida;
         

@@ -1,6 +1,5 @@
 package sisa.com.br.relatorios.web;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,21 +30,10 @@ public class RelatorioPropostaEspecifico extends InformacoesRelatorio {
 		String caminhoArquivoImgCidadeGarapu = "";
 		String caminhoArquivoImgLogoSisa = "";
 		
-		File arquivoAux = null;
-		arquivoAux = new File(nomeImgCidadeGarapu);
-//		caminhoArquivoImgCidadeGarapu = arquivoAux.getClass().getResource("/").getPath() + nomeImgCidadeGarapu;
 		caminhoArquivoImgCidadeGarapu = caminhoImgRel + "cidade_garapu.jpg";
-//		arquivoAux = new File(caminhoArquivoImgCidadeGarapu);
-//		System.out.println(arquivoAux.exists());
-		
-		arquivoAux = new File(nomeImgLogoSisa);
-//		caminhoArquivoImgLogoSisa = arquivoAux.getClass().getResource("/").getPath() + nomeImgLogoSisa;
 		caminhoArquivoImgLogoSisa = caminhoImgRel + "logo_sisa.jpg";
-//		arquivoAux = new File(caminhoArquivoImgCidadeGarapu);
-//		System.out.println(arquivoAux.exists());
 
 		// Nome dos parãmetros
-
 		String paramImgCidadeGarapu = "CAMINHO_JASPER_CID_GARAPU";
 		String paramImgLogo = "CAMINHO_JASPER_SISA";
 		String paramNumeroProposta = "NUMERO_PROPOSTA";
