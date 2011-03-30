@@ -7,6 +7,7 @@ package sisa.com.br.entidade
 		public var codigo: String; 
 		public var nome: String; 
 		public var estadoCivil: String; 
+		public var nomeConjuge: String; 
 		public var sexo: String; 
 		public var numeroRG: String; 
 		public var orgaoEmissorRG: String; 

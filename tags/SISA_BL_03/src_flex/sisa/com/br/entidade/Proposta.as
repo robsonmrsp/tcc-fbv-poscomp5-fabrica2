@@ -8,7 +8,6 @@ package sisa.com.br.entidade
 	{
 		public var numero: String;
 		public var promitente: Promitente; 
-		public var nomeConjuge: String; 
 		public var valorVista: Number; 
 		public var valorSinal: Number; 
 		public var financiamento: Financiamento; 
@@ -18,8 +17,6 @@ package sisa.com.br.entidade
 		public var dataEmissao: Date; 
 		public var dataPrimeiraParcela: Date; 
 		public var valorParcela: Number; 
-		public var dependente: String; 
-		public var cpfCnpjResponsavel: String; 
 		public var pagamentoVista: String;  //S: Sim - N: Não
 		public var loteamento: LoteamentoSisa;
 		public var lotes: ArrayCollection;	
