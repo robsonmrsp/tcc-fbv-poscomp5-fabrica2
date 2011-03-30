@@ -8,7 +8,6 @@ public class Proposta {
 
 	private String numero; 
 	private Promitente promitente; 
-	private String nomeConjuge; 
 	private double valorVista; 
 	private double valorSinal; 
 	private Financiamento financiamento; 
@@ -18,8 +17,6 @@ public class Proposta {
 	private Date dataEmissao; 
 	private Date dataPrimeiraParcela; 
 	private double valorParcela; 
-	private String dependente; 
-	private String cpfCnpjResponsavel; 
 	private String pagamentoVista;  //S: Sim - N: Não
 	private Loteamento loteamento;
 	private Set<Lote> lotes = new HashSet<Lote>();
@@ -36,12 +33,6 @@ public class Proposta {
 	}
 	public void setPromitente(Promitente promitente) {
 		this.promitente = promitente;
-	}
-	public String getNomeConjuge() {
-		return nomeConjuge;
-	}
-	public void setNomeConjuge(String nomeConjuge) {
-		this.nomeConjuge = nomeConjuge;
 	}
 	public double getValorVista() {
 		return valorVista;
@@ -97,18 +88,6 @@ public class Proposta {
 	}
 	public void setValorParcela(double valorParcela) {
 		this.valorParcela = valorParcela;
-	}
-	public String getDependente() {
-		return dependente;
-	}
-	public void setDependente(String dependente) {
-		this.dependente = dependente;
-	}
-	public String getCpfCnpjResponsavel() {
-		return cpfCnpjResponsavel;
-	}
-	public void setCpfCnpjResponsavel(String cpfCnpjResponsavel) {
-		this.cpfCnpjResponsavel = cpfCnpjResponsavel;
 	}
 	public String getPagamentoVista() {
 		return pagamentoVista;
