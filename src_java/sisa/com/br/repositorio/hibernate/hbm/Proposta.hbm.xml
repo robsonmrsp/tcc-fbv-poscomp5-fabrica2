@@ -10,7 +10,6 @@
 		</id>
 		<many-to-one name="loteamento" column="nu_lotm" class="sisa.com.br.entidade.Loteamento" fetch="join" />
 		<many-to-one name="promitente" column="cd_promitente" class="sisa.com.br.entidade.Promitente" fetch="join" />
-		<property column="no_conjuge" type="java.lang.String" name="nomeConjuge" length="40" />
 		<property column="vl_vista" type="java.lang.Double" name="valorVista" />
 		<property column="vl_sinal" type="java.lang.Double" name="valorSinal" />
 		<many-to-one name="financiamento" column="qt_prest" class="sisa.com.br.entidade.Financiamento" fetch="join" />
@@ -20,8 +19,6 @@
 		<many-to-one name="vendedor" column="cd_vend" class="sisa.com.br.entidade.Vendedor" fetch="join"/>
 		<property column="dt_emissao" type="java.sql.Date" name="dataEmissao" not-null="true" />
 		<property column="dt_pri_prest" type="java.sql.Date" name="dataPrimeiraParcela" />
-		<property column="fl_dep" type="java.lang.String" name="dependente" not-null="true" length="1" />
-		<property column="nu_cgc_cpf_menor" type="java.lang.String" name="cpfCnpjResponsavel" length="15" />
 		<property column="fl_pagto_avista" type="java.lang.String" name="pagamentoVista" not-null="true" length="1" />
 		<set name="lotes" table="lotes_proposta" cascade="all" lazy="false">
 			<key column="nu_proposta"/>
