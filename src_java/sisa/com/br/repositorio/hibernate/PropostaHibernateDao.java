@@ -47,8 +47,8 @@ public class PropostaHibernateDao extends HibernateDaoSupport implements Propost
 	public Proposta findById(String id) throws Exception {
 		Proposta proposta = (Proposta) getHibernateTemplate().get(Proposta.class, id);
 		
-		if (proposta == null)
-			throw new Exception("A Proposta com o número: "+id+" da "+Proposta.class.getSimpleName()+" não foi encontrada.");
+		//if (proposta == null)
+	//		throw new Exception("A Proposta com o número: "+id+" da "+Proposta.class.getSimpleName()+" não foi encontrada.");
 		return proposta;
 	}
 
