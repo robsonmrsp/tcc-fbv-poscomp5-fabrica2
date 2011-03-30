@@ -51,7 +51,6 @@
 				if (cbLoteamento.selectedIndex != 0)
 				{ 			 
 					proposta.loteamento = cbLoteamento.selectedItem as LoteamentoSisa;
-					//proposta.loteamento.nu_lotm = cbLoteamento.selectedItem.nu_lotm;
 					filtrar = true;
 				}
 				if (txNomePromitente.text != "")

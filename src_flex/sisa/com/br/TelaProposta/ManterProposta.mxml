@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="706" height="604" 
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="730" height="460" 
 	title="Manter Proposta" creationComplete="iniciarTela()" verticalAlign="middle" 
 	horizontalAlign="center" showCloseButton="true" close="titleWindow_close(event)">
 
@@ -139,7 +139,7 @@
 			parcelarSinal();
 			calcularValorPrestacao();
 			
-			pnPlanoPagto.enabled = (listaLotesProposta.length != 0);
+			pnSinal.enabled = (listaLotesProposta.length != 0);
 			
 			//Muda a situação do lote para livre (L)
 			lote.situacao = "L";			
@@ -220,10 +220,22 @@
 				proposta.vendedor = cbVendedor.selectedItem as VendedorSisa;
 				proposta.promitente = promitente;
 				proposta.lotes = listaLotesProposta;
-				proposta.parcelasSinal = listaParcelasSinal;
-								
-				proposta.lotes = listaLotesProposta;
-				
+				proposta.pagamentoVista = (ckPagtoVista.selected? "S": "N");
+				proposta.valorVista = parseFloat(txValorTotal.text.replace(".", "").replace(",", "."));
+				if (!ckPagtoVista.selected)
+				{
+					if (txSinal.text != "")
+					{
+						proposta.valorSinal = parseFloat(txSinal.text.replace(".", "").replace(",", "."));
+						proposta.parcelasSinal = listaParcelasSinal;
+					}
+					proposta.financiamento = cbFinanciamento.selectedItem as Financiamento;
+					proposta.valorParcela = parseFloat(txValorPrestacao.text.replace(".", "").replace(",", "."));
+					proposta.dataPrimeiraParcela = dtPrimVencimento.selectedDate;
+				}		
+				proposta.observacao = txObservacao.text;
+				proposta.situacao = "P";
+				proposta.dataEmissao = new Date();
 				//insere a proposta
 				propostaService.insert(proposta);
 			}
@@ -233,7 +245,7 @@
 				propostaService.update(proposta);
 			}
 			//fecha a tela
-			fechar();
+			//fechar();
 		}
 		
 		//função de retorno da tela de Selecionar Lote
@@ -249,7 +261,7 @@
             parcelarSinal();
             calcularValorPrestacao();
             
-            pnPlanoPagto.enabled = (listaLotesProposta.length != 0);
+            pnSinal.enabled = (listaLotesProposta.length != 0);
             
             //Alterar a situção do lote para Em reserva (E)
             popupLote.lote.situacao = "E";
@@ -494,6 +506,12 @@
 			
 			popupEditParcelaSinal.parcelaSinal = grParcelaSinal.selectedItem as ParcelaSinal;
 		}
+		
+		private function desabilitarSinalParcelamento(): void
+		{
+			pnSinal.enabled = !ckPagtoVista.selected;
+			pnParcelamento.enabled = !ckPagtoVista.selected;
+		}
 
 		//evento chamado ao clicar em OK na tela de editar parcela
 		private function popupEditParcelaSinal_OK(e: Event): void
@@ -583,119 +601,132 @@
 			<mx:ComboBox id="cbLoteamento" width="173" height="19" dataProvider="{listaLoteamento}" labelField="ds_lotm"></mx:ComboBox>
 		</mx:FormItem>
 	</mx:Form>
-	<mx:Panel x="10" y="52" width="668" height="101" layout="absolute" title="Promitente" backgroundColor="#EFF5FB" headerHeight="15">
-		<mx:Form x="0" y="0" width="100%" alpha="1.0" paddingTop="5" paddingLeft="5" verticalGap="2" paddingBottom="5" paddingRight="5" height="100%">
-			<mx:FormItem label="Código:" required="true">
-				<mx:TextInput id="txCodigoPromitente" width="80" maxChars="5" height="19"/>
-			</mx:FormItem>
-			<mx:FormItem label="Nome:" required="true">
-				<mx:TextInput width="336" editable="false" enabled="false" height="19" id="txNomePromitente"/>
-			</mx:FormItem>
-			<mx:FormItem label="Endereço:">
-				<mx:TextInput editable="false" enabled="false" width="559" height="19" id="txEnderecoPromitente"/>
-			</mx:FormItem>
-		</mx:Form>
-		<mx:Form x="422" y="0" width="224" paddingLeft="5" paddingTop="28" paddingRight="5" paddingBottom="5">
-			<mx:FormItem label="Telefone:">
-				<mx:TextInput width="141" editable="false" enabled="false" height="19" id="txTelefonePromitente"/>
-			</mx:FormItem>
-		</mx:Form>
-		<mx:Button x="160" y="5" width="27" height="19" id="btConsultarPromitente" click="consultarPromitente()" toolTip="Consultar promitente">
-			<mx:icon>@Embed(source='../../../../img/button/search.png')</mx:icon>
-		</mx:Button>
-		<mx:Button x="191" y="5" width="27" height="19" id="btCadastrarPromitente" toolTip="Cadastrar novo promitente" click="cadastrarPromitente()">
-			<mx:icon>@Embed(source='../../../../img/button/add.png')</mx:icon>
-		</mx:Button>
-		<mx:Button x="222" y="5" width="27" height="19" id="btLimparPromitente" toolTip="Limpar promitente" click="limparPromitente()">
-			<mx:icon>@Embed(source='../../../../img/button/cancel.png')</mx:icon>
-		</mx:Button>
-	</mx:Panel>
-	<mx:Panel x="10" y="161" width="666" height="125" layout="absolute" title="Lotes" backgroundColor="#EFF5FB" headerHeight="15">
-		<mx:DataGrid x="0" y="0" width="100%" height="62" id="grLotes" editable="false"  headerHeight="20" rowHeight="19" dataProvider="{listaLotesProposta}">
-			<mx:columns>
-				<mx:DataGridColumn headerText="Quadra" dataField="nu_quadra" headerStyleName="CenterHeader" />
-				<mx:DataGridColumn headerText="Lote" dataField="nu_lote" headerStyleName="CenterHeader"/>
-				<mx:DataGridColumn headerText="Área (m²)" headerStyleName="CenterHeader" textAlign="right" dataField="nu_area" labelFunction="formatarValor"/>
-				<mx:DataGridColumn headerText="Valor do m² (R$)" headerStyleName="CenterHeader" textAlign="right" dataField="valorm2" labelFunction="formatarValor"/>
-				<mx:DataGridColumn headerText="Valor (R$)" labelFunction="calcularValor" headerStyleName="CenterHeader" textAlign="right"/>
-			</mx:columns>
-		</mx:DataGrid>
-		<mx:Button x="10" y="70" label="Adicionar" icon="@Embed(source='../../../../img/button/add.png')" id="btAddLote" toolTip="Adicionar um lote" click="adicionarLote()"/>
-		<mx:Button x="120" y="70" label="Remover" click="removerLote()" id="btRemLote">
-			<mx:icon>@Embed(source='../../../../img/button/cancel.png')</mx:icon>
-		</mx:Button>
-		<mx:Form x="432" y="69" width="214" paddingTop="3" paddingBottom="3" paddingLeft="3" paddingRight="5" styleName="FormAlign">
-			<mx:FormItem label="Valor Total:">
-				<mx:TextInput width="112" id="txValorTotal" editable="false" enabled="false" textAlign="right"/>
-			</mx:FormItem>
-		</mx:Form>
-	</mx:Panel>
-	<mx:Panel x="10" y="319" width="666" layout="absolute" headerHeight="15" title="Plano de Pagamento" backgroundColor="#EFF5FB" height="192" enabled="false" id="pnPlanoPagto">
-		<mx:DataGrid x="0" y="26" width="100%" height="100" id="grParcelaSinal" dataProvider="{listaParcelasSinal}">
-			<mx:columns>
-				<mx:DataGridColumn headerText="Parcela" dataField="parcela" width="70" headerStyleName="CenterHeader"/>
-				<mx:DataGridColumn headerText="Tipo de Pagto." dataField="tipoPagto" labelFunction="formatarTipoPagto" width="120" headerStyleName="CenterHeader" />
-				<mx:DataGridColumn headerText="Documento" dataField="numeroDoc" width="100" headerStyleName="CenterHeader"/>
-				<mx:DataGridColumn headerText="Valor" dataField="valor" width="100" headerStyleName="CenterHeader" labelFunction="formatarValor"  textAlign="right"/>
-				<mx:DataGridColumn headerText="Data de Vencimento" dataField="dataVencimento" labelFunction="formatarData" headerStyleName="CenterHeader"/>
-				<mx:DataGridColumn width="30">
-					<mx:itemRenderer>
-						<mx:Component>
-							<mx:Button click="parentDocument.editarParcela()" >
-								<mx:icon>@Embed(source='../../../../img/button/alter.png')</mx:icon>
-							</mx:Button>
-						</mx:Component>
-					</mx:itemRenderer>
-				</mx:DataGridColumn>
-			</mx:columns>
-		</mx:DataGrid>
-		<mx:Form x="0" y="0" paddingBottom="5" paddingTop="2" paddingLeft="5" paddingRight="5">
-			<mx:FormItem label="Parcelamento Sinal:">
-				<mx:ComboBox height="19" width="94" id="cbQtdeParcelasSinal" selectedIndex="0" labelField="label" change="parcelarSinal()">
-					<mx:dataProvider>
-						<mx:ArrayCollection>
-							<mx:Object label="1" data="1"/>
-							<mx:Object label="2" data="2"/>
-							<mx:Object label="3" data="3"/>
-							<mx:Object label="4" data="4"/>							
-						</mx:ArrayCollection>
-					</mx:dataProvider>
-				</mx:ComboBox>
-			</mx:FormItem>
-		</mx:Form>
-		<mx:Form x="0" y="131" paddingBottom="5" paddingLeft="5" paddingRight="5" paddingTop="5">
-			<mx:FormItem label="Número de Prestações:">
-				<mx:ComboBox width="98" id="cbFinanciamento" dataProvider="{listaFinanciamento}" labelField="qtdeParcelas" height="19" change="calcularValorPrestacao()"></mx:ComboBox>
-			</mx:FormItem>
-		</mx:Form>
-		<mx:Form x="245" y="131" paddingBottom="5" paddingLeft="5" paddingRight="5" paddingTop="5">
-			<mx:FormItem label="Valor das Prestações:">
-				<mx:TextInput width="112" editable="false" enabled="false" id="txValorPrestacao" textAlign="right" height="19"/>
-			</mx:FormItem>
-		</mx:Form>
-	</mx:Panel>
-	<mx:Form x="230" y="293" paddingBottom="5" paddingTop="0" paddingLeft="12" paddingRight="5" verticalGap="3" autoLayout="false">
-		<mx:FormItem label="Sinal:">
-			<mx:TextInput width="112" id="txSinal" textAlign="right" height="19" focusIn="focusSinal()" focusOut="validarSinal(event)"/>
-		</mx:FormItem>
-	</mx:Form>
-	<mx:Form x="492" y="293" paddingBottom="5" paddingLeft="5" paddingRight="5" paddingTop="0" styleName="FormAlign">
-		<mx:FormItem label="Saldo:">
-			<mx:TextInput width="112" editable="false" enabled="false" height="19" id="txSaldo" textAlign="right"/>
-		</mx:FormItem>
-	</mx:Form>
 	<mx:Form x="285" y="22" paddingBottom="5" paddingLeft="0" paddingRight="5" paddingTop="5">
 		<mx:FormItem label="Vendedor:" required="true">
 			<mx:ComboBox id="cbVendedor" dataProvider="{listaVendedor}" labelField="ds_razao_nome" width="318" height="19"></mx:ComboBox>
 		</mx:FormItem>
 	</mx:Form>
-	<mx:Button x="470" y="519" label="Salvar" icon="@Embed(source='../../../../img/button/10.png')" id="btSalvar" toolTip="Adicionar um lote" click="salvar()" width="98" height="24"/>
-	<mx:Button x="575" y="519" label="Cancelar" click="fechar()" id="btCancelar" width="98" height="24">
+	<mx:Button x="496" y="370" label="Salvar" icon="@Embed(source='../../../../img/button/10.png')" id="btSalvar" toolTip="Adicionar um lote" click="salvar()" width="98" height="24"/>
+	<mx:Button x="602" y="370" label="Cancelar" click="fechar()" id="btCancelar" width="98" height="24">
 		<mx:icon>@Embed(source='../../../../img/button/cancel.png')</mx:icon>
 	</mx:Button>
-	<mx:Form x="0" y="293" paddingBottom="5" paddingTop="0" paddingLeft="12" paddingRight="5" verticalGap="3" autoLayout="false">
-		<mx:FormItem label="Pagamento a Vista">
-			<mx:CheckBox width="29" id="ckPagtoVista"/>
+	<mx:TabNavigator x="10" y="60" width="691" height="302" backgroundColor="#EFF5FB" borderStyle="solid" creationPolicy="all">
+		<mx:Canvas label="Promitente" width="100%" height="100%">
+			<mx:Panel x="10" y="10" width="668" layout="absolute" title="Promitente" backgroundColor="#EFF5FB" headerHeight="22">
+				<mx:Form x="0" y="0" width="100%" alpha="1.0" paddingTop="5" paddingLeft="5" verticalGap="2" paddingBottom="5" paddingRight="5" height="100%">
+					<mx:FormItem label="Código:" required="true">
+						<mx:TextInput id="txCodigoPromitente" width="80" maxChars="5" height="19"/>
+					</mx:FormItem>
+					<mx:FormItem label="Nome:" required="true">
+						<mx:TextInput width="336" editable="false" enabled="false" height="19" id="txNomePromitente"/>
+					</mx:FormItem>
+					<mx:FormItem label="Endereço:">
+						<mx:TextInput editable="false" enabled="false" width="559" height="19" id="txEnderecoPromitente"/>
+					</mx:FormItem>
+					<mx:FormItem label="Telefone:">
+						<mx:TextInput width="141" editable="false" enabled="false" height="19" id="txTelefonePromitente"/>
+					</mx:FormItem>
+				</mx:Form>
+				<mx:Button x="160" y="5" width="27" height="19" id="btConsultarPromitente" click="consultarPromitente()" toolTip="Consultar promitente">
+					<mx:icon>@Embed(source='../../../../img/button/search.png')</mx:icon>
+				</mx:Button>
+				<mx:Button x="191" y="5" width="27" height="19" id="btCadastrarPromitente" toolTip="Cadastrar novo promitente" click="cadastrarPromitente()">
+					<mx:icon>@Embed(source='../../../../img/button/add.png')</mx:icon>
+				</mx:Button>
+				<mx:Button x="222" y="5" width="27" height="19" id="btLimparPromitente" toolTip="Limpar promitente" click="limparPromitente()">
+					<mx:icon>@Embed(source='../../../../img/button/cancel.png')</mx:icon>
+				</mx:Button>
+			</mx:Panel>
+			<mx:TextArea x="10" y="168" width="669" height="63" id="txObservacao" maxChars="60" wordWrap="true"/>
+			<mx:Label x="10" y="148" text="Observação:"/>
+		</mx:Canvas>
+		<mx:Canvas label="Lotes" width="100%" height="100%">
+			<mx:DataGrid x="10" y="10" width="669" height="120" id="grLotes" editable="false"  headerHeight="20" rowHeight="19" dataProvider="{listaLotesProposta}">
+				<mx:columns>
+					<mx:DataGridColumn headerText="Quadra" dataField="nu_quadra" headerStyleName="CenterHeader" />
+					<mx:DataGridColumn headerText="Lote" dataField="nu_lote" headerStyleName="CenterHeader"/>
+					<mx:DataGridColumn headerText="Área (m²)" headerStyleName="CenterHeader" textAlign="right" dataField="nu_area" labelFunction="formatarValor"/>
+					<mx:DataGridColumn headerText="Valor do m² (R$)" headerStyleName="CenterHeader" textAlign="right" dataField="valorm2" labelFunction="formatarValor"/>
+					<mx:DataGridColumn headerText="Valor (R$)" labelFunction="calcularValor" headerStyleName="CenterHeader" textAlign="right"/>
+				</mx:columns>
+			</mx:DataGrid>
+			<mx:Button x="10" y="138" label="Adicionar" icon="@Embed(source='../../../../img/button/add.png')" id="btAddLote" toolTip="Adicionar um lote" click="adicionarLote()"/>
+			<mx:Button x="120" y="138" label="Remover" click="removerLote()" id="btRemLote">
+				<mx:icon>@Embed(source='../../../../img/button/cancel.png')</mx:icon>
+			</mx:Button>
+		</mx:Canvas>
+		<mx:Canvas label="Plano de Pagamento" width="100%" height="100%">
+			<mx:Panel x="10" y="34" width="666" layout="absolute" headerHeight="22" title="Sinal" backgroundColor="#EFF5FB" enabled="true" id="pnSinal">
+				<mx:DataGrid x="0" y="27" width="100%" height="90" id="grParcelaSinal" dataProvider="{listaParcelasSinal}">
+					<mx:columns>
+						<mx:DataGridColumn headerText="Parcela" dataField="parcela" width="70" headerStyleName="CenterHeader"/>
+						<mx:DataGridColumn headerText="Tipo de Pagto." dataField="tipoPagto" labelFunction="formatarTipoPagto" width="120" headerStyleName="CenterHeader" />
+						<mx:DataGridColumn headerText="Documento" dataField="numeroDocumento" width="100" headerStyleName="CenterHeader"/>
+						<mx:DataGridColumn headerText="Valor" dataField="valor" width="100" headerStyleName="CenterHeader" labelFunction="formatarValor"  textAlign="right"/>
+						<mx:DataGridColumn headerText="Data de Vencimento" dataField="dataVencimento" labelFunction="formatarData" headerStyleName="CenterHeader"/>
+						<mx:DataGridColumn width="30">
+							<mx:itemRenderer>
+								<mx:Component>
+									<mx:Button click="parentDocument.editarParcela()" >
+										<mx:icon>@Embed(source='../../../../img/button/alter.png')</mx:icon>
+									</mx:Button>
+								</mx:Component>
+							</mx:itemRenderer>
+						</mx:DataGridColumn>
+					</mx:columns>
+				</mx:DataGrid>
+				<mx:Form x="0" y="1" paddingBottom="5" paddingTop="2" paddingLeft="5" paddingRight="5">
+					<mx:FormItem label="Valor:">
+						<mx:TextInput width="112" id="txSinal" textAlign="right" height="19" focusIn="focusSinal()" focusOut="validarSinal(event)"/>
+					</mx:FormItem>
+				</mx:Form>
+				<mx:Form x="200" y="0" paddingBottom="5" paddingTop="2" paddingLeft="5" paddingRight="5">
+					<mx:FormItem label="Pagamento:">
+						<mx:ComboBox height="19" width="94" id="cbQtdeParcelasSinal" selectedIndex="0" labelField="label" change="parcelarSinal()">
+							<mx:dataProvider>
+								<mx:ArrayCollection>
+									<mx:Object label="1 parcela" data="1"/>
+									<mx:Object label="2 parcelas" data="2"/>
+									<mx:Object label="3 parcelas" data="3"/>
+									<mx:Object label="4 parcelas" data="4"/>							
+								</mx:ArrayCollection>
+							</mx:dataProvider>
+						</mx:ComboBox>
+					</mx:FormItem>
+				</mx:Form>
+			</mx:Panel>
+			<mx:Form x="10" y="10" paddingBottom="5" paddingTop="0" paddingLeft="12" paddingRight="5" verticalGap="3" autoLayout="false">
+				<mx:FormItem label="Pagamento a Vista">
+					<mx:CheckBox width="29" id="ckPagtoVista" click="desabilitarSinalParcelamento()"/>
+				</mx:FormItem>
+			</mx:Form>
+			<mx:Panel x="10" y="192" width="666" layout="absolute" headerHeight="22" title="Parcelamento" backgroundColor="#EFF5FB" id="pnParcelamento">
+				<mx:Form x="0" y="0" paddingBottom="5" paddingLeft="5" paddingRight="5" paddingTop="5">
+					<mx:FormItem label="Número de Parcelas:">
+						<mx:ComboBox width="98" id="cbFinanciamento" dataProvider="{listaFinanciamento}" labelField="qtdeParcelas" height="19" change="calcularValorPrestacao()"></mx:ComboBox>
+					</mx:FormItem>
+				</mx:Form>
+				<mx:Form x="241" y="0" paddingBottom="5" paddingLeft="5" paddingRight="5" paddingTop="5">
+					<mx:FormItem label="Valor::">
+						<mx:TextInput width="112" editable="false" enabled="false" id="txValorPrestacao" textAlign="right" height="19"/>
+					</mx:FormItem>
+				</mx:Form>
+				<mx:Form x="422" y="-2" paddingBottom="5" paddingLeft="5" paddingRight="5" paddingTop="5">
+					<mx:FormItem label="1º Vencimento:">
+						<mx:DateField height="19" id="dtPrimVencimento"/>
+					</mx:FormItem>
+				</mx:Form>
+			</mx:Panel>
+			<mx:Form x="506" y="10" paddingBottom="5" paddingLeft="5" paddingRight="5" paddingTop="0" styleName="FormAlign">
+				<mx:FormItem label="Saldo:">
+					<mx:TextInput width="112" editable="false" enabled="false" height="19" id="txSaldo" textAlign="right"/>
+				</mx:FormItem>
+			</mx:Form>
+		</mx:Canvas>
+	</mx:TabNavigator>
+	<mx:Form x="10" y="367" paddingTop="3" paddingBottom="3" paddingLeft="0" paddingRight="5" styleName="FormAlign">
+		<mx:FormItem label="Valor Total da Proposta:">
+			<mx:TextInput width="131" id="txValorTotal" editable="false" enabled="false" textAlign="right"/>
 		</mx:FormItem>
 	</mx:Form>
 	
