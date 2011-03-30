@@ -63,7 +63,7 @@
 		
 			public function detalharPromitente():void
 			{            		
-            	telaPromitente = MantemPromitente(PopUpManager.createPopUp(this, sisa.com.br.TelaPromitente.MantemPromitente, true));
+            	telaPromitente = MantemPromitente(PopUpManager.createPopUp(UIComponent(this.parentApplication), sisa.com.br.TelaPromitente.MantemPromitente, true));
             	//Enviando objeto selecionado para tela seguinte
             	telaPromitente.promitenteEditar = idGridPromitente.selectedItem as Promitente;  
             	PopUpManager.centerPopUp(telaPromitente);
@@ -72,7 +72,7 @@
 			public function alterarPromitente():void
 			{   
 				    		
-            	telaPromitente = MantemPromitente(PopUpManager.createPopUp(this, sisa.com.br.TelaPromitente.MantemPromitente, true));
+            	telaPromitente = MantemPromitente(PopUpManager.createPopUp(UIComponent(this.parentApplication), sisa.com.br.TelaPromitente.MantemPromitente, true));
             	//Enviando objeto selecionado para tela seguinte
             	telaPromitente.promitenteEditar = idGridPromitente.selectedItem as Promitente;  
             	PopUpManager.centerPopUp(telaPromitente);
