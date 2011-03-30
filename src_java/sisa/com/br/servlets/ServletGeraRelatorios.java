@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.sf.jasperreports.engine.JRException;
+import sisa.com.br.relatorios.web.RBoleto;
 import sisa.com.br.relatorios.web.RelatorioProposta;
 import sisa.com.br.relatorios.web.RelatorioPropostaEspecifico;
 
@@ -61,7 +62,9 @@ public class ServletGeraRelatorios extends HttpServlet {
 			}else if(tpRelatorio.equals("3")){
 				String numeroProposta = request.getParameter("nrProp");
 				
+				RBoleto relBoleto = new RBoleto(pathJasper, numeroProposta);
 				
+				relatorio = relBoleto.gerar();
 			}
         	
         	if (relatorio != null && relatorio.length > 0) {  
