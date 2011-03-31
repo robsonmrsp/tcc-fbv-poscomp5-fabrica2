@@ -7,6 +7,7 @@ public class Promitente {
 	private String codigo; 
 	private String nome; 
 	private String estadoCivil; 
+	private String nomeConjuge; 
 	private String sexo; 
 	private String numeroRG; 
 	private String orgaoEmissorRG; 
@@ -139,6 +140,13 @@ public class Promitente {
 		this.cpfCnpjResponsavel = cpfCnpjResponsavel;
 	} 		
 
+	public String getNomeConjuge() {
+		return nomeConjuge;
+	}
+	public void setNomeConjuge(String nomeConjuge) {
+		this.nomeConjuge = nomeConjuge;
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) return true;

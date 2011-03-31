@@ -10,7 +10,6 @@
     <default-channels>
         <channel ref="channel-amf"/>
     </default-channels>
-
 	
 	<destination id="usuarioService">
 		<properties>
@@ -44,4 +43,19 @@
 			<source>dominioService</source>
 		</properties>
 	</destination>
+
+	
+	<destination id="relatoriosService">
+		<properties>
+			<factory>spring</factory>
+			<source>relatoriosService</source>
+		</properties>
+	</destination>
+	
+    <destination id="vendedorService">
+    	<properties>
+            <factory>spring</factory>
+            <source>vendedorService</source>
+        </properties>
+    </destination>
 </service>
