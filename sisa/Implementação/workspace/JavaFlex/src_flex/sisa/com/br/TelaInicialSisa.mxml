@@ -7,6 +7,8 @@
 			import sisa.com.br.TelaVendedor.ConsultaVendedor;
 			import sisa.com.br.entidade.TransacaoSisa;
 			import sisa.com.br.TelasAdministracao.ConsultaUsuario;
+			import sisa.com.br.TelaLoteamento.ConsultaLoteamento;
+			import sisa.com.br.TelaLote.ConsultaLote;
 			import sisa.com.br.TelasAdministracao.Usuario;
 			import mx.rpc.events.FaultEvent;
 			import sisa.com.br.entidade.UsuarioSisa;
@@ -14,6 +16,8 @@
 			import sisa.com.br.TelasAdministracao.ConsultaTransacao;
 			import sisa.com.br.TelasAdministracao.ConsultaPerfil;
 			import sisa.com.br.TelasAdministracao.ConsultaUsuario;
+			import sisa.com.br.TelaPromitente.MantemPromitente;
+			import sisa.com.br.TelaPromitente.ConsultaPromitente;
 			import mx.containers.TitleWindow;
 			import sisa.com.br.TelasAdministracao.Usuario;
 			import mx.containers.Canvas;
@@ -27,7 +31,8 @@
 			
 			 [Bindable]
             public var menuBarCollection:XMLListCollection;
-            public 	 var telaUsurio:Usuario;
+            public var telaUsurio:Usuario;
+            public var telaPromitente: MantemPromitente;
             
             public var usuarioLogado:UsuarioSisa;
             
@@ -39,8 +44,11 @@
             
 			private function iniciarTela():void
 			{
+				
+				if (myViewstack.getChildren() != null && myViewstack.getChildren().length > 0){
+					myViewstack.removeAllChildren();
+				}
 
-			   	myViewstack.removeAllChildren();
 				this.tela01 = new TelaTemplateConsulta();
 				myViewstack.addChild(tela01);
  
@@ -59,12 +67,16 @@
             private function getTela(event:MenuEvent):void{
             
 	            if(event.item.nome == "Usuario"){
-		            myViewstack.removeAllChildren();			
+		            if (myViewstack.getChildren() != null && myViewstack.getChildren().length > 0){
+						myViewstack.removeAllChildren();
+					}			
 					var consUsuario:ConsultaUsuario = new ConsultaUsuario();
 		            	myViewstack.addChild(consUsuario);
 		            	
 		        }else if(event.item.tl == "Vendedor"){
-		            myViewstack.removeAllChildren();			
+		            if (myViewstack.getChildren() != null && myViewstack.getChildren().length > 0){
+						myViewstack.removeAllChildren();
+					}				
 					var consVendedor:ConsultaVendedor = new ConsultaVendedor();
 		            	myViewstack.addChild(consVendedor);
 		        }else if(event.item.nome == "Perfil"){
@@ -73,9 +85,51 @@
 		            	myViewstack.addChild(consPerfil);
 		            	
 		         }else if(event.item.nome == "Transacao"){
-		            myViewstack.removeAllChildren();			
+		            if (myViewstack.getChildren() != null && myViewstack.getChildren().length > 0){
+						myViewstack.removeAllChildren();
+					}				
 					var consTransacao:ConsultaTransacao= new ConsultaTransacao();
 		            	myViewstack.addChild(consTransacao);
+		        }else if(event.item.tl == "Vendedor"){
+                            myViewstack.removeAllChildren();                    
+                            var consVendedor:ConsultaVendedor = new ConsultaVendedor();
+                            myViewstack.addChild(consVendedor);
+             	}else if(event.item.tl == "Promitente"){
+		            if (myViewstack.getChildren() != null && myViewstack.getChildren().length > 0){
+                      myViewstack.removeAllChildren();
+                   }				
+					var consProm:ConsultaPromitente = new ConsultaPromitente();
+		            myViewstack.addChild(consProm);
+		        }else if(event.item.tl == "Relatório Proposta"){
+		           	if (myViewstack.getChildren() != null && myViewstack.getChildren().length > 0){
+						myViewstack.removeAllChildren();
+					}				
+					var telaRelatorios:RelatorioProposta = new RelatorioProposta();
+		            	myViewstack.addChild(telaRelatorios);
+		        }else if(event.item.tl == "Relatório Proposta em Formulário Específico"){
+		           	if (myViewstack.getChildren() != null && myViewstack.getChildren().length > 0){
+						myViewstack.removeAllChildren();
+					}				
+					var telaFormularioEspecifico:RelatorioFormularioEspecifico = new RelatorioFormularioEspecifico();
+		            	myViewstack.addChild(telaFormularioEspecifico);
+		        }else if(event.item.tl == "Boleto Bancário"){
+		           	if (myViewstack.getChildren() != null && myViewstack.getChildren().length > 0){
+						myViewstack.removeAllChildren();
+					}				
+					var telaBoleto:RelatorioBoletoBancario = new RelatorioBoletoBancario();
+		            	myViewstack.addChild(telaBoleto);
+		        }else if(event.item.tl == "Proposta"){
+		            myViewstack.removeAllChildren();			
+					var consProp:ConsultaProposta = new ConsultaProposta();
+		            myViewstack.addChild(consProp);
+		        }else if(event.item.tl == "Loteamento"){
+		           myViewstack.removeAllChildren();			
+					var consLoteamento:ConsultaLoteamento = new ConsultaLoteamento();
+		            	myViewstack.addChild(consLoteamento);
+		        }else if(event.item.tl == "Lote"){
+		           myViewstack.removeAllChildren();			
+					var consLote:ConsultaLote = new ConsultaLote();
+		            	myViewstack.addChild(consLote);
 		        }else{
 		           
 		        }
@@ -85,9 +139,10 @@
             private function sairAplicacao():void{
             	
             	controleSessaoService.destruirSessao(usuarioLogado);
-            	Application.application.removeAllChildren();
-            	
-            	
+            	if (Application.application.getChildren() != null && Application.application.getChildren().length > 0){
+            		Application.application.removeAllChildren();
+				}	
+
             	
             	var telaLogin:TelaLogin= new TelaLogin();
 		        Application.application.addChild(telaLogin);

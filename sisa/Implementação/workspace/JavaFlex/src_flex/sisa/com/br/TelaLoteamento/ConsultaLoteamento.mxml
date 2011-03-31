@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:fc="com.adobe.flex.extras.controls.*" creationComplete="iniciarTela()"
+				 xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" title="Consulta Loteamento"
+				width="1006" height="402" enabled="true" horizontalAlign="center" verticalAlign="middle">
+
+	<mx:Metadata>
+    	[ResourceBundle("MessagemResource_pt_BR")] //Nome do arquivo .properties
+    </mx:Metadata>
+    
+	<mx:Script>
+		<![CDATA[
+			import mx.core.EventPriority;
+			import mx.events.CloseEvent;
+			import sisa.com.br.entidade.LoteamentoSisa;
+			import mx.rpc.events.ResultEvent;
+			import mx.managers.PopUpManager;
+			import mx.rpc.events.FaultEvent;
+			import mx.controls.Alert;
+			import mx.core.Application;
+			import mx.collections.ArrayCollection;
+			
+			public var telaLoteamento:Loteamento;
+			public var loteamento:LoteamentoSisa;
+			[Bindable]
+			private var listaLoteamento:ArrayCollection;
+			
+			public function iniciarTela():void{
+				getList();
+			}
+			
+			//Consulta Loteamentos pegando os campos da tela 
+			public function consultaLoteamento():void
+			{	  
+				 this.loteamento = new LoteamentoSisa();
+				 				 
+				if (codigoLoteamento.text != "")
+				{ 			 
+				  loteamento.nu_lotm = codigoLoteamento.text;
+				  loteamentoService.consultaLoteamento(loteamento);
+				  
+				}else{
+					loteamentoService.getList();
+				} 
+				  
+			}
+			
+			//retorno do java da consulta de loteamento
+			public function onResultConsultaLoteamento(event:ResultEvent):void
+			{ 
+				 listaLoteamento = event.result as ArrayCollection;
+			}
+			
+			//Consulta a lista de todos os loteamentos
+			public function getList():void
+			{
+				loteamentoService.getList();
+			}
+			
+			//Função que será executada após a conclusão do método getList
+			public function onResultListaLoteamento(event:ResultEvent):void
+			{
+				listaLoteamento = event.result as ArrayCollection;
+			}
+		
+			public function detalharLoteamento():void
+			{            		
+            	telaLoteamento = Loteamento(PopUpManager.createPopUp(this, sisa.com.br.TelaLoteamento.Loteamento, true));
+            	//Enviando objeto selecionado para tela seguinte
+            	telaLoteamento.loteamento = idGridLoteamento.selectedItem as LoteamentoSisa;  
+            	PopUpManager.centerPopUp(telaLoteamento);
+			}
+			
+			public function alterarLoteamento():void
+			{   
+				    		
+            	telaLoteamento = Loteamento(PopUpManager.createPopUp(this, sisa.com.br.TelaLoteamento.Loteamento, true));
+            	//Enviando objeto selecionado para tela seguinte
+            	telaLoteamento.loteamento = idGridLoteamento.selectedItem as LoteamentoSisa;  
+            	PopUpManager.centerPopUp(telaLoteamento);
+            	
+			}
+			
+			public function removerLoteamento():void{
+				
+				if(idGridLoteamento.selectedItem != null){
+					 
+					 this.loteamento = new LoteamentoSisa();
+					 this.loteamento.nu_lotm = idGridLoteamento.selectedItem.nu_lotm;
+					 this.loteamento.ds_lotm = idGridLoteamento.selectedItem.ds_lotm;
+					 loteamentoService.remove(loteamento);
+				}
+			}
+			
+			//Função que será executada após a conclusão do método getList
+			public function onResultRemoverLoteamento(event:ResultEvent):void
+			{
+				Alert.show("Loteamento removido com sucesso");
+				getList();
+			}
+			
+			//Ocorreu uma falha ao chamar algum servico servico.
+			public function onFault(event:FaultEvent):void
+			{												
+				Alert.show(event.fault.message);
+			}
+			
+			public function cadastrarLoteamento():void{
+            	
+            	telaLoteamento = Loteamento(PopUpManager.createPopUp(this, sisa.com.br.TelaLoteamento.Loteamento, true));
+            	PopUpManager.centerPopUp(telaLoteamento);
+            	
+			}
+						
+		]]>
+	</mx:Script>
+	<mx:RemoteObject id="loteamentoService" showBusyCursor="true" fault="onFault(event)" destination="loteamentoService">
+		<mx:method name="getList" result="onResultListaLoteamento(event)" fault="onFault(event)"/>
+		<mx:method name="remove" result="onResultRemoverLoteamento(event)" fault="onFault(event)"/>
+		<mx:method name="consultaLoteamento" result="onResultConsultaLoteamento(event)" fault="onFault(event)"/>
+	</mx:RemoteObject>
+	
+	<mx:Label x="24" y="10.3" text="{resourceManager.getString('MessagemResource_pt_BR', 'tela.consulta.loteamento.campo.codigo')}"/>
+	<mx:TextInput x="139" y="9.95" maxChars="3" id="codigoLoteamento" width="50" tabIndex="2" enabled="true" />
+	
+	<mx:Label x="25" y="49.7" text="{resourceManager.getString('MessagemResource_pt_BR', 'tela.consulta.loteamento.campo.nome')}"/>
+	<mx:TextInput x="139" y="49.35" maxChars="100" id="nomeLoteamento" width="610" tabIndex="2" enabled="true" />
+	
+	<mx:Image x="897.95" y="8.75" width="76.05" height="74.95796" source="@Embed(source='../../../../img/telas/aluno.png')"/>
+	
+	<mx:Button x="790" y="8.3" label="{resourceManager.getString('MessagemResource_pt_BR', 'tela.button.pesquisa')}" icon="@Embed(source='../../../../img/button/search.png')" width="99.95" height="24" id="btBuscar" click="consultaLoteamento();" buttonMode="true" tabIndex="4" enabled="true" styleName="Button"/>
+	
+	<mx:Panel x="10" y="91.7" width="966" height="204.25" layout="absolute" title="{resourceManager.getString('MessagemResource_pt_BR', 'tela.consulta.loteamento.title.lista')}" horizontalAlign="center">
+		<mx:DataGrid id="idGridLoteamento" x="0" y="0" width="946" height="158.25" dataProvider="{listaLoteamento}" doubleClick="{detalharLoteamento()}" doubleClickEnabled="true" tabIndex="7" tabEnabled="false">
+			<mx:columns>
+				<mx:DataGridColumn headerText="{resourceManager.getString('MessagemResource_pt_BR', 'tela.consulta.loteamento.campo.grid.codigo')}" dataField="nu_lotm" width="30"/>
+				<mx:DataGridColumn headerText="{resourceManager.getString('MessagemResource_pt_BR', 'tela.consulta.loteamento.campo.grid.nome')}" dataField="ds_lotm" width="150"/>
+			</mx:columns>
+		</mx:DataGrid>
+
+	</mx:Panel>
+	<mx:Button label="{resourceManager.getString('MessagemResource_pt_BR', 'tela.button.novo')}" id="btCadastrar" icon="@Embed(source='../../../../img/button/add.png')" x="10" y="312" width="99" buttonMode="true" tabIndex="8" enabled="true" styleName="Button" click="cadastrarLoteamento()"/>
+	<mx:Button label="{resourceManager.getString('MessagemResource_pt_BR', 'tela.button.alterar')}" id="btAlterar" icon="@Embed('../../../../img/button/alter.png')" x="117" y="312" buttonMode="true" tabIndex="9" styleName="Button" width="99" click="alterarLoteamento()"/>
+	<mx:Button label="{resourceManager.getString('MessagemResource_pt_BR', 'tela.button.excluir')}" enabled="true" id="btExcluir" icon="@Embed('../../../../img/button/cancel.png')" x="224" y="312" buttonMode="true" tabIndex="11" styleName="Button" width="99" click="removerLoteamento();"/>
+
+</mx:TitleWindow>

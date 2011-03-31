@@ -92,11 +92,11 @@
 		<mx:method name="consultaUsuario" result="onResultConsultaUsuario(event)" fault="onFault(event)"/>
 	</mx:RemoteObject> 
 	
-	<mx:Label x="870" y="332.35" text="{resourceManager.getString('MessagemResource_pt_BR', 'tela.login.campo.senha')}"/>
-	<mx:TextInput x="925" y="330.35" maxChars="100" id="idSenha" width="277" tabIndex="2"  enabled="true" displayAsPassword="true"/>
+	<mx:Label x="879" y="298.35" text="{resourceManager.getString('MessagemResource_pt_BR', 'tela.login.campo.senha')}"/>
+	<mx:TextInput x="934" y="296.35" maxChars="100" id="idSenha" width="277" tabIndex="2"  enabled="true" displayAsPassword="true"/>
 	
-	<mx:Label x="870" y="292.95" text="{resourceManager.getString('MessagemResource_pt_BR', 'tela.login.campo.login')}"/>
-	<mx:TextInput x="925" y="290.95" maxChars="100" id="idLogin" width="277" tabIndex="2" enabled="true" />
+	<mx:Label x="879" y="258.95" text="{resourceManager.getString('MessagemResource_pt_BR', 'tela.login.campo.login')}"/>
+	<mx:TextInput x="934" y="256.95" maxChars="100" id="idLogin" width="277" tabIndex="2" enabled="true" />
 	
 	<mx:Button label="Login" enabled="true" id="botaoExcluir"  click="efetuarLogin()" x="1045" y="372" buttonMode="true" tabIndex="11" styleName="Button" width="99"/>
 	 
