@@ -19,7 +19,6 @@
 		<queryString>
 			<![CDATA[SELECT
      proposta.`nu_proposta` AS proposta_nu_proposta,
-     proposta.`no_conjuge` AS proposta_no_conjuge,
      proposta.`vl_vista` AS proposta_vl_vista,
      proposta.`vl_sinal` AS proposta_vl_sinal,
      proposta.`qt_prest` AS proposta_qt_prest,
@@ -28,8 +27,6 @@
      proposta.`situacao` AS proposta_situacao,
      proposta.`dt_emissao` AS proposta_dt_emissao,
      proposta.`dt_pri_prest` AS proposta_dt_pri_prest,
-     proposta.`fl_dep` AS proposta_fl_dep,
-     proposta.`nu_cgc_cpf_menor` AS proposta_nu_cgc_cpf_menor,
      proposta.`fl_pagto_avista` AS proposta_fl_pagto_avista,
      vendedor.`ds_razao_nome` AS vendedor_ds_razao_nome,
      promitente.`nome_promitente` AS promitente_nome_promitente,
@@ -47,7 +44,6 @@ WHERE
  AND proposta.cd_vend = $P{CODIGO_VENDEDOR}]]>
 		</queryString>
 		<field name="proposta_nu_proposta" class="java.lang.String"/>
-		<field name="proposta_no_conjuge" class="java.lang.String"/>
 		<field name="proposta_vl_vista" class="java.math.BigDecimal"/>
 		<field name="proposta_vl_sinal" class="java.math.BigDecimal"/>
 		<field name="proposta_qt_prest" class="java.lang.Integer"/>
@@ -56,8 +52,6 @@ WHERE
 		<field name="proposta_situacao" class="java.lang.String"/>
 		<field name="proposta_dt_emissao" class="java.sql.Timestamp"/>
 		<field name="proposta_dt_pri_prest" class="java.sql.Timestamp"/>
-		<field name="proposta_fl_dep" class="java.lang.String"/>
-		<field name="proposta_nu_cgc_cpf_menor" class="java.lang.String"/>
 		<field name="proposta_fl_pagto_avista" class="java.lang.String"/>
 		<field name="vendedor_ds_razao_nome" class="java.lang.String"/>
 		<field name="promitente_nome_promitente" class="java.lang.String"/>
@@ -86,7 +80,6 @@ WHERE
 	<queryString>
 		<![CDATA[SELECT
      proposta.`nu_proposta` AS proposta_nu_proposta,
-     proposta.`no_conjuge` AS proposta_no_conjuge,
      proposta.`vl_vista` AS proposta_vl_vista,
      proposta.`vl_sinal` AS proposta_vl_sinal,
      proposta.`qt_prest` AS proposta_qt_prest,
@@ -95,8 +88,6 @@ WHERE
      proposta.`situacao` AS proposta_situacao,
      proposta.`dt_emissao` AS proposta_dt_emissao,
      proposta.`dt_pri_prest` AS proposta_dt_pri_prest,
-     proposta.`fl_dep` AS proposta_fl_dep,
-     proposta.`nu_cgc_cpf_menor` AS proposta_nu_cgc_cpf_menor,
      proposta.`fl_pagto_avista` AS proposta_fl_pagto_avista,
      vendedor.`ds_razao_nome` AS vendedor_ds_razao_nome,
      promitente.`nome_promitente` AS promitente_nome_promitente,
@@ -114,7 +105,6 @@ WHERE
  AND proposta.cd_vend = $P{CODIGO_VENDEDOR}]]>
 	</queryString>
 	<field name="proposta_nu_proposta" class="java.lang.String"/>
-	<field name="proposta_no_conjuge" class="java.lang.String"/>
 	<field name="proposta_vl_vista" class="java.math.BigDecimal"/>
 	<field name="proposta_vl_sinal" class="java.math.BigDecimal"/>
 	<field name="proposta_qt_prest" class="java.lang.Integer"/>
@@ -123,8 +113,6 @@ WHERE
 	<field name="proposta_situacao" class="java.lang.String"/>
 	<field name="proposta_dt_emissao" class="java.sql.Timestamp"/>
 	<field name="proposta_dt_pri_prest" class="java.sql.Timestamp"/>
-	<field name="proposta_fl_dep" class="java.lang.String"/>
-	<field name="proposta_nu_cgc_cpf_menor" class="java.lang.String"/>
 	<field name="proposta_fl_pagto_avista" class="java.lang.String"/>
 	<field name="vendedor_ds_razao_nome" class="java.lang.String"/>
 	<field name="promitente_nome_promitente" class="java.lang.String"/>
