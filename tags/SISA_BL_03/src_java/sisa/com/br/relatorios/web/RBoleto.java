@@ -26,12 +26,14 @@ public class RBoleto extends InformacoesRelatorio {
 		String paramVlBoleto = "P_VL_BOLETO";
 		String paramNmSacado = "P_NM_SACADO";
 		String paramImgLogo = "CAMINHO_JASPER_LOGO_ITAU";
+		String paramNrProposta = "P_NR_PROPOSTA";
 		
         HashMap<String, Object> parametros = new HashMap<String, Object>(6);
         parametros.put(paramNrBoleto, "123");
         parametros.put(paramNrParcelaBoleto, "01");
         parametros.put(paramDtVenc, "31/03/2011");
         parametros.put(paramVlBoleto, "12365.98");
+        parametros.put(paramNrProposta, cdProposta);
         parametros.put(paramImgLogo, caminhoArquivoImgLogoItau);
         
         return parametros;
