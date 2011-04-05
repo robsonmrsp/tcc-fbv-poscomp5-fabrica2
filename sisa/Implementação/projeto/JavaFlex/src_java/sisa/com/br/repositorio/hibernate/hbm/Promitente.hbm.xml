@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="sisa.com.br.entidade.Promitente" table="promitente">
+
+		<id name="codigo" column="cd_pro" type="java.lang.String">
+			<generator class="assigned"/>
+		</id>
+		<property column="nome_promitente" type="java.lang.String" name="nome" not-null="true" length="40" />
+		<property column="dominio_estado_civil" type="java.lang.String" name="estadoCivil" not-null="true" length="1" />
+		<property column="no_conjuge" type="java.lang.String" name="nomeConjuge" length="40" />
+		<property column="dominio_sexo" type="java.lang.String" name="sexo" not-null="true" length="1" />
+		<property column="nu_rg" type="java.lang.String" name="numeroRG" not-null="true" length="10" />
+		<property column="ds_org_emiss" type="java.lang.String" name="orgaoEmissorRG" not-null="true" length="6" />
+		<property column="dt_exp_rg" type="java.sql.Date" name="dataExpedicaoRG" not-null="true" />
+		<property column="nu_cgc_cpf" type="java.lang.String" name="cpfCnpj" not-null="true" length="15" />
+		<property column="dt_nasc" type="java.sql.Date" name="dataNascimento" not-null="true" />
+		<property column="nu_fone_res" type="java.lang.String" name="telefoneResidencial" not-null="false" length="11" />
+		<many-to-one name="enderecoCobranca" column="cd_end_cobr" class="sisa.com.br.entidade.Endereco" cascade="all" lazy="false" fetch="join"/>
+		<property column="nu_fone_cobr" type="java.lang.String" name="telefoneCobranca" not-null="false" length="11" />
+		<property column="ds_profissao" type="java.lang.String" name="profissao" not-null="false" length="20" />
+		<property column="situacao" type="java.lang.String" name="situacao" length="1"  />
+		<property column="nacionalidade" type="java.lang.String" name="nacionalidade" length="50" />
+		<many-to-one name="enderecoResidencial" column="cd_end_residencial" class="sisa.com.br.entidade.Endereco" cascade="all" fetch="join" lazy="false"/>
+		<property column="fl_dep" type="java.lang.String" name="dependente" length="1"  />
+		<property column="nome_responsavel" type="java.lang.String" name="nomeResponsavel" length="40" />
+		<property column="nu_cgc_cpf_responsavel" type="java.lang.String" name="cpfCnpjResponsavel" length="15" />
+		
+	</class>
+</hibernate-mapping>

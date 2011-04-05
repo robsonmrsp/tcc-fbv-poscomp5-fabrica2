@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="JavaFlex">
+				<wb-resource deploy-path="/" source-path="/src_flex"/>
+				<wb-resource deploy-path="/" source-path="/src_fle"/>
+				<wb-resource deploy-path="/" source-path="/src_fl"/>
+				<wb-resource deploy-path="/" source-path="/src_f"/>
+				<wb-resource deploy-path="/" source-path="/src_"/>
+				<wb-resource deploy-path="/" source-path="/src"/>
+				<wb-resource deploy-path="/" source-path="/sr"/>
+        <wb-resource deploy-path="/" source-path="/WebContent"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src_java"/>
+        <wb-resource deploy-path="/" source-path="/WebContent"/>
+        <wb-resource deploy-path="/" source-path="/s"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/resources"/>
+        <property name="context-root" value="JavaFlex"/>
+        <property name="java-output-path" value="build/classes"/>
+    </wb-module>
+</project-modules>

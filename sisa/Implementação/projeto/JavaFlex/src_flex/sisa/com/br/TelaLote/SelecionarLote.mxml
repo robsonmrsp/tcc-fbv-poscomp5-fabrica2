@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="542" 
+	height="260" title="Selecionar Lote" showCloseButton="true" creationComplete="CreationComplete()">
+	<mx:Metadata>
+    	[ResourceBundle("MessagemResource_pt_BR")] //Nome do arquivo .properties
+    </mx:Metadata>
+    
+	<mx:Script>
+		<![CDATA[
+			import sisa.com.br.componentes.Utils;
+			import mx.controls.Alert;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			import mx.collections.ArrayCollection;
+			import sisa.com.br.entidade.LoteamentoSisa;
+			import mx.managers.PopUpManager;
+			import sisa.com.br.entidade.LoteSisa;
+		
+		public static const OK:String = "Botao_OK";
+		
+		public var loteamento: LoteamentoSisa;
+		public var lote: LoteSisa;
+		
+		[Bindable]
+		private var listaLotes: ArrayCollection;
+		[Bindable]
+		private var listaLoteamento: ArrayCollection;
+		
+        private function CreationComplete():void{
+        	
+        	loteamentoService.getList();
+            // Centraliza o pop-up.
+            PopUpManager.centerPopUp(this);
+            
+            listarLotes();
+        }
+        
+        private function pesquisarLotes(): void
+        {
+        	if (cbLotamento.selectedIndex > 0)
+        	{
+        		loteamento = cbLotamento.selectedItem as LoteamentoSisa;
+        	}
+        	else
+        	{
+        		loteamento = null;
+        	}
+        	
+        	listarLotes();
+        }
+		
+		private function listarLotes(): void
+		{
+            var lote: LoteSisa = new LoteSisa();
+            
+            if (loteamento != null)
+            {
+            	lote.nu_lotm = loteamento.nu_lotm;
+            }
+            lote.situacao = "L";
+            
+            loteService.consultaLote(lote);			
+		}
+		
+		private function btnOk_Click(e: MouseEvent):void
+		{
+			lote = grLotes.selectedItem as LoteSisa;
+			
+			dispatchEvent(new Event(SelecionarLote.OK));
+		}
+          
+        // Este metodo é usado para fechar o pop-up.
+        private function btnCancelar_Click(e:MouseEvent):void
+        {
+            PopUpManager.removePopUp(this);
+        }
+        
+        public function onResultConsultaLote(e: ResultEvent): void
+        {
+        	listaLotes = e.result as ArrayCollection;
+        }
+        
+        public function onResultListaLoteamento(e: ResultEvent): void
+        {
+        	listaLoteamento = e.result as ArrayCollection;
+			var lotm: LoteamentoSisa = new LoteamentoSisa();
+			lotm.ds_lotm = "{Todos}";
+			lotm.nu_lotm = "0";
+			listaLoteamento.addItemAt(lotm, 0);
+			if (loteamento != null)
+			{
+				//cbLotamento.selectedIndex = listaLoteamento.getItemIndex(loteamento);
+				var i: Number = 0;
+				for each(var l: LoteamentoSisa in listaLoteamento)
+				{
+					if (l.nu_lotm == loteamento.nu_lotm)
+					{
+						cbLotamento.selectedIndex = i;
+						break;
+					}
+					i++;
+				}
+				cbLotamento.enabled = false;
+			}
+			else
+			{
+				cbLotamento.selectedIndex = 0;	
+			}        	
+        }
+
+		private function onFault(event:FaultEvent):void
+		{												
+			Alert.show(Utils.mensagemErro(event));
+		}
+		]]>
+	</mx:Script>
+
+	<mx:RemoteObject id="loteService" showBusyCursor="true" fault="onFault(event)" destination="loteService">
+		<mx:method name="consultaLote" result="onResultConsultaLote(event)" fault="onFault(event)"/>
+	</mx:RemoteObject>
+
+	<mx:RemoteObject id="loteamentoService" showBusyCursor="true" fault="onFault(event)" destination="loteamentoService">
+		<mx:method name="getList" result="onResultListaLoteamento(event)" fault="onFault(event)"/>
+	</mx:RemoteObject>
+
+	<mx:DataGrid x="10" y="40" width="502" editable="false" dataProvider="{listaLotes}" id="grLotes" height="126">
+		<mx:columns>
+			<mx:DataGridColumn headerText="Loteamento" dataField="nu_lotm"/>
+			<mx:DataGridColumn headerText="Quadra" dataField="nu_quadra"/>
+			<mx:DataGridColumn headerText="Lote" dataField="nu_lote"/>
+			<mx:DataGridColumn headerText="Área (m²)" dataField="nu_area"/>
+		</mx:columns>
+	</mx:DataGrid>
+	<mx:Button x="416" y="173" label="Cancelar" width="96" id="btCancelar" height="24" click="btnCancelar_Click(event)">
+		<mx:icon>@Embed(source='../../../../img/button/cancel.png')</mx:icon>
+	</mx:Button>
+	<mx:Button x="312" y="173" label="Ok" width="96" id="btOk" height="24" click="btnOk_Click(event)">
+		<mx:icon>@Embed(source='../../../../img/button/10.png')</mx:icon>
+	</mx:Button>
+	<mx:Form x="10" y="5" paddingBottom="5" paddingLeft="5" paddingRight="5" paddingTop="5">
+		<mx:FormItem label="Loteamento:">
+			<mx:ComboBox width="187" id="cbLotamento" dataProvider="{listaLoteamento}" labelField="ds_lotm" change="pesquisarLotes()"></mx:ComboBox>
+		</mx:FormItem>
+	</mx:Form>
+</mx:TitleWindow>
