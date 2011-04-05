@@ -7,10 +7,10 @@ import sisa.com.br.entidade.Lote;
 
 public interface LoteService {
 
-	Lote consultaLote(String cd_lote,String nu_lotm,String nu_quadra) throws Exception;
+	List<Lote> consultaLote(String nu_lote,String nu_lotm,String nu_quadra,String situacao) throws Exception;
 	
-    Lote save(Lote lote) throws Exception;
-    Lote update(Lote lote) throws Exception;
+	Lote save(Lote lote) throws Exception;
+	Lote update(Lote lote) throws Exception;
 	Lote findById(Lote lote) throws Exception;
 	List<Lote> getList() throws Exception;
 	List<Lote> consultaLote(Lote lote)throws Exception;

@@ -1,17 +1,21 @@
 package sisa.com.br.entidade;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class Loteamento {
 	
 	private String nu_lotm;
 	private String ds_lotm;
+	private Set<Lote> lotes = new HashSet<Lote>();
+		
+	public Loteamento(){
+		
+	}
 	
 	public Loteamento(String pCodigo,String pNome){
 		this.nu_lotm = pCodigo;
 		this.ds_lotm = pNome;
-	}
-	
-	public Loteamento(){
-		
 	}
 
 	public String getNu_lotm() {
@@ -29,7 +33,12 @@ public class Loteamento {
 	public void setDs_lotm(String ds_lotm) {
 		this.ds_lotm = ds_lotm;
 	}
-
 	
+	public Set<Lote> getLotes() {
+		return lotes;
+	}
+	public void setLotes(Set<Lote> lotes) {
+		this.lotes = lotes;
+	} 
 
 }

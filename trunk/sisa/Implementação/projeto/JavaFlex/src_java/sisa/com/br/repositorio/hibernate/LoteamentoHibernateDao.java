@@ -46,7 +46,27 @@ public class LoteamentoHibernateDao extends HibernateDaoSupport implements
 	
 	@Override
 	public Loteamento save(Loteamento loteamento) throws Exception {
-		getHibernateTemplate().saveOrUpdate(loteamento);
+		
+		Loteamento resposta = null;
+		
+		Criteria criteria = getSession().createCriteria(Loteamento.class,
+				"loteamento");
+		criteria.add(Restrictions.like("loteamento.nu_lotm",loteamento.getNu_lotm(),MatchMode.EXACT));
+		
+
+		resposta = (Loteamento) criteria.uniqueResult();
+		
+		
+		if(resposta != null){
+			throw new Exception();
+		}else{
+			getHibernateTemplate().saveOrUpdate(loteamento);
+			return loteamento;
+		}
+	}
+	
+	public Loteamento update(Loteamento loteamento) throws Exception {
+		getHibernateTemplate().update(loteamento);
 		return loteamento;
 	}
 	

@@ -41,20 +41,38 @@ public class LoteHibernateDao extends HibernateDaoSupport implements
 	
 	@Override
 	public void remove(Lote lote) throws Exception {
+		lote = (Lote)getHibernateTemplate().load(Lote.class,lote.getCd_lote());  
 		getHibernateTemplate().delete(lote);	
 	}
 	
 	@Override
 	public Lote save(Lote lote) throws Exception {
-		getHibernateTemplate().saveOrUpdate(lote);
+		
+		Lote resposta = null;
+		
+		Criteria criteria = getSession().createCriteria(Lote.class,
+				"lote");
+		criteria.add(Restrictions.like("lote.nu_lotm",lote.getNu_lotm(),MatchMode.EXACT));
+		criteria.add(Restrictions.like("lote.nu_quadra",lote.getNu_quadra(),MatchMode.EXACT));
+		criteria.add(Restrictions.like("lote.nu_lote",lote.getNu_lote(),MatchMode.EXACT));
+		
+		resposta = (Lote) criteria.uniqueResult();
+				
+		if(resposta != null){
+			throw new Exception();
+		}else{
+			getHibernateTemplate().save(lote);
+			return lote;
+		}
+		
+		
+	}
+	
+	public Lote update(Lote lote) throws Exception {
+		getHibernateTemplate().update(lote);
 		return lote;
 	}
-
-    public Lote update(Lote lote) throws Exception {
-        getHibernateTemplate().update(lote);
-        return lote;
-    }
-
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Lote> consultaLote(Lote lote)
@@ -72,31 +90,32 @@ public class LoteHibernateDao extends HibernateDaoSupport implements
 			if(lote.getNu_quadra() != null){
 				criteria.add(Restrictions.like("lote.nu_quadra",lote.getNu_quadra(), MatchMode.ANYWHERE));
 			}
-			if(lote.getSituacao() != null){
-				criteria.add(Restrictions.eq("lote.situacao", lote.getSituacao()));
-			}
 		}
 		return criteria.list();
 	}
 
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public Lote consultaLote(String pCodigo, String pNu_Lotm,String pNu_Quadra)
+	public List<Lote> consultaLote(String pNu_Lote, String pNu_Lotm,String pNu_Quadra,String situacao)
 			throws Exception {
-		 Lote resposta = null;
+		
 		 Criteria criteria = getSession().createCriteria(Lote.class,
 			"lote");
-			if (pCodigo != null) {
-				criteria.add(Restrictions.like("lote.nu_lote",pCodigo,MatchMode.ANYWHERE));
+			if (pNu_Lote != null) {
+				criteria.add(Restrictions.like("lote.nu_lote",pNu_Lote,MatchMode.ANYWHERE));
 			}
 			if(pNu_Lotm != null && !pNu_Lotm.equals("")){
 				criteria.add(Restrictions.like("lote.nu_lotm",pNu_Lotm, MatchMode.EXACT));
 			}	
 			if(pNu_Quadra != null && !pNu_Quadra.equals("")){
 				criteria.add(Restrictions.like("lote.nu_quadra",pNu_Quadra, MatchMode.ANYWHERE));
-			}	
-		
-		return resposta;
+			}
+			if(situacao != null && !situacao.equals("")){
+				criteria.add(Restrictions.like("lote.situacao",situacao,MatchMode.EXACT));
+			}
+				
+		return criteria.list();
 	}
 
 }
