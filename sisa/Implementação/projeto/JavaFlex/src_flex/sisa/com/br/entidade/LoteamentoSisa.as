@@ -1,6 +1,6 @@
 package sisa.com.br.entidade
 {
-	import sisa.com.br.TelaLoteamento.Loteamento;
+	import mx.collections.ArrayCollection;
 	
 	[RemoteClass(alias="sisa.com.br.entidade.Loteamento")]
 	[Bindable]
@@ -9,6 +9,7 @@ package sisa.com.br.entidade
 		public var nu_lotm:String;
 		public var ds_lotm:String;
 		public var loteamento:LoteamentoSisa;
+		public var lotes:ArrayCollection;
 	
 	}
 }
