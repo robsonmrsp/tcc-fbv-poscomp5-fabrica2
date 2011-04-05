@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="sisa.com.br.entidade.Proposta" table="proposta">
+
+		<id name="numero" column="nu_proposta" type="java.lang.String">
+			<generator class="assigned"/>
+		</id>
+		<many-to-one name="loteamento" column="nu_lotm" class="sisa.com.br.entidade.Loteamento" fetch="join" />
+		<many-to-one name="promitente" column="cd_promitente" class="sisa.com.br.entidade.Promitente" fetch="join" />
+		<property column="vl_vista" type="java.lang.Double" name="valorVista" />
+		<property column="vl_sinal" type="java.lang.Double" name="valorSinal" />
+		<many-to-one name="financiamento" column="qt_prest" class="sisa.com.br.entidade.Financiamento" fetch="join" />
+		<property column="vl_prest" type="java.lang.Double" name="valorParcela" />
+		<property column="ds_obs" type="java.lang.String" name="observacao" length="60" />
+		<property column="situacao" type="java.lang.String" name="situacao" not-null="true" length="1" />
+		<many-to-one name="vendedor" column="cd_vend" class="sisa.com.br.entidade.Vendedor" fetch="join"/>
+		<property column="dt_emissao" type="java.sql.Date" name="dataEmissao" not-null="true" />
+		<property column="dt_pri_prest" type="java.sql.Date" name="dataPrimeiraParcela" />
+		<property column="fl_pagto_avista" type="java.lang.String" name="pagamentoVista" not-null="true" length="1" />
+		<set name="lotes" table="lotes_proposta" cascade="all" lazy="false">
+			<key column="nu_proposta"/>
+			<many-to-many class="sisa.com.br.entidade.Lote" column="cd_lote"/>
+		</set>		
+		<set name="parcelasSinal" table="parcelas_sinal_proposta" cascade="all" lazy="false" inverse="false">
+			<key column="nu_proposta"/>
+			<one-to-many entity-name="sisa.com.br.entidade.ParcelaSinal" />
+		</set>
+	</class>
+</hibernate-mapping>
