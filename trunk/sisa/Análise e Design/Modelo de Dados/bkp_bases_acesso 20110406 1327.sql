@@ -385,7 +385,7 @@ CREATE TABLE `transacao` (
   `ativa` varchar(1) NOT NULL,
   `idpai` int(11) DEFAULT NULL,
   PRIMARY KEY (`id_transacao`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `transacao`
@@ -396,17 +396,7 @@ INSERT INTO `transacao` (`id_transacao`,`titulo`,`nome`,`url`,`ordem`,`ativa`,`i
  (1,'Administração','Administracao','administracao',1,'S',0),
  (2,'Usuario','Usuario','Usuario',1,'S',1),
  (3,'Perfil','Perfil','Perfil',2,'S',1),
- (4,'Transacao','Transacao','Transacao',3,'S',1),
- (5,'Cadastros','Cadastros','Cadastros',2,'S',0),
- (6,'Loteamento','Loteamento','Loteamento',1,'S',5),
- (7,'Lote','Lote','Lote',2,'S',5),
- (8,'Vendedor','Vendedor','Vendedor',3,'S',5),
- (9,'Promitente','Promitente','Promitente',4,'S',5),
- (10,'Proposta','Proposta','Proposta',5,'S',5),
- (11,'Relatórios','Relatorios','Relatorios',3,'S',0),
- (12,'Relatório Proposta','Relatório Proposta','Relatório Proposta',1,'S',11),
- (13,'Relatório Proposta em Formulário Específico','Relatório Proposta em Formulário Específico','Relatório Proposta em Formulário Específico',2,'S',11),
- (14,'Boleto Bancário','Boleto Bancário','Boleto Bancário',3,'S',11);
+ (4,'Transacao','Transacao','Transacao',3,'S',1);
 /*!40000 ALTER TABLE `transacao` ENABLE KEYS */;
 
 
@@ -433,17 +423,7 @@ INSERT INTO `transacao_perfil` (`id_perfil`,`id_transacao`) VALUES
  (1,1),
  (1,2),
  (1,3),
- (1,4),
- (1,5),
- (1,6),
- (1,7),
- (1,8),
- (1,9),
- (1,10),
- (1,11),
- (1,12),
- (1,13),
- (1,14);
+ (1,4);
 /*!40000 ALTER TABLE `transacao_perfil` ENABLE KEYS */;
 
 
