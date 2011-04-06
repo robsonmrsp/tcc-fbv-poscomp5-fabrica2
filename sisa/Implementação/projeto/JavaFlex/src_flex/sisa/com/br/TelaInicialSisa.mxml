@@ -23,6 +23,7 @@
 			import sisa.com.br.TelaPromitente.ConsultaPromitente;
 			import mx.containers.TitleWindow;
 			import sisa.com.br.TelasAdministracao.Usuario;
+			import sisa.com.br.entidade.TransacaoSisa;
 			import mx.containers.Canvas;
 			import mx.messaging.FlexClient;
 			import mx.managers.PopUpManager;

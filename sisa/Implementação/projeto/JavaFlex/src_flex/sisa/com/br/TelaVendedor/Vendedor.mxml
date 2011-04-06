@@ -91,7 +91,7 @@
 				enderecoSisa.complemento = idComplemento.text;
 				enderecoSisa.logradouro = idLogradouro.text;
 				enderecoSisa.cidade = idCidade.text;
-				enderecoSisa.numero = parseInt(idNrLogradouro.text);
+				enderecoSisa.numero = idNrLogradouro.text;
 				enderecoSisa.cep = idCEP.text;
 				
 				vendedorSisa.endereco = enderecoSisa;
