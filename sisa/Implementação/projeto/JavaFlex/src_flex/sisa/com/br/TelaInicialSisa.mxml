@@ -70,6 +70,7 @@
             
             private function getTela(event:MenuEvent):void{
             
+            	// ADMINISTRAÇÃO
 	            if(event.item.nome == "Usuario"){
 		            if (myViewstack.getChildren() != null && myViewstack.getChildren().length > 0){
 						myViewstack.removeAllChildren();
@@ -77,12 +78,6 @@
 					var consUsuario:ConsultaUsuario = new ConsultaUsuario();
 		            	myViewstack.addChild(consUsuario);
 		            	
-		        }else if(event.item.tl == "Vendedor"){
-		            if (myViewstack.getChildren() != null && myViewstack.getChildren().length > 0){
-						myViewstack.removeAllChildren();
-					}				
-					var consVendedor:ConsultaVendedor = new ConsultaVendedor();
-		            	myViewstack.addChild(consVendedor);
 		        }else if(event.item.nome == "Perfil"){
 		            myViewstack.removeAllChildren();			
 					var consPerfil:ConsultaPerfil= new ConsultaPerfil();
@@ -94,46 +89,52 @@
 					}				
 					var consTransacao:ConsultaTransacao= new ConsultaTransacao();
 		            	myViewstack.addChild(consTransacao);
-		        }else if(event.item.tl == "Vendedor"){
-                            myViewstack.removeAllChildren();                    
-                            var consVendedor:ConsultaVendedor = new ConsultaVendedor();
-                            myViewstack.addChild(consVendedor);
-             	}else if(event.item.tl == "Promitente"){
+		        }
+		        // CADASTROS
+		        else if(event.item.nome == "Loteamento"){
+		           myViewstack.removeAllChildren();			
+					var consLoteamento:ConsultaLoteamento = new ConsultaLoteamento();
+		            	myViewstack.addChild(consLoteamento);
+		        }else if(event.item.nome == "Lote"){
+		           myViewstack.removeAllChildren();			
+					var consLote:ConsultaLote = new ConsultaLote();
+		            	myViewstack.addChild(consLote);
+		        }else if(event.item.nome == "Vendedor"){
+		            if (myViewstack.getChildren() != null && myViewstack.getChildren().length > 0){
+						myViewstack.removeAllChildren();
+					}				
+					var consVendedor:ConsultaVendedor = new ConsultaVendedor();
+		            	myViewstack.addChild(consVendedor);
+		        }else if(event.item.nome == "Promitente"){
 		            if (myViewstack.getChildren() != null && myViewstack.getChildren().length > 0){
                       myViewstack.removeAllChildren();
                    }				
 					var consProm:ConsultaPromitente = new ConsultaPromitente();
 		            myViewstack.addChild(consProm);
-		        }else if(event.item.tl == "Relatório Proposta"){
+		        }else if(event.item.nome == "Proposta"){
+		            myViewstack.removeAllChildren();			
+					var consProp:ConsultaProposta = new ConsultaProposta();
+		            myViewstack.addChild(consProp);
+		        }
+		        //RELATÓRIOS
+		        else if(event.item.nome == "Relatório Proposta"){
 		           	if (myViewstack.getChildren() != null && myViewstack.getChildren().length > 0){
 						myViewstack.removeAllChildren();
 					}				
 					var telaRelatorios:RelatorioProposta = new RelatorioProposta();
 		            	myViewstack.addChild(telaRelatorios);
-		        }else if(event.item.tl == "Relatório Proposta em Formulário Específico"){
+		        }else if(event.item.nome == "Relatório Proposta em Formulário Específico"){
 		           	if (myViewstack.getChildren() != null && myViewstack.getChildren().length > 0){
 						myViewstack.removeAllChildren();
 					}				
 					var telaFormularioEspecifico:RelatorioFormularioEspecifico = new RelatorioFormularioEspecifico();
 		            	myViewstack.addChild(telaFormularioEspecifico);
-		        }else if(event.item.tl == "Boleto Bancário"){
+		        }else if(event.item.nome == "Boleto Bancário"){
 		           	if (myViewstack.getChildren() != null && myViewstack.getChildren().length > 0){
 						myViewstack.removeAllChildren();
 					}				
 					var telaBoleto:RelatorioBoletoBancario = new RelatorioBoletoBancario();
 		            	myViewstack.addChild(telaBoleto);
-		        }else if(event.item.tl == "Proposta"){
-		            myViewstack.removeAllChildren();			
-					var consProp:ConsultaProposta = new ConsultaProposta();
-		            myViewstack.addChild(consProp);
-		        }else if(event.item.tl == "Loteamento"){
-		           myViewstack.removeAllChildren();			
-					var consLoteamento:ConsultaLoteamento = new ConsultaLoteamento();
-		            	myViewstack.addChild(consLoteamento);
-		        }else if(event.item.tl == "Lote"){
-		           myViewstack.removeAllChildren();			
-					var consLote:ConsultaLote = new ConsultaLote();
-		            	myViewstack.addChild(consLote);
 		        }else{
 		           
 		        }
@@ -162,15 +163,26 @@
 				listaMenu = event.result as ArrayCollection;
 				listaMenuPrincipal = new ArrayCollection();
 				
+				//Alert.show(listaMenu.length + " = tamanho");
+				
 				for each(var objTransacao:TransacaoSisa in listaMenu){
+					//Alert.show("entrou no for");
+					//Alert.show("objTransacao.idPai = " + objTransacao.idPai);
 					if(objTransacao.idPai == 0){
 						var objMenu:Object = new Object();
-
+						
+						//Alert.show("Entrou no if");
+						
 						objMenu.cd = objTransacao.id;
 						objMenu.nome = objTransacao.nome;
 						objMenu.children = new ArrayCollection();
 						
+						//Alert.show("objMenu.nome = " + objTransacao.nome);
+						//Alert.show("objMenu.cd = " + objTransacao.id);
+						
 						listaMenuPrincipal.addItem(objMenu);
+						
+						//Alert.show("listaMenuPrincipal = " + listaMenuPrincipal.getItemAt(0, listaMenuPrincipal.length));
 						recuperarFilhos(objMenu);
 					}
 					
@@ -208,22 +220,22 @@
 				Alert.show(event.fault.message);
 			}
 			
-			[Bindable]
-            public var array:ArrayCollection = new ArrayCollection([
-	        { cd:"1", nome:"Proposta", tp:"A", tl:"", children:[{cd:"6", nome:"Cadastro Proposta", tp:"B", tl:"Proposta"}, 
-	        										  			{cd:"7", nome:"Promitente", tp:"B", tl:"Promitente"}]},
-	        { cd:"2", nome:"Lote", tp:"A", tl:""},
-	        
-	        { cd:"3", nome:"Administração", tp:"A", tl:"", children:[{cd:"8", nome:"Usuario", tp:"B", tl:"Usuario"}, 
-	        											  			             {cd:"9", nome:"Perfil", tp:"B", tl:"Perfil"}, 
-                                                                    {cd:"10", nome:"Transacao", tp:"B", tl:"Transacao"},
-                                                                    {cd:"11", nome:"Vendedor", tp:"B", tl:"Vendedor"}]},
-	      	{ cd:"4", nome:"Relatórios", tp:"A", tl:"", children:[{cd:"12", nome:"Relatório Proposta", tp:"B", tl:"Relatório Proposta"},
-	      														  {cd:"12", nome:"Relatório Proposta em Formulário Específico", tp:"B", tl:"Relatório Proposta em Formulário Específico"},
-	      														  {cd:"13", nome:"Boleto Bancário", tp:"B", tl:"Boleto Bancário"}]}    
+//			[Bindable]
+//            public var array:ArrayCollection = new ArrayCollection([
+//	        { cd:"1", nome:"Proposta", tp:"A", tl:"", children:[{cd:"6", nome:"Cadastro Proposta", tp:"B", tl:"Proposta"}, 
+//	        										  			{cd:"7", nome:"Promitente", tp:"B", tl:"Promitente"}]},
+//	        { cd:"2", nome:"Lote", tp:"A", tl:""},
+//	        
+//	        { cd:"3", nome:"Administração", tp:"A", tl:"", children:[{cd:"8", nome:"Usuario", tp:"B", tl:"Usuario"}, 
+//	        											  			             {cd:"9", nome:"Perfil", tp:"B", tl:"Perfil"}, 
+//                                                                    {cd:"10", nome:"Transacao", tp:"B", tl:"Transacao"},
+//                                                                    {cd:"11", nome:"Vendedor", tp:"B", tl:"Vendedor"}]},
+//	      	{ cd:"4", nome:"Relatórios", tp:"A", tl:"", children:[{cd:"12", nome:"Relatório Proposta", tp:"B", tl:"Relatório Proposta"},
+//	      														  {cd:"12", nome:"Relatório Proposta em Formulário Específico", tp:"B", tl:"Relatório Proposta em Formulário Específico"},
+//	      														  {cd:"13", nome:"Boleto Bancário", tp:"B", tl:"Boleto Bancário"}]}    
 //	        { cd:"4", nome:"Loteamento", tp:"A", tl:"", children:[{cd:"11", nome:"Cadastro", tp:"B", tl:"Loteamento"},]},
 //	        { cd:"5", nome:"Lote", tp:"A", tl:"", children:[{cd:"12", nome:"Cadastro", tp:"B", tl:"Lote"},]}, 
-	      ]);
+//	      ]);
 			
             
 		]]>
