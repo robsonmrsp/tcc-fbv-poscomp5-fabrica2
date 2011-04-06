@@ -75,7 +75,7 @@
 	<destination id="controleSessaoService">
 		<properties>
 			<factory>spring</factory>
-			<source>dominioService</source>
+			<source>controleSessaoService</source>
 		</properties>
 	</destination>
 
