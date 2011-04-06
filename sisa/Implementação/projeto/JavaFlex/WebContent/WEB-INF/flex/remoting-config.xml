@@ -47,7 +47,7 @@
 	<destination id="dominioService">
 		<properties>
 			<factory>spring</factory>
-			<source>vendedorService</source>
+			<source>dominioService</source>
 		</properties>
 	</destination>
 	
