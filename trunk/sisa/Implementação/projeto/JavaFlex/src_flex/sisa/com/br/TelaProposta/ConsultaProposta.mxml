@@ -232,6 +232,18 @@
 			           ,Alert.YES);
 				
 			}
+			
+			private function autorizarProposta(): void
+			{
+				acaoProposta = "A"; //Cancelar a proposta
+				Alert.show("Confirma autorização da proposta '" + propostaSelecionada.numero + "'?", "Confirmação"
+			           ,Alert.YES| Alert.NO
+			           ,null
+			           ,handleAlert
+			           ,null
+			           ,Alert.YES);
+				
+			}
 
 			//labelFunction para formatar valor
 			private function formatarValor(item: Object, column:DataGridColumn): String
@@ -330,7 +342,7 @@
 	<mx:Button label="{resourceManager.getString('MessagemResource_pt_BR', 'tela.button.nova')}" id="btCadastrar" icon="@Embed(source='../../../../img/button/add.png')" x="10" y="312" width="99" buttonMode="true" tabIndex="8" enabled="true" styleName="Button" click="cadastrarProposta()"/>
 	<mx:Button label="{resourceManager.getString('MessagemResource_pt_BR', 'tela.button.alterar')}" id="btAlterar" icon="@Embed('../../../../img/button/alter.png')" x="117" y="312" buttonMode="true" tabIndex="9" styleName="Button" width="99" enabled="false"/>
 	<mx:Button label="{resourceManager.getString('MessagemResource_pt_BR', 'tela.button.cancelarProposta')}" enabled="false" id="btCancelarProposta" icon="@Embed('../../../../img/button/cancel.png')" x="331" y="312" buttonMode="true" tabIndex="11" styleName="Button" width="99" click="cancelarProposta()"/>
-	<mx:Button label="Autorizar" enabled="false" id="btAutorizarProposta" icon="@Embed(source='../../../../img/button/10.png')" x="224" y="312" buttonMode="true" tabIndex="11" styleName="Button" width="99"/>
+	<mx:Button label="Autorizar" enabled="false" id="btAutorizarProposta" icon="@Embed(source='../../../../img/button/10.png')" x="224" y="312" buttonMode="true" tabIndex="11" styleName="Button" width="99" click="autorizarProposta()"/>
 	<mx:Label x="10" y="10" text="Loteamento:" width="82"/>
 	<mx:Label x="10" y="38" text="Promitente:" width="82"/>
 	<mx:TextInput x="84" y="36" width="66" toolTip="Código do Promitente" id="txCodigoPromitente" maxChars="5"/>
