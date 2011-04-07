@@ -28,7 +28,12 @@
 					idNome.text = transacao.nome;
 					idTitulo.text = transacao.titulo;
 					idUrl.text = transacao.url;
-					idAtiva.text = transacao.ativa;
+					//idAtiva.text = transacao.ativa;
+					if(transacao.ativa == 'S'){
+						idAtiva.selected = true;
+					}else{
+						idAtiva.selected = false;
+					}
 					idOrdem.text = new String(transacao.ordem);
 								
 				}
@@ -47,7 +52,7 @@
 				idOrdem.text = "";
 				idTitulo.text = "";
 				idUrl.text = "";
-				idAtiva.text = "";
+				idAtiva.selected = false;
 
 			}
 			
@@ -65,7 +70,12 @@
 				transacaoSisa.ordem = new Number(idOrdem.text);
 				transacaoSisa.titulo = idTitulo.text;
 				transacaoSisa.url = idUrl.text;
-				transacaoSisa.ativa = idAtiva.text;
+				
+				if(idAtiva.selected == true){
+					transacaoSisa.ativa = 'S';
+				}else{
+					transacaoSisa.ativa = 'N';
+				}
 
 				transacaoService.save(transacaoSisa);  			
 				
@@ -110,11 +120,6 @@
 					Alert.show("Campo url obrigatório");
 					return false;
 				}
-				if(idAtiva.text == "")
-				{
-					Alert.show("Campo ativo obrigatório");
-					return false;
-				}
 
 				if(idOrdem.text == "")
 				{
@@ -156,8 +161,8 @@
 	</mx:FormItem>
 	
 	<mx:Label x="661" y="56" text="{resourceManager.getString('MessagemResource_pt_BR', 'tela.transacao.campo.ativa')}"/>
-	<mx:FormItem id="idAtivaItem" width="129.5" required="true" x="720.5" y="54" errorString="Campo Obrigatório">
-		<mx:TextInput x="720.5" y="55.65" id="idAtiva" width="115" tabIndex="2" enabled="true" maxChars="100"/>
+	<mx:FormItem id="idAtivaItem" width="129.5" required="false" x="720.5" y="54">
+		<mx:CheckBox id="idAtiva" x="720.5" y="55.65" width="118" tabIndex="27" />
 	</mx:FormItem>
 	
 	<mx:Image x="858" y="2" width="126" height="120" source="@Embed(source='../../../../img/telas/aluno.png')"/>
