@@ -22,7 +22,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 	
 	
 	private UsuarioRepository usuarioRepository;
-	private UsuarioUtils utils = new UsuarioUtils();
+	private final UsuarioUtils utils = new UsuarioUtils();
 
 	@Autowired
 	public void setUsuarioRepository(UsuarioRepository usuarioRepository) {
@@ -83,7 +83,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 			
 			if( usuarioLogado == null){
 				
-				throw new Exception("Usuário ou senha incorreto");
+				throw new Exception("Usuário ou senha incorreta");
 			}else{
 			
 			if( utils.isUsuarioLogado(usuarioLogado.getId()))

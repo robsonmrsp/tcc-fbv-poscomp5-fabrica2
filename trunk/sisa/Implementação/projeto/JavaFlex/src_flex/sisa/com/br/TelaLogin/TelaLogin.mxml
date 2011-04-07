@@ -80,8 +80,11 @@
 			
 			//Ocorreu uma falha ao chamar algum servico servico.
 			public function onFault(event:FaultEvent):void
-			{												
-				Alert.show(event.fault.message);
+			{
+				var mensagemErro:String = event.fault.faultString;
+                var posicao:Number = mensagemErro.indexOf(":");        
+                posicao = posicao + 1;                                                        
+                Alert.show(mensagemErro.substring(posicao));												
 			}
            
 			
