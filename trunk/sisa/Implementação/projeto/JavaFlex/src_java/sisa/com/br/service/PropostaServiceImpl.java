@@ -82,9 +82,41 @@ public class PropostaServiceImpl implements PropostaService {
 			if (findById(proposta.getNumero()) == null){
 				throw new Exception("Proposta com o número '" + proposta.getNumero() + "' não cadastrada!");
 			}
-			return this.propostaRepository.save(proposta);
+			return this.propostaRepository.update(proposta);
 		} catch (Exception e) {
 			throw new Exception("Não foi possível atualizar a proposta: " + e.getMessage());
+		}
+	}
+
+	@Override
+	public void cancelar(Proposta proposta) throws Exception {
+		try {
+			Proposta propostaUpd = findById(proposta.getNumero());
+			if (propostaUpd == null){
+				throw new Exception("Proposta com o número '" + proposta.getNumero() + "' não cadastrada!");
+			}
+			propostaUpd.setSituacao("C");
+			for(Lote lote: propostaUpd.getLotes())
+			{
+				lote.setSituacao("L");
+			}
+			this.propostaRepository.update(propostaUpd);
+		} catch (Exception e) {
+			throw new Exception("Não foi possível cancelar a proposta: " + e.getMessage());
+		}
+	}
+
+	@Override
+	public void autorizar(Proposta proposta) throws Exception {
+		try {
+			Proposta propostaUpd = findById(proposta.getNumero());
+			if (propostaUpd == null){
+				throw new Exception("Proposta com o número '" + proposta.getNumero() + "' não cadastrada!");
+			}
+			propostaUpd.setSituacao("A");
+			this.propostaRepository.update(propostaUpd);
+		} catch (Exception e) {
+			throw new Exception("Não foi possível autorizar a proposta: " + e.getMessage());
 		}
 	}
 

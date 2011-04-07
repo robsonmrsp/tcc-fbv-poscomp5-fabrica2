@@ -664,11 +664,11 @@
 						<mx:DataGridColumn headerText="Documento" dataField="numeroDocumento" width="100" headerStyleName="CenterHeader"/>
 						<mx:DataGridColumn headerText="Valor" dataField="valor" width="100" headerStyleName="CenterHeader" labelFunction="formatarValor"  textAlign="right"/>
 						<mx:DataGridColumn headerText="Data de Vencimento" dataField="dataVencimento" labelFunction="formatarData" headerStyleName="CenterHeader"/>
-						<mx:DataGridColumn width="30">
+						<mx:DataGridColumn width="17">
 							<mx:itemRenderer>
 								<mx:Component>
 									<mx:Button click="parentDocument.editarParcela()" >
-										<mx:icon>@Embed(source='../../../../img/button/alter.png')</mx:icon>
+										<mx:icon>@Embed(source='../../../../img/button/reply.png')</mx:icon>
 									</mx:Button>
 								</mx:Component>
 							</mx:itemRenderer>
@@ -676,7 +676,7 @@
 					</mx:columns>
 				</mx:DataGrid>
 				<mx:Form x="0" y="1" paddingBottom="5" paddingTop="2" paddingLeft="5" paddingRight="5">
-					<mx:FormItem label="Valor:">
+					<mx:FormItem label="Valor:" required="true">
 						<mx:TextInput width="112" id="txSinal" textAlign="right" height="19" focusIn="focusSinal()" focusOut="validarSinal(event)"/>
 					</mx:FormItem>
 				</mx:Form>
@@ -713,7 +713,9 @@
 				</mx:Form>
 				<mx:Form x="422" y="-2" paddingBottom="5" paddingLeft="5" paddingRight="5" paddingTop="5">
 					<mx:FormItem label="1º Vencimento:">
-						<mx:DateField height="19" id="dtPrimVencimento"/>
+						<mx:DateField height="19" id="dtPrimVencimento" formatString="DD/MM/YYYY" dayNames="['D','S','T','Q','Q','S','S']" monthNames="['Janeiro','Fevereiro','Março','Abril',
+						'Maio','Junho','Julho','Agosto','Setembro','Outubro',
+						'Novembro','Dezembro']" disabledDays="[0,6]" yearNavigationEnabled="true" useHandCursor="true" restrict="0-9/" editable="true" showToday="false" width="104"/>
 					</mx:FormItem>
 				</mx:Form>
 			</mx:Panel>
@@ -725,7 +727,7 @@
 		</mx:Canvas>
 	</mx:TabNavigator>
 	<mx:Form x="10" y="367" paddingTop="3" paddingBottom="3" paddingLeft="0" paddingRight="5" styleName="FormAlign">
-		<mx:FormItem label="Valor Total da Proposta:">
+		<mx:FormItem label="Valor Total da Proposta:" required="true">
 			<mx:TextInput width="131" id="txValorTotal" editable="false" enabled="false" textAlign="right"/>
 		</mx:FormItem>
 	</mx:Form>

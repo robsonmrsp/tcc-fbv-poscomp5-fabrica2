@@ -11,4 +11,6 @@ public interface PropostaService {
 	List<Proposta> getList() throws Exception;
 	List<Proposta> find(Proposta proposta)throws Exception;
 	void remove(Proposta proposta) throws Exception;
+	void cancelar(Proposta proposta)  throws Exception;
+	void autorizar(Proposta proposta)  throws Exception;
 }

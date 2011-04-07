@@ -102,5 +102,14 @@ package sisa.com.br.componentes
 			}
 			return -1;
 		}
+			
+		public static function getIndexLista(lista: ArrayCollection, valor: String): int{
+			for ( var cont:int = 0; cont < lista.length; cont++ ) {
+				if (lista[cont]['data'] == valor) {
+			      return cont;
+			    }
+			  }
+			  return -1;
+		}
 	}
 }

@@ -9,6 +9,9 @@
     
 	<mx:Script>
 		<![CDATA[
+			import sisa.com.br.entidade.LoteSisa;
+			import mx.events.CloseEvent;
+			import sisa.com.br.componentes.Utils;
 			import mx.core.UIComponent;
 			import sisa.com.br.entidade.VendedorSisa;
 			import sisa.com.br.dominio.objDominio;
@@ -34,6 +37,9 @@
 			private var listaSituacao: ArrayCollection;
 			[Bindable]
 			private var listaVendedor: ArrayCollection;
+			
+			private var acaoProposta: String;
+			private var propostaSelecionada: Proposta;
 			
 			public function iniciarTela():void{
 				getList();
@@ -189,6 +195,20 @@
 				cbSituacao.selectedIndex = 0;
 			}
 			
+			public function onResultAlterarProposta(e: ResultEvent): void
+			{
+				switch (acaoProposta)
+				{
+					case "C":
+						Alert.show("Proposta cancelada com sucesso!");
+						break;
+					case "A":
+						Alert.show("Proposta autorizada com sucesso!");
+						break;
+				}
+				getList();
+			}
+			
 			//Ocorreu uma falha ao chamar algum servico servico.
 			public function onFault(event:FaultEvent):void
 			{												
@@ -201,11 +221,75 @@
             	PopUpManager.centerPopUp(telaProposta);
 			}
 			
+			private function cancelarProposta(): void
+			{
+				acaoProposta = "C"; //Cancelar a proposta
+				Alert.show("Confirma cancelamento da proposta '" + propostaSelecionada.numero + "'?", "Confirmação"
+			           ,Alert.YES| Alert.NO
+			           ,null
+			           ,handleAlert
+			           ,null
+			           ,Alert.YES);
+				
+			}
+
+			//labelFunction para formatar valor
+			private function formatarValor(item: Object, column:DataGridColumn): String
+			{
+				return nf.format(item[column.dataField]);
+			}	
+			
+			private function getDescricaoSituacao(item: Object, column:DataGridColumn): String
+			{
+				var descricao: String = "";
+				var situacao: String = item[column.dataField];
+				var index: int = Utils.getIndexListaDominio(listaSituacao, situacao);
+				
+				descricao = (listaSituacao.getItemAt(index) as objDominio).descricao;
+				
+				return descricao;
+			}
+			
+			private function changeRowSelected(event:Event):void
+			{
+				propostaSelecionada = (event.target.selectedItem as Proposta);
+				btAutorizarProposta.enabled = (propostaSelecionada.situacao == "P");
+				btCancelarProposta.enabled = ((propostaSelecionada.situacao == "P") || (proposta.situacao == "A"));
+			}
+
+			//evento ao fechar do Alert
+			private function handleAlert(e: CloseEvent): void
+			{
+				if (e.detail == Alert.YES)
+				{
+					switch (acaoProposta){
+						case "C": //Cancelar
+							propostaService.cancelar(propostaSelecionada);
+							break;
+						case "A": //Autorizar
+							propostaService.autorizar(propostaSelecionada);
+							break;
+					}
+					propostaService.update(propostaSelecionada);
+				}
+			}
+			
 		]]>
 	</mx:Script>
+	<mx:Style>
+		.CenterHeader {
+			textAlign: center;
+		}
+		.FormAlign{
+			horizontal-align: right;
+		}
+	</mx:Style>
+
 	<mx:RemoteObject id="propostaService" showBusyCursor="true" fault="onFault(event)" destination="propostaService">
 		<mx:method name="getList" result="onResultListaProposta(event)" fault="onFault(event)"/>
 		<mx:method name="remove" result="onResultRemoverProposta(event)" fault="onFault(event)"/>
+		<mx:method name="cancelar" result="onResultAlterarProposta(event)" fault="onFault(event)"/>
+		<mx:method name="autorizar" result="onResultAlterarProposta(event)" fault="onFault(event)"/>
 		<mx:method name="find" result="onResultListaProposta(event)" fault="onFault(event)"/>
 	</mx:RemoteObject>
 
@@ -224,22 +308,29 @@
 	<mx:RemoteObject id="dominioService" showBusyCursor="true" fault="onFault(event)" destination="dominioService">
 		<mx:method name="listarSituacaoProposta" result="onResultListaSituacao(event)" fault="onFault(event)"/>
 	</mx:RemoteObject>
+	
+	<mx:NumberFormatter id="nf"  precision="2" decimalSeparatorTo="," thousandsSeparatorTo="." useThousandsSeparator="true" />
+
+	<mx:DateFormatter id="df" formatString="DD/MM/YYYY"/>
 		
 	<mx:Button x="532" y="63.7" label="{resourceManager.getString('MessagemResource_pt_BR', 'tela.button.pesquisa')}" icon="@Embed(source='../../../../img/button/search.png')" width="99.95" height="24" id="btBuscar" click="consultaProposta();" buttonMode="true" tabIndex="4" enabled="true" styleName="Button"/>
 	
 	<mx:Panel x="10" y="95.7" width="966" height="204.25" layout="absolute" title="{resourceManager.getString('MessagemResource_pt_BR', 'tela.consulta.proposta.title.lista')}" horizontalAlign="center">
-		<mx:DataGrid id="grProposta" x="0" y="0" width="100%" height="100%" dataProvider="{listaProposta}" doubleClick="{detalharProposta()}" doubleClickEnabled="true" tabIndex="7" tabEnabled="false" sortableColumns="true" editable="false">
+		<mx:DataGrid id="grProposta" x="0" y="0" width="100%" height="100%" dataProvider="{listaProposta}" doubleClick="{detalharProposta()}" doubleClickEnabled="true" tabIndex="7" tabEnabled="false" sortableColumns="true" editable="false" change="changeRowSelected(event)">
 			<mx:columns>
-				<mx:DataGridColumn headerText="{resourceManager.getString('MessagemResource_pt_BR', 'tela.consulta.proposta.campo.grid.numero')}" dataField="numero" width="80"/>
-				<mx:DataGridColumn headerText="{resourceManager.getString('MessagemResource_pt_BR', 'tela.consulta.proposta.campo.grid.loteamento')}" dataField="loteamento.nu_lotm" width="80" />
-				<mx:DataGridColumn headerText="{resourceManager.getString('MessagemResource_pt_BR', 'tela.consulta.proposta.campo.grid.qtdeLote')}" width="100" dataField="lotes.length" />
-				<mx:DataGridColumn headerText="{resourceManager.getString('MessagemResource_pt_BR', 'tela.consulta.proposta.campo.grid.valorTotal')}" dataField="valorVista" width="100" />
+				<mx:DataGridColumn headerText="{resourceManager.getString('MessagemResource_pt_BR', 'tela.consulta.proposta.campo.grid.numero')}" dataField="numero" width="80" headerStyleName="CenterHeader"/>
+				<mx:DataGridColumn headerText="{resourceManager.getString('MessagemResource_pt_BR', 'tela.consulta.proposta.campo.grid.loteamento')}" dataField="loteamento.nu_lotm" width="80" headerStyleName="CenterHeader" />
+				<mx:DataGridColumn headerText="{resourceManager.getString('MessagemResource_pt_BR', 'tela.consulta.proposta.campo.grid.promitente')}" dataField="promitente.nome" headerStyleName="CenterHeader"/>
+				<mx:DataGridColumn headerText="{resourceManager.getString('MessagemResource_pt_BR', 'tela.consulta.proposta.campo.grid.qtdeLote')}" width="100" dataField="lotes.length" headerStyleName="CenterHeader" textAlign="right" />
+				<mx:DataGridColumn headerText="{resourceManager.getString('MessagemResource_pt_BR', 'tela.consulta.proposta.campo.grid.valorTotal')}" dataField="valorVista" width="100" textAlign="right" labelFunction="formatarValor" headerStyleName="CenterHeader" />
+				<mx:DataGridColumn headerText="{resourceManager.getString('MessagemResource_pt_BR', 'tela.consulta.proposta.campo.grid.situacao')}" width="150" dataField="situacao" headerStyleName="CenterHeader" labelFunction="getDescricaoSituacao"/>
 			</mx:columns>
 		</mx:DataGrid>
 	</mx:Panel>
-	<mx:Button label="{resourceManager.getString('MessagemResource_pt_BR', 'tela.button.novo')}" id="btCadastrar" icon="@Embed(source='../../../../img/button/add.png')" x="10" y="312" width="99" buttonMode="true" tabIndex="8" enabled="true" styleName="Button" click="cadastrarProposta()"/>
-	<mx:Button label="{resourceManager.getString('MessagemResource_pt_BR', 'tela.button.alterar')}" id="btAlterar" icon="@Embed('../../../../img/button/alter.png')" x="117" y="312" buttonMode="true" tabIndex="9" styleName="Button" width="99" click="alterarProposta()"/>
-	<mx:Button label="{resourceManager.getString('MessagemResource_pt_BR', 'tela.button.excluir')}" enabled="true" id="btExcluir" icon="@Embed('../../../../img/button/cancel.png')" x="224" y="312" buttonMode="true" tabIndex="11" styleName="Button" width="99" click="removerProposta();"/>
+	<mx:Button label="{resourceManager.getString('MessagemResource_pt_BR', 'tela.button.nova')}" id="btCadastrar" icon="@Embed(source='../../../../img/button/add.png')" x="10" y="312" width="99" buttonMode="true" tabIndex="8" enabled="true" styleName="Button" click="cadastrarProposta()"/>
+	<mx:Button label="{resourceManager.getString('MessagemResource_pt_BR', 'tela.button.alterar')}" id="btAlterar" icon="@Embed('../../../../img/button/alter.png')" x="117" y="312" buttonMode="true" tabIndex="9" styleName="Button" width="99" enabled="false"/>
+	<mx:Button label="{resourceManager.getString('MessagemResource_pt_BR', 'tela.button.cancelarProposta')}" enabled="false" id="btCancelarProposta" icon="@Embed('../../../../img/button/cancel.png')" x="331" y="312" buttonMode="true" tabIndex="11" styleName="Button" width="99" click="cancelarProposta()"/>
+	<mx:Button label="Autorizar" enabled="false" id="btAutorizarProposta" icon="@Embed(source='../../../../img/button/10.png')" x="224" y="312" buttonMode="true" tabIndex="11" styleName="Button" width="99"/>
 	<mx:Label x="10" y="10" text="Loteamento:" width="82"/>
 	<mx:Label x="10" y="38" text="Promitente:" width="82"/>
 	<mx:TextInput x="84" y="36" width="66" toolTip="Código do Promitente" id="txCodigoPromitente" maxChars="5"/>
