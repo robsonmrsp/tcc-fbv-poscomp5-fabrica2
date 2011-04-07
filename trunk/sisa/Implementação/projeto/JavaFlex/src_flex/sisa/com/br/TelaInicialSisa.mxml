@@ -29,7 +29,7 @@
 			import mx.managers.PopUpManager;
 			import mx.events.FlexEvent;
 			import mx.rpc.events.ResultEvent;
-			 import mx.events.MenuEvent;
+			import mx.events.MenuEvent;
             import mx.controls.Alert;
             import mx.collections.*;
 			
@@ -52,9 +52,6 @@
 				if (myViewstack.getChildren() != null && myViewstack.getChildren().length > 0){
 					myViewstack.removeAllChildren();
 				}
-
-				this.tela01 = new TelaTemplateConsulta();
-				myViewstack.addChild(tela01);
  
 			     var data:Date = new Date(); 
 			     var dia:Number = data.getDate(); 
@@ -64,7 +61,6 @@
 				idUsuarioLogado.text = "Usuário Logado: " + usuarioLogado.nome + "    Data do Sistema: " + dia + " / "+ mes +" / "+ ano;
 				
 				transacaoService.getListMenu(usuarioLogado.id);
-				//transacaoService.getList();
 
 			}
             
@@ -163,26 +159,16 @@
 				listaMenu = event.result as ArrayCollection;
 				listaMenuPrincipal = new ArrayCollection();
 				
-				//Alert.show(listaMenu.length + " = tamanho");
-				
 				for each(var objTransacao:TransacaoSisa in listaMenu){
-					//Alert.show("entrou no for");
-					//Alert.show("objTransacao.idPai = " + objTransacao.idPai);
 					if(objTransacao.idPai == 0){
 						var objMenu:Object = new Object();
-						
-						//Alert.show("Entrou no if");
 						
 						objMenu.cd = objTransacao.id;
 						objMenu.nome = objTransacao.nome;
 						objMenu.children = new ArrayCollection();
 						
-						//Alert.show("objMenu.nome = " + objTransacao.nome);
-						//Alert.show("objMenu.cd = " + objTransacao.id);
-						
 						listaMenuPrincipal.addItem(objMenu);
 						
-						//Alert.show("listaMenuPrincipal = " + listaMenuPrincipal.getItemAt(0, listaMenuPrincipal.length));
 						recuperarFilhos(objMenu);
 					}
 					
@@ -191,9 +177,6 @@
 					}
 				}
 				
-				/* for each(var objTransacao:TransacaoSisa in listaMenuPrincipal){
-					
-				} */
 			}
 			
 			private function recuperarFilhos(objMenu:Object):void{
@@ -249,8 +232,7 @@
 	</mx:RemoteObject>
 	
       <mx:Box width="1012" height="410" x="176" y="173">
-             <mx:ViewStack width="1006" height="402" id="myViewstack">	
-				<telaTemplate:TelaTemplateConsulta id="tela01" width="1006"/>
+             <mx:ViewStack width="1006" height="402" id="myViewstack">
 				
 			</mx:ViewStack>   
         </mx:Box>      
