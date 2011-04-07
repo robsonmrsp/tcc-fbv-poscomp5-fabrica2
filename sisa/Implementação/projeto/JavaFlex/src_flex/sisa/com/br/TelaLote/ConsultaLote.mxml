@@ -166,15 +166,6 @@
                                 <mx:DataGridColumn headerText="{resourceManager.getString('MessagemResource_pt_BR', 'tela.consulta.lote.campo.grid.numero')}" dataField="nu_lote" width="10" />
                                 <mx:DataGridColumn headerText="{resourceManager.getString('MessagemResource_pt_BR', 'tela.consulta.lote.campo.grid.numeroquadra')}" dataField="nu_quadra" width="10"/>
                                 <mx:DataGridColumn headerText="{resourceManager.getString('MessagemResource_pt_BR', 'tela.consulta.lote.campo.grid.numeroloteamento')}" dataField="nu_lotm" width="10"/>
-                                <mx:DataGridColumn headerText="{resourceManager.getString('MessagemResource_pt_BR', 'tela.consulta.lote.campo.grid.confrente')}" dataField="ds_conf_frente" width="10"/>
-                                <mx:DataGridColumn headerText="{resourceManager.getString('MessagemResource_pt_BR', 'tela.consulta.lote.campo.grid.confundo')}" dataField="ds_conf_fundo" width="10" />
-                                <mx:DataGridColumn headerText="{resourceManager.getString('MessagemResource_pt_BR', 'tela.consulta.lote.campo.grid.confdireita')}" dataField="ds_conf_direita" width="10"/>
-                                <mx:DataGridColumn headerText="{resourceManager.getString('MessagemResource_pt_BR', 'tela.consulta.lote.campo.grid.confesquerda')}" dataField="ds_conf_esquerda" width="10"/>
-                                <mx:DataGridColumn headerText="{resourceManager.getString('MessagemResource_pt_BR', 'tela.consulta.lote.campo.grid.dimfrente')}" dataField="ds_dim_frente" width="10"/>
-                                <mx:DataGridColumn headerText="{resourceManager.getString('MessagemResource_pt_BR', 'tela.consulta.lote.campo.grid.dimfundo')}" dataField="ds_dim_fundo" width="10" />
-                                <mx:DataGridColumn headerText="{resourceManager.getString('MessagemResource_pt_BR', 'tela.consulta.lote.campo.grid.dimdireita')}" dataField="ds_dim_direita" width="10"/>
-                                <mx:DataGridColumn headerText="{resourceManager.getString('MessagemResource_pt_BR', 'tela.consulta.lote.campo.grid.dimesquerda')}" dataField="ds_dim_esquerda" width="10"/>
-                                <mx:DataGridColumn headerText="{resourceManager.getString('MessagemResource_pt_BR', 'tela.consulta.lote.campo.grid.distesquina')}" dataField="nu_dist_esquina" width="10" />
                                 <mx:DataGridColumn headerText="{resourceManager.getString('MessagemResource_pt_BR', 'tela.consulta.lote.campo.grid.area')}" dataField="nu_area" width="10"/>
                                 <mx:DataGridColumn headerText="{resourceManager.getString('MessagemResource_pt_BR', 'tela.consulta.lote.campo.grid.valor')}" dataField="valorm2" width="10"/>
                                 <mx:DataGridColumn headerText="{resourceManager.getString('MessagemResource_pt_BR', 'tela.consulta.lote.campo.grid.situacao')}" dataField="situacao" width="10"/>
