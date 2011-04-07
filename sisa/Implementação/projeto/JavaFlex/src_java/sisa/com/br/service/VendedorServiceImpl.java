@@ -74,7 +74,7 @@ public class VendedorServiceImpl implements VendedorService {
 		try {	
 			return this.vendedorRepository.consultaVendedor(vendedor);
 		} catch (Exception e) {
-			throw new Exception("N‹o foi poss’vel localizar." +e.getMessage());
+			throw new Exception("Não foi possível localizar." +e.getMessage());
 		}
 	}
 
@@ -85,7 +85,7 @@ public class VendedorServiceImpl implements VendedorService {
 			
 			if( vendedorLogado == null){
 				
-				throw new Exception("Usu‡rio ou senha incorreto");
+				throw new Exception("Usu‡rio ou senha incorreta");
 			}else{
 			
 			/*if( utils.isVendedorLogado(vendedorLogado.getCd_vend()))
