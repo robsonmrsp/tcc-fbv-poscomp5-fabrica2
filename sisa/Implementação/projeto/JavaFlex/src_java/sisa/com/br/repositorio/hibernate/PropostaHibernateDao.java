@@ -62,7 +62,13 @@ public class PropostaHibernateDao extends HibernateDaoSupport implements Propost
 	}
 
 	public Proposta save(Proposta proposta) throws Exception {
-		getHibernateTemplate().saveOrUpdate(proposta);
+		getHibernateTemplate().save(proposta);
+		return proposta;
+	}
+
+	@Override
+	public Proposta update(Proposta proposta) throws Exception {
+		getHibernateTemplate().update(proposta);
 		return proposta;
 	}
 

@@ -113,7 +113,7 @@
 							txComplRes.text = promitenteEditar.enderecoResidencial.complemento;
 							txBairroRes.text = promitenteEditar.enderecoResidencial.bairro;
 							txCidadeRes.text = promitenteEditar.enderecoResidencial.cidade;
-							cbUfRes.selectedIndex = getIndexLista(listaUf, promitenteEditar.enderecoResidencial.uf);
+							cbUfRes.selectedIndex = Utils.getIndexLista(listaUf, promitenteEditar.enderecoResidencial.uf);
 						}
 						catch(e: Error)
 						{
@@ -129,7 +129,7 @@
 						txComplCob.text = promitenteEditar.enderecoCobranca.complemento;
 						txBairroCob.text = promitenteEditar.enderecoCobranca.bairro;
 						txCidadeCob.text = promitenteEditar.enderecoCobranca.cidade;
-						cbUfCob.selectedIndex = getIndexLista(listaUf, promitenteEditar.enderecoCobranca.uf);
+						cbUfCob.selectedIndex = Utils.getIndexLista(listaUf, promitenteEditar.enderecoCobranca.uf);
 					}
 					txTelefoneCob.text = promitenteEditar.telefoneCobranca;
 					
@@ -144,15 +144,6 @@
 				else{
 					limparTela();
 				}
-			}
-			
-			private function getIndexLista(lista: ArrayCollection, valor: String): int{
-				for ( var cont:int = 0; cont < lista.length; cont++ ) {
-					if (lista[cont]['data'] == valor) {
-				      return cont;
-				    }
-				  }
-				  return -1;
 			}
 			
 			public function voltar():void
