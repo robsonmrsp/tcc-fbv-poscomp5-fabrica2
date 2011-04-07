@@ -8,6 +8,7 @@
     
 	<mx:Script>
 		<![CDATA[
+			import sisa.com.br.entidade.Proposta;
 			import mx.controls.List;
 			import sisa.com.br.dominio.DominioSituacaoProposta;
 			import mx.utils.StringUtil;
@@ -26,6 +27,8 @@
             
             [Bindable]
             public var listaPropostas:ArrayCollection = new ArrayCollection();
+            [Bindable]
+            public var listaParcelas:ArrayCollection = new ArrayCollection();
             
             private	var url:String;
 			private	var variables:URLVariables;
@@ -107,6 +110,11 @@
 			}
 			// ---------------------------------------------------------------------
 			
+			public function carregaComboParcela(): void{
+				var proposta : Proposta = cboProposta.selectedItem as Proposta;
+				
+				listaParcelas = proposta.parcelasSinal;
+			}
 		]]>
 	</mx:Script>
 	
@@ -121,8 +129,13 @@
 	<mx:Button label="{resourceManager.getString('MessagemResource_pt_BR', 'tela.button.cancelar')}" click="voltar();" id="btCancelar" icon="@Embed('../../../../img/button/cancel.png')" x="524.5" y="142.5" buttonMode="true" styleName="Button" height="59" width="99.5"/>
 	<mx:Button label="{resourceManager.getString('MessagemResource_pt_BR', 'tela.button.gerar')}" id="btGerar" click="gerarBoletoBancario();" toolTip="Gerar" icon="@Embed('../../../../img/button/imprimir.png')"  x="256" y="142.5" buttonMode="true" tabIndex="24" styleName="Button" height="59.05"  width="99.5"/>
 	<mx:Label x="121" y="48" text="Selcione a Proposta : " id="lblProposta"/>
-	<mx:ComboBox x="256" y="48" id="cboProposta" width="368" height="23" editable="false" selectedIndex="0" enabled="true"
+	<mx:ComboBox x="256" y="48" id="cboProposta" width="368" height="23" editable="false" selectedIndex="0" enabled="true" change="carregaComboParcela()"
 		dataProvider="{listaPropostas}" labelField="numero">
+	</mx:ComboBox>
+	
+	<mx:Label x="121" y="95" text="Selcione a Parcela : " id="lblParcela"/>
+	<mx:ComboBox x="256" y="92" id="cboParcela" width="368" height="23" editable="false" selectedIndex="0" enabled="true" change="carregaComboParcela()"
+		dataProvider="{listaParcelas}" labelField="id">
 	</mx:ComboBox>
 	
 </mx:TitleWindow>
