@@ -35,19 +35,21 @@
 			{	  
 				 this.transacaoSisa = new TransacaoSisa();
 				 
-				if (idNome.text != "" || idTitulo.text != "" || idAtiva.text != ""){
+				if (idNome.text != "" || idTitulo.text != ""){
 					if (idNome.text != "")
 					{ 			 
-				  	this.transacaoSisa.nome = idNome.text;
+				  		this.transacaoSisa.nome = idNome.text;
 				 	}
 				 	
 					if(idTitulo.text != ""){
 						this.transacaoSisa.titulo = idTitulo.text;
 					} 
 					 
-					 if(idAtiva.text != ""){
-						this.transacaoSisa.ativa = idAtiva.text;
-					}  
+					if(idAtiva.selected == true){
+						this.transacaoSisa.ativa = 'S';
+					}else{
+						this.transacaoSisa.ativa = 'N';
+					}
 					transacaoService.consultaTransacao(transacaoSisa);
 					  
 				}else{
@@ -136,7 +138,8 @@
 	<mx:TextInput x="75" y="53.95" maxChars="100" id="idTitulo" width="426" tabIndex="2" enabled="true" />
 	
 	<mx:Label x="534" y="54.3" text="{resourceManager.getString('MessagemResource_pt_BR', 'tela.consulta.transacao.campo.ativa')}"/>
-	<mx:TextInput x="585" y="53.95" maxChars="100" id="idAtiva" width="162" tabIndex="2" enabled="true" />
+	<!--<mx:TextInput x="585" y="53.95" maxChars="100" id="idAtiva" width="162" tabIndex="2" enabled="true" />-->
+	<mx:CheckBox id="idAtiva" x="720.5" y="55.65" width="118" tabIndex="27" />
 	
 	<mx:Image x="897.95" y="8.75" width="76.05" height="74.95796" source="@Embed(source='../../../../img/telas/aluno.png')"/>
 	
