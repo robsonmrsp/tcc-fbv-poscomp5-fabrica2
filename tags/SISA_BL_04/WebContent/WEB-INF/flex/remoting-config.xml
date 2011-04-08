@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<service id="remoting-service"
+    class="flex.messaging.services.RemotingService"
+    messageTypes="flex.messaging.messages.RemotingMessage">
+
+    <adapters>
+        <adapter-definition id="java-object" class="flex.messaging.services.remoting.adapters.JavaAdapter" default="true"/>
+    </adapters>
+
+    <default-channels>
+        <channel ref="channel-amf"/>
+    </default-channels>
+	
+	<destination id="usuarioService">
+		<properties>
+			<factory>spring</factory>
+			<source>usuarioService</source>
+		</properties>
+	</destination>
+		<destination id="perfilService">
+		<properties>
+			<factory>spring</factory>
+			<source>perfilService</source>
+		</properties>
+	</destination>
+	
+	<destination id="transacaoService">
+		<properties>
+			<factory>spring</factory>
+			<source>transacaoService</source>
+		</properties>
+	</destination>
+
+   <destination id="loteamentoService">
+		<properties>
+			<factory>spring</factory>
+			<source>loteamentoService</source>
+		</properties>
+	</destination>
+	<destination id="loteService">
+		<properties>
+			<factory>spring</factory>
+			<source>loteService</source>
+		</properties>
+	</destination>	
+	
+	<destination id="dominioService">
+		<properties>
+			<factory>spring</factory>
+			<source>dominioService</source>
+		</properties>
+	</destination>
+	
+	<destination id="promitenteService">
+		<properties>
+			<factory>spring</factory>
+			<source>promitenteService</source>
+		</properties>
+	</destination>
+
+	<destination id="propostaService">
+		<properties>
+			<factory>spring</factory>
+			<source>propostaService</source>
+		</properties>
+	</destination>
+
+	<destination id="financiamentoService">
+		<properties>
+			<factory>spring</factory>
+			<source>financiamentoService</source>
+		</properties>
+	</destination>
+		
+	<destination id="controleSessaoService">
+		<properties>
+			<factory>spring</factory>
+			<source>controleSessaoService</source>
+		</properties>
+	</destination>
+
+	
+	<destination id="relatoriosService">
+		<properties>
+			<factory>spring</factory>
+			<source>relatoriosService</source>
+		</properties>
+	</destination>
+	
+    <destination id="vendedorService">
+    	<properties>
+            <factory>spring</factory>
+            <source>vendedorService</source>
+        </properties>
+    </destination>
+</service>

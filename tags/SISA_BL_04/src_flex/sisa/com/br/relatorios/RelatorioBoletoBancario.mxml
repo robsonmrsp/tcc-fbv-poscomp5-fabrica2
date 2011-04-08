@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:fc="com.adobe.flex.extras.controls.*" creationComplete="iniciarTela()" xmlns:mx="http://www.adobe.com/2006/mxml" 
+				layout="absolute" title="Emissão de Boleto Bancário" width="1009" height="316" enabled="true">
+
+	<mx:Metadata>
+    	[ResourceBundle("MessagemResource_pt_BR")] //Nome do arquivo .properties
+    </mx:Metadata>
+    
+	<mx:Script>
+		<![CDATA[
+			import sisa.com.br.entidade.Proposta;
+			import mx.controls.List;
+			import sisa.com.br.dominio.DominioSituacaoProposta;
+			import mx.utils.StringUtil;
+			import mx.formatters.SwitchSymbolFormatter;
+			import mx.accessibility.ListAccImpl;
+			import mx.controls.Alert;
+			import mx.rpc.events.FaultEvent;
+			import mx.collections.ArrayCollection;
+			import mx.managers.PopUpManager;
+			import mx.rpc.events.ResultEvent;
+			import mx.core.Application;
+
+			
+			import sisa.com.br.entidade.InformacoesRelatorio
+			
+            
+            [Bindable]
+            public var listaPropostas:ArrayCollection = new ArrayCollection();
+            [Bindable]
+            public var listaParcelas:ArrayCollection = new ArrayCollection();
+            
+            private	var url:String;
+			private	var variables:URLVariables;
+		    private var request:URLRequest;            
+			
+			public function iniciarTela():void 
+			{
+				carregarComboProposta();
+			}
+			
+
+			private function esconderCampos():void{
+				lblProposta.visible = false;
+				cboProposta.visible = false;
+				btGerar.visible = false;
+			}
+			
+			private function visualizarComboProposta():void{
+				lblProposta.visible = true;
+				cboProposta.visible = true;
+				
+				btGerar.visible = true;
+			}            
+            
+			public function voltar():void
+			{
+				limparTela();
+				//esconderCampos();
+			}
+			
+			public function limparTela():void
+			{	
+				cboProposta.selectedIndex = -1;
+			}
+			
+			//Função que será executada após a conclusão do método save
+			public function onRelatorioGerado(event:ResultEvent):void
+			{	
+				limparTela();
+				Alert.show("relatório gerado com sucesso!");
+				
+			}	
+			
+			//Ocorreu uma falha ao chamar algum servico servico.
+			public function onFault(event:FaultEvent):void
+			{											
+				Alert.show(event.fault.message + "/n" + event.fault.rootCause + "/n" + event.fault.getStackTrace());
+			}
+
+			private function gerarBoletoBancario():void
+			{
+				var numeroProposta:String = "";
+				if (cboProposta.selectedIndex.valueOf() > -1){
+					numeroProposta = cboProposta.selectedItem.numero;
+//					relatoriosService.gerarBoleto(numeroProposta);
+
+					url =  Application.application.url;
+					url = url.substr(0,31) + "ServletGeraRelatorios?tpRel=3&nrProp="+numeroProposta;
+					
+					request = new URLRequest(url);
+					request.method = URLRequestMethod.POST;				
+					navigateToURL(request);
+				} else {
+					Alert.show("Seleciona uma proposta!");
+				}
+				
+			}
+			
+			// ---------------------------------------------------------------------			
+			// Carregando o combo de situações com os valores d banco
+			public function preencheComboProposta(event:ResultEvent):void
+			{
+				listaPropostas = event.result as ArrayCollection;
+			}
+			
+			public function carregarComboProposta():void
+			{
+				propostaService.getList();
+			}
+			// ---------------------------------------------------------------------
+			
+			public function carregaComboParcela(): void{
+				var proposta : Proposta = cboProposta.selectedItem as Proposta;
+				
+				listaParcelas = proposta.parcelasSinal;
+			}
+		]]>
+	</mx:Script>
+	
+	<mx:RemoteObject id="relatoriosService" showBusyCursor="true" fault="onFault(event)" destination="relatoriosService">
+		<mx:method name="gerarBoleto" result="onRelatorioGerado(event)" fault="onFault(event)"/>
+	</mx:RemoteObject>
+
+	<mx:RemoteObject id="propostaService" showBusyCursor="true" fault="onFault(event)" destination="propostaService">
+		<mx:method name="getList" result="preencheComboProposta(event)" fault="onFault(event)"/>
+	</mx:RemoteObject>
+	
+	<mx:Button label="{resourceManager.getString('MessagemResource_pt_BR', 'tela.button.cancelar')}" click="voltar();" id="btCancelar" icon="@Embed('../../../../img/button/cancel.png')" x="524.5" y="142.5" buttonMode="true" styleName="Button" height="59" width="99.5"/>
+	<mx:Button label="{resourceManager.getString('MessagemResource_pt_BR', 'tela.button.gerar')}" id="btGerar" click="gerarBoletoBancario();" toolTip="Gerar" icon="@Embed('../../../../img/button/imprimir.png')"  x="256" y="142.5" buttonMode="true" tabIndex="24" styleName="Button" height="59.05"  width="99.5"/>
+	<mx:Label x="121" y="48" text="Selcione a Proposta : " id="lblProposta"/>
+	<mx:ComboBox x="256" y="48" id="cboProposta" width="368" height="23" editable="false" selectedIndex="0" enabled="true" change="carregaComboParcela()"
+		dataProvider="{listaPropostas}" labelField="numero">
+	</mx:ComboBox>
+	
+	<mx:Label x="121" y="95" text="Selcione a Parcela : " id="lblParcela"/>
+	<mx:ComboBox x="256" y="92" id="cboParcela" width="368" height="23" editable="false" selectedIndex="0" enabled="true" change="carregaComboParcela()"
+		dataProvider="{listaParcelas}" labelField="id">
+	</mx:ComboBox>
+	
+</mx:TitleWindow>

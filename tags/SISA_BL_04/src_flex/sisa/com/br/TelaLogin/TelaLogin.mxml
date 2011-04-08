@@ -1,0 +1,111 @@
+<?xml version="1.0"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml"  xmlns:telaTemplate="sisa.com.br.TelaTemplate.*" creationComplete="iniciarTela()" layout="absolute" width="100%" height="100%"
+	horizontalAlign="center" backgroundImage="img/estrutura/ImgTelaLogin.png">
+
+	<mx:Metadata>
+    	[ResourceBundle("MessagemResource_pt_BR")] //Nome do arquivo .properties
+    </mx:Metadata>
+    		
+<mx:Script>
+		<![CDATA[
+			import mx.rpc.events.FaultEvent;
+			import sisa.com.br.TelaInicialSisa;
+			import sisa.com.br.entidade.UsuarioSisa;
+			import sisa.com.br.TelasAdministracao.ConsultaUsuario;
+			import mx.containers.TitleWindow;
+			import sisa.com.br.TelasAdministracao.Usuario;
+			import mx.containers.Canvas;
+			import mx.messaging.FlexClient;
+			import mx.managers.PopUpManager;
+			import mx.events.FlexEvent;
+			import mx.rpc.events.ResultEvent;
+			import mx.events.MenuEvent;
+            import mx.controls.Alert;
+            import mx.collections.*;
+			
+            private var usuario:UsuarioSisa;
+            
+			private function iniciarTela():void
+			{
+			}
+            
+            public function efetuarLogin():void
+			{	
+				
+				if(!validarCamposObrigatorios())
+					return;
+					
+				usuarioService.consultaUsuario(idLogin.text, idSenha.text);
+				  
+			}
+			
+			private function validarCamposObrigatorios():Boolean
+			{
+				if(idLogin.text == "")
+				{
+					Alert.show("Campo login obrigatório");
+					return false;
+				}
+				
+				if(idSenha.text == "")
+				{
+					Alert.show("Campo senha obrigatório");
+					return false;
+				}
+				return true;
+				
+			}
+			
+			public function onResultConsultaUsuario(event:ResultEvent):void
+			{
+				
+				usuario = event.result as UsuarioSisa;
+				
+				if(usuario == null){
+				
+					Alert.show("Usuário ou senha invlálido");
+				
+				}else{
+				
+					var telaInicial:TelaInicialSisa = new TelaInicialSisa();
+					telaInicial.usuarioLogado = usuario as UsuarioSisa;
+					if (application.getChildren() != null && application.getChildren().length > 0){
+						application.removeAllChildren();
+					} 
+					application.addChild(telaInicial);
+					
+
+				}
+			}	
+			
+			//Ocorreu uma falha ao chamar algum servico servico.
+			public function onFault(event:FaultEvent):void
+			{
+				var mensagemErro:String = event.fault.faultString;
+                var posicao:Number = mensagemErro.indexOf(":");        
+                posicao = posicao + 1;                                                        
+                Alert.show(mensagemErro.substring(posicao));												
+			}
+           
+			
+            
+		]]>
+	</mx:Script> 
+	
+	<mx:RemoteObject id="usuarioService" showBusyCursor="true" fault="onFault(event)" destination="usuarioService">
+		<mx:method name="consultaUsuario" result="onResultConsultaUsuario(event)" fault="onFault(event)"/>
+	</mx:RemoteObject> 
+	<mx:Panel width="657.4" height="184" layout="absolute" cornerRadius="10" horizontalAlign="center" verticalAlign="bottom" verticalCenter="56" horizontalCenter="166">
+		<mx:Label text="{resourceManager.getString('MessagemResource_pt_BR', 'tela.login.campo.senha')}" textAlign="right" enabled="true" right="223.40002" verticalCenter="12"/>
+		<mx:Label text="{resourceManager.getString('MessagemResource_pt_BR', 'tela.login.campo.login')}" textAlign="right" enabled="true" right="222.40002" verticalCenter="-18"/>
+		<mx:TextInput x="423" y="43.4" maxChars="100" id="idLogin" width="200" tabIndex="1" enabled="true" />
+		<mx:Button label="Login" enabled="true" id="botaoExcluir"  click="efetuarLogin()" x="489.15" y="103" buttonMode="true" tabIndex="11" styleName="Button" width="133.86363" height="22.045454"/>
+		<mx:TextInput x="422.9" y="73" maxChars="100" id="idSenha" width="199" tabIndex="3"  enabled="true" displayAsPassword="true"/>
+		<mx:VRule x="310" y="18" height="105.8" width="12"/>
+		<mx:TextArea x="24" y="37.2" text="Prezado usuário, esta é uma área restrita.&#xa;&#xa;Favor efetuar login para acessar o sistema." height="58" width="259" borderStyle="none" fontFamily="Verdana" enabled="true" editable="false"/>
+	</mx:Panel>
+	<mx:HRule width="100%" height="44" bottom="0" horizontalCenter="0"/>
+	<mx:Text text="Copyright @ SISA - 2011" width="100%" textAlign="center" color="#BECAC8" fontWeight="bold" fontFamily="Verdana" bottom="2" horizontalCenter="0"/>
+	 
+       
+</mx:Application>
