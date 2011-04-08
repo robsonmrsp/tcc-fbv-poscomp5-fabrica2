@@ -95,14 +95,17 @@
 	<mx:RemoteObject id="usuarioService" showBusyCursor="true" fault="onFault(event)" destination="usuarioService">
 		<mx:method name="consultaUsuario" result="onResultConsultaUsuario(event)" fault="onFault(event)"/>
 	</mx:RemoteObject> 
-	
-	<mx:Label x="879" y="298.35" text="{resourceManager.getString('MessagemResource_pt_BR', 'tela.login.campo.senha')}"/>
-	<mx:TextInput x="934" y="296.35" maxChars="100" id="idSenha" width="277" tabIndex="3"  enabled="true" displayAsPassword="true"/>
-	
-	<mx:Label x="879" y="258.95" text="{resourceManager.getString('MessagemResource_pt_BR', 'tela.login.campo.login')}"/>
-	<mx:TextInput x="934" y="256.95" maxChars="100" id="idLogin" width="277" tabIndex="1" enabled="true" />
-	
-	<mx:Button label="Login" enabled="true" id="botaoExcluir"  click="efetuarLogin()" x="1045" y="372" buttonMode="true" tabIndex="11" styleName="Button" width="99"/>
+	<mx:Panel width="657.4" height="184" layout="absolute" cornerRadius="10" horizontalAlign="center" verticalAlign="bottom" verticalCenter="56" horizontalCenter="166">
+		<mx:Label text="{resourceManager.getString('MessagemResource_pt_BR', 'tela.login.campo.senha')}" textAlign="right" enabled="true" right="223.40002" verticalCenter="12"/>
+		<mx:Label text="{resourceManager.getString('MessagemResource_pt_BR', 'tela.login.campo.login')}" textAlign="right" enabled="true" right="222.40002" verticalCenter="-18"/>
+		<mx:TextInput x="423" y="43.4" maxChars="100" id="idLogin" width="200" tabIndex="1" enabled="true" />
+		<mx:Button label="Login" enabled="true" id="botaoExcluir"  click="efetuarLogin()" x="489.15" y="103" buttonMode="true" tabIndex="11" styleName="Button" width="133.86363" height="22.045454"/>
+		<mx:TextInput x="422.9" y="73" maxChars="100" id="idSenha" width="199" tabIndex="3"  enabled="true" displayAsPassword="true"/>
+		<mx:VRule x="310" y="18" height="105.8" width="12"/>
+		<mx:TextArea x="24" y="37.2" text="Prezado usuário, esta é uma área restrita.&#xa;&#xa;Favor efetuar login para acessar o sistema." height="58" width="259" borderStyle="none" fontFamily="Verdana" enabled="true" editable="false"/>
+	</mx:Panel>
+	<mx:HRule width="100%" height="44" bottom="0" horizontalCenter="0"/>
+	<mx:Text text="Copyright @ SISA - 2011" width="100%" textAlign="center" color="#BECAC8" fontWeight="bold" fontFamily="Verdana" bottom="2" horizontalCenter="0"/>
 	 
        
 </mx:Application>
