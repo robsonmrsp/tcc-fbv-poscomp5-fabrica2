@@ -19,7 +19,7 @@ public class ConexaoMySQL {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             String driver = "jdbc:mysql://localhost:3306/tcc";
-            Connection con = DriverManager.getConnection(driver, "root", "root");
+            Connection con = DriverManager.getConnection(driver, "root", "");
             return con;
         } catch (Exception e) {
             e.printStackTrace();
