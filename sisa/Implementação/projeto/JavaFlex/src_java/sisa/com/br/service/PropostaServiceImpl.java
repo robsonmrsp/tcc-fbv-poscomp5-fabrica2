@@ -23,7 +23,7 @@ public class PropostaServiceImpl implements PropostaService {
 	}
 	
 	@Override
-	public Proposta insert(Proposta proposta) throws Exception {
+	public Proposta save(Proposta proposta) throws Exception {
 		try {
 			if (findById(proposta.getNumero()) != null){
 				throw new Exception("Proposta com o número '" + proposta.getNumero() + "' já cadastrada!");
@@ -79,10 +79,7 @@ public class PropostaServiceImpl implements PropostaService {
 	@Override
 	public Proposta update(Proposta proposta) throws Exception {
 		try {
-			if (findById(proposta.getNumero()) == null){
-				throw new Exception("Proposta com o número '" + proposta.getNumero() + "' não cadastrada!");
-			}
-			return this.propostaRepository.update(proposta);
+			return this.propostaRepository.save(proposta);
 		} catch (Exception e) {
 			throw new Exception("Não foi possível atualizar a proposta: " + e.getMessage());
 		}
@@ -91,16 +88,12 @@ public class PropostaServiceImpl implements PropostaService {
 	@Override
 	public void cancelar(Proposta proposta) throws Exception {
 		try {
-			Proposta propostaUpd = findById(proposta.getNumero());
-			if (propostaUpd == null){
-				throw new Exception("Proposta com o número '" + proposta.getNumero() + "' não cadastrada!");
-			}
-			propostaUpd.setSituacao("C");
-			for(Lote lote: propostaUpd.getLotes())
+			proposta.setSituacao("C");
+			for(Lote lote: proposta.getLotes())
 			{
 				lote.setSituacao("L");
 			}
-			this.propostaRepository.update(propostaUpd);
+			this.propostaRepository.update(proposta);
 		} catch (Exception e) {
 			throw new Exception("Não foi possível cancelar a proposta: " + e.getMessage());
 		}
@@ -109,12 +102,8 @@ public class PropostaServiceImpl implements PropostaService {
 	@Override
 	public void autorizar(Proposta proposta) throws Exception {
 		try {
-			Proposta propostaUpd = findById(proposta.getNumero());
-			if (propostaUpd == null){
-				throw new Exception("Proposta com o número '" + proposta.getNumero() + "' não cadastrada!");
-			}
-			propostaUpd.setSituacao("A");
-			this.propostaRepository.update(propostaUpd);
+			proposta.setSituacao("A");
+			this.propostaRepository.update(proposta);
 		} catch (Exception e) {
 			throw new Exception("Não foi possível autorizar a proposta: " + e.getMessage());
 		}
