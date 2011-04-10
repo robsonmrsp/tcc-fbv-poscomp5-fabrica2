@@ -5,7 +5,7 @@ import java.util.List;
 import sisa.com.br.entidade.Promitente;
 
 public interface PromitenteService {
-	Promitente add(Promitente promitente) throws Exception;
+	Promitente save(Promitente promitente) throws Exception;
 	Promitente update(Promitente promitente) throws Exception;
 	Promitente findById(String id) throws Exception;
 	List<Promitente> getList() throws Exception;

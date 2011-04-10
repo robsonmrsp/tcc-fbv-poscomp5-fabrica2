@@ -55,11 +55,12 @@ public class PromitenteServiceImpl implements PromitenteService {
 		}
 	}
 
-	public Promitente add(Promitente promitente) throws Exception {
+	public Promitente save(Promitente promitente) throws Exception {
 		try {
 			if (findById(promitente.getCodigo()) != null){
 				throw new Exception("Promitente com o código '" + promitente.getCodigo() + "' já cadastrado!");
 			}
+			
 			return this.promitenteRepository.save(promitente);
 		} catch (Exception e) {
 			throw new Exception("Não foi possível salvar o promitente: " + e.getMessage());
@@ -68,9 +69,24 @@ public class PromitenteServiceImpl implements PromitenteService {
 
 	public Promitente update(Promitente promitente) throws Exception {
 		try {
-			if (findById(promitente.getCodigo()) == null){
-				throw new Exception("Promitente com o código '" + promitente.getCodigo() + "' não cadastrado!");
-			}
+//			Promitente promitenteUpd = findById(promitente.getCodigo());
+//			if (promitenteUpd == null){
+//				throw new Exception("Promitente com o código '" + promitente.getCodigo() + "' não cadastrado!");
+//			}
+//			
+//			Method metodos[] = promitente.getClass().getDeclaredMethods();
+//			for (int j = 0, ml = metodos.length; j < ml; j++) {
+//				Method m = metodos[j];
+//				if (m.getName().contains("set") && !m.getName().contains("Codigo"))
+//				{
+//					Object arglist[] = new Object[1];
+//					Method mGet = promitente.getClass().getDeclaredMethod(m.getName().replaceFirst("set", "get"));
+//					arglist[0] = mGet.invoke(promitente);
+//					m.invoke(promitenteUpd, arglist);
+//					
+//				}
+//			}
+			
 			return this.promitenteRepository.save(promitente);
 		} catch (Exception e) {
 			throw new Exception("Não foi possível salvar o promitente: " + e.getMessage());
