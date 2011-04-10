@@ -75,6 +75,9 @@
 				//enderecoSisa = new EnderecoSisa();
 				enderecoSisa = new Endereco();
 				
+				if(!validarCamposObrigatorios())
+					return;
+				
 				if(vendedor!= null){
 					vendedorSisa.ds_razao_nome = vendedor.ds_razao_nome;
 				}
@@ -98,6 +101,49 @@
 
 				vendedorService.save(vendedorSisa);
 			
+			}
+			
+			//validar os campos obrigatórios
+			public function validarCamposObrigatorios():Boolean{
+				//Vendedor
+				if(idCod.text == ""){
+					Alert.show("Campo Código Vendedor obrigatório");
+					return false;
+				}
+				if(idNome.text == ""){
+					Alert.show("Campo Nome obrigatório");
+					return false;
+				}
+				if(idCPF.text == ""){
+					Alert.show("Campo CPF obrigatório");
+					return false;
+				}
+				if(idTelefone.text == ""){
+					Alert.show("Campo Telefone obrigatório");
+					return false;
+				}
+				if(idNomeFantasia.text == ""){
+					Alert.show("Campo Nome Fantasia obrigatório");
+					return false;
+				}
+				if(idSituacao.text == ""){
+					Alert.show("Campo Situação obrigatório");
+					return false;
+				}
+				//Endereço
+				if(idLogradouro.text == ""){
+					Alert.show("Campo Logradouro obrigatório");
+					return false;
+				}
+				if(idCidade.text == ""){
+					Alert.show("Campo Cidade obrigatório");
+					return false;
+				}
+				if(idUf.text == ""){
+					Alert.show("Campo UF obrigatório");
+					return false;
+				}
+				return true;
 			}
 			
 			//Função que será executada após a conclusão do método remove
@@ -132,33 +178,46 @@
 	<mx:DateFormatter id="df" formatString="DD/MM/YYYY"/>
 	
 	<mx:Label x="51" y="10.35" text="Código:"/>
-	<mx:TextInput x="107" y="8" id="idCod" width="51" tabIndex="1" enabled="true" maxChars="3"/>
+	<mx:FormItem id="idCodItem" x="107" y="8" width="70" required="true" height="22" errorString="Campo Obrigatório">
+		<mx:TextInput x="107" y="8" id="idCod"  width="51" tabIndex="1" enabled="true" maxChars="3"/>
+	</mx:FormItem>
 	<mx:Image x="858" y="2" width="126" height="120" source="@Embed(source='../../../../img/telas/aluno.png')"/>
 	
 	<mx:Label x="58" y="37" text="Nome:"/>
-	<mx:TextInput x="107" y="35.65" id="idNome" width="650" tabIndex="2" enabled="true" maxChars="40"/>
+	<mx:FormItem id="idNomeItem" x="107" y="35.65" width="700" required="true" height="22" errorString="Campo Obrigatório">
+		<mx:TextInput x="107" y="35.65" id="idNome" width="650" tabIndex="2" enabled="true" maxChars="40"/>
+	</mx:FormItem>
 	
 	<mx:Label x="69"   y="66.7"  text="CPF:"/>
-	<mx:TextInput x="107"  y="65.65" id="idCPF" width="256" tabIndex="3"  enabled="true"  height="22"  maxChars="15"/>
-
+	<mx:FormItem id="idCPFItem" x="107"  y="65.65" width="271" required="true" height="22" errorString="Campo Obrigatório">
+		<mx:TextInput x="107"  y="65.65" id="idCPF" width="256" tabIndex="3"  enabled="true"  height="22"  maxChars="15"/>
+	</mx:FormItem>
+	
 	<mx:Label x="44"  y="97"  text="Telefone:"/>
-	<mx:TextInput x="107" y="95.95"  id="idTelefone" width="311" tabIndex="5" enabled="true" maxChars="11"/>
+	<mx:FormItem id="idTelefoneItem" x="107" y="95.95" width="350" required="true" height="22" errorString="Campo Obrigatório">
+		<mx:TextInput x="107" y="95.95"  id="idTelefone" width="311" tabIndex="5" enabled="true" maxChars="11"/>
+	</mx:FormItem>
 	
 	<mx:Label x="386"  y="66"  text="Situação:"/>
-	<mx:TextInput x="446" y="65.65"  id="idSituacao" width="73" tabIndex="4" enabled="true" maxChars="1"/>
+	<mx:FormItem id="idSituacaoItem" x="446" y="65.65" width="100" required="true" height="22" errorString="Campo Obrigatório">
+		<mx:TextInput x="446" y="65.65"  id="idSituacao" width="73" tabIndex="4" enabled="true" maxChars="1"/>
+	</mx:FormItem>
 	
 	<mx:Label x="12" y="126" text="Nome Fantasia:"/>
-	<mx:TextInput x="107" y="125.65" id="idNomeFantasia" width="604" tabIndex="5" enabled="true" maxChars="40"/>
-	
+	<mx:FormItem id="idNomeFantasiaItem" x="107" y="125.65" width="650" required="true" height="22" errorString="Campo Obrigatório">
+		<mx:TextInput x="107" y="125.65" id="idNomeFantasia" width="604" tabIndex="5" enabled="true" maxChars="40"/>
+	</mx:FormItem>
 	<!--ENDEREÇO-->
 	
 	<mx:Label x="380" y="157.65" text="..:: Endereço ::.."/>
 	
 	<mx:Label x="24" y="186" text="Logradouro:"/>
-	<mx:TextInput x="101" y="185.65" id="idLogradouro" width="636" tabIndex="6" enabled="true" maxChars="200"/>
+	<mx:FormItem id="idLogradouroItem" x="101" y="185.65" width="656" required="true" height="22" errorString="Campo Obrigatório">
+		<mx:TextInput x="101" y="185.65" id="idLogradouro" width="636" tabIndex="6" enabled="true" maxChars="200"/>
+	</mx:FormItem>
 	
-	<mx:Label x="745"   y="186"  text="Nº:"/>
-	<mx:TextInput x="774"  y="185.65" id="idNrLogradouro" width="54" tabIndex="7"  enabled="true"  height="22"  maxChars="11"/>
+	<mx:Label x="757"   y="186"  text="Nº:"/>
+	<mx:TextInput x="786"  y="185.65" id="idNrLogradouro" width="54" tabIndex="7"  enabled="true"  height="22"  maxChars="11"/>
 
 	<mx:Label x="10"  y="214"  text="Complemento:"/>
 	<mx:TextInput x="101" y="212"  id="idComplemento" width="211" tabIndex="8" enabled="true" maxChars="45"/>
@@ -167,11 +226,14 @@
 	<mx:TextInput x="367" y="212"  id="idBairro" width="205" tabIndex="9" enabled="true" maxChars="100"/>
 	
 	<mx:Label x="580"  y="215"  text="Cidade:"/>
-	<mx:TextInput x="632" y="212.65"  id="idCidade" width="196.5" tabIndex="10" enabled="true" maxChars="100"/>
+	<mx:FormItem x="632" y="212.65"  id="idCidadeItem" width="218" required="true" height="22" errorString="Campo Obrigatório">
+		<mx:TextInput x="632" y="212.65"  id="idCidade" width="196.5" tabIndex="10" enabled="true" maxChars="100"/>
+	</mx:FormItem>
 	
 	<mx:Label x="71"  y="242.35"  text="UF:"/>
-	<mx:TextInput x="101" y="242"  id="idUf" width="211" tabIndex="11" enabled="true" maxChars="100"/>
-	
+	<mx:FormItem x="101" y="242"  id="idUfItem" width="232" required="true" height="22" errorString="Campo Obrigatório">
+		<mx:TextInput x="101" y="242"  id="idUf" width="211" tabIndex="11" enabled="true" maxChars="100"/>
+	</mx:FormItem>
 	<mx:Label x="331"  y="242.35"  text="CEP:"/>
 	<mx:TextInput x="367" y="242"  id="idCEP" width="196.5" tabIndex="12" enabled="true" maxChars="8"/>
 	
