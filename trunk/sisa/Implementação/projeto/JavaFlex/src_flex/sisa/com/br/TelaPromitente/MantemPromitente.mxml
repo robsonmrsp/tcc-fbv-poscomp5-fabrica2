@@ -61,17 +61,27 @@
 				 {label: "Tocantins", data: "TO"}]
 				);
 			
-			//Variavel publica para receber objeto da tela de consulta
-			public var promitenteEditar:Promitente = null;
-			public var retornarPromitente: Boolean = false;
-			public static const SALVAR:String = "Botao_Salvar";
 			
-			private var retornoDominio: int = 0;
+			//Variavel publica para receber objeto da tela de consulta
+			public var codigoPromitente: String = null;
+			public var promitenteRetornar:Promitente = null;
+			public var retornarPromitente: Boolean = false;
+			//Variáveis usadas para dispara evento para telas anterior
+			public static const SALVAR:String = "Botao_Salvar";
+			public static const ATUALIZAR:String = "Atualizar_ListaPromitente";
+			
+			private var retornoServico: int = 0;
+			private var totalRetorno: int = 2;
 			
 			public function iniciarTela():void 
 			{
 				dominioService.listarTipoSexo();
 				dominioService.listarEstadoCivil();	
+				if (codigoPromitente != null)
+				{
+					totalRetorno = 3;
+					promitenteService.findById(codigoPromitente);
+				}
 				
 				if (retornarPromitente)
 				{
@@ -82,61 +92,60 @@
 			
 			private function prepararTela():void
 			{
-				
-				if(promitenteEditar != null){
-					txCodigo.text = promitenteEditar.codigo;
+				if(codigoPromitente != null){
+					txCodigo.text = promitente.codigo;
 					txCodigo.enabled = false;
-					txNome.text = promitenteEditar.nome;
-					cbSexo.selectedIndex = Utils.getIndexListaDominio(listaSexo, promitenteEditar.sexo);
-					cbEstadoCivil.selectedIndex = Utils.getIndexListaDominio(listaEstadoCivil, promitenteEditar.estadoCivil);
-					if (promitenteEditar.estadoCivil == "C") 
+					txNome.text = promitente.nome;
+					cbSexo.selectedIndex = Utils.getIndexListaDominio(listaSexo, promitente.sexo);
+					cbEstadoCivil.selectedIndex = Utils.getIndexListaDominio(listaEstadoCivil, promitente.estadoCivil);
+					if (promitente.estadoCivil == "C") 
 					{
-						txNomeConjuge.text = promitenteEditar.nomeConjuge;
+						txNomeConjuge.text = promitente.nomeConjuge;
 						txNomeConjuge.enabled = true;
 						fiConjuge.required = true;
 					}
 					
-					txDtNasc.selectedDate = promitenteEditar.dataNascimento;
-					txCpfCnpj.text = promitenteEditar.cpfCnpj;
-					txRG.text = promitenteEditar.numeroRG;
-					txOrgEmissor.text = promitenteEditar.orgaoEmissorRG;
-					txDtEmissao.selectedDate = promitenteEditar.dataExpedicaoRG;
-					txProfissao.text = promitenteEditar.profissao;
-					txNacionalidade.text = promitenteEditar.nacionalidade;
+					txDtNasc.selectedDate = promitente.dataNascimento;
+					txCpfCnpj.text = promitente.cpfCnpj;
+					txRG.text = promitente.numeroRG;
+					txOrgEmissor.text = promitente.orgaoEmissorRG;
+					txDtEmissao.selectedDate = promitente.dataExpedicaoRG;
+					txProfissao.text = promitente.profissao;
+					txNacionalidade.text = promitente.nacionalidade;
 					
-					if (promitenteEditar.enderecoResidencial != null){
+					if (promitente.enderecoResidencial != null){
 						try
 						{
-							txCepRes.text = promitenteEditar.enderecoResidencial.cep;
-							txLogRes.text = promitenteEditar.enderecoResidencial.logradouro;
-							txNumRes.text = promitenteEditar.enderecoResidencial.numero;
-							txComplRes.text = promitenteEditar.enderecoResidencial.complemento;
-							txBairroRes.text = promitenteEditar.enderecoResidencial.bairro;
-							txCidadeRes.text = promitenteEditar.enderecoResidencial.cidade;
-							cbUfRes.selectedIndex = Utils.getIndexLista(listaUf, promitenteEditar.enderecoResidencial.uf);
+							txCepRes.text = promitente.enderecoResidencial.cep;
+							txLogRes.text = promitente.enderecoResidencial.logradouro;
+							txNumRes.text = promitente.enderecoResidencial.numero;
+							txComplRes.text = promitente.enderecoResidencial.complemento;
+							txBairroRes.text = promitente.enderecoResidencial.bairro;
+							txCidadeRes.text = promitente.enderecoResidencial.cidade;
+							cbUfRes.selectedIndex = Utils.getIndexLista(listaUf, 'data', promitente.enderecoResidencial.uf);
 						}
 						catch(e: Error)
 						{
 							Alert.show(e.message);
 						}
 					}
-					txTelefoneRes.text = promitenteEditar.telefoneResidencial;
+					txTelefoneRes.text = promitente.telefoneResidencial;
 					
-					if (promitenteEditar.enderecoCobranca != null){
-						txCepCob.text = promitenteEditar.enderecoCobranca.cep;
-						txLogCob.text = promitenteEditar.enderecoCobranca.logradouro;
-						txNumCob.text = promitenteEditar.enderecoCobranca.numero;
-						txComplCob.text = promitenteEditar.enderecoCobranca.complemento;
-						txBairroCob.text = promitenteEditar.enderecoCobranca.bairro;
-						txCidadeCob.text = promitenteEditar.enderecoCobranca.cidade;
-						cbUfCob.selectedIndex = Utils.getIndexLista(listaUf, promitenteEditar.enderecoCobranca.uf);
+					if (promitente.enderecoCobranca != null){
+						txCepCob.text = promitente.enderecoCobranca.cep;
+						txLogCob.text = promitente.enderecoCobranca.logradouro;
+						txNumCob.text = promitente.enderecoCobranca.numero;
+						txComplCob.text = promitente.enderecoCobranca.complemento;
+						txBairroCob.text = promitente.enderecoCobranca.bairro;
+						txCidadeCob.text = promitente.enderecoCobranca.cidade;
+						cbUfCob.selectedIndex = Utils.getIndexLista(listaUf, 'data', promitente.enderecoCobranca.uf);
 					}
-					txTelefoneCob.text = promitenteEditar.telefoneCobranca;
+					txTelefoneCob.text = promitente.telefoneCobranca;
 					
-					ckDependente.selected = (promitenteEditar.dependente == "S")
+					ckDependente.selected = (promitente.dependente == "S")
 					if (ckDependente.selected){
-						txNomeResponsavel.text = promitenteEditar.nomeResponsavel;
-						txCpfCnpjResponsavel.text = promitenteEditar.cpfCnpjResponsavel;
+						txNomeResponsavel.text = promitente.nomeResponsavel;
+						txCpfCnpjResponsavel.text = promitente.cpfCnpjResponsavel;
 						habilitaResponsavel();
 					}
 					
@@ -146,10 +155,9 @@
 				}
 			}
 			
-			public function voltar():void
+			public function fechar():void
 			{
 				PopUpManager.removePopUp(this);
-				
 			}
 			
 			public function limparTela():void
@@ -315,13 +323,13 @@
 				
 				
 				try{
-					if(promitenteEditar != null)
-					{
+					if(codigoPromitente == null)
+/* 					{
 						promitente = promitenteEditar;
-						promitente.codigo = promitenteEditar.codigo;
+						//promitente.codigo = promitenteEditar.codigo;
 					}
 					else
-					{
+ */					{
 						promitente = new Promitente();
 						promitente.codigo = txCodigo.text;
 						promitente.situacao = "I";			
@@ -343,7 +351,7 @@
 					promitente.profissao = txProfissao.text;	
 					promitente.nacionalidade = txNacionalidade.text;	
 					                                
-					if (promitenteEditar == null){           
+					if (codigoPromitente == null){           
 						promitente.enderecoResidencial = new Endereco();
 					}                                                                
 					promitente.enderecoResidencial.cep = txCepRes.text;			
@@ -356,7 +364,7 @@
 					promitente.enderecoResidencial.uf = cbUfRes.selectedItem.data;	
 					promitente.telefoneResidencial = txTelefoneRes.text;	
 					
-					if (promitenteEditar == null){           
+					if (codigoPromitente == null){           
 						promitente.enderecoCobranca = new Endereco();
 					}                                                             
 					promitente.enderecoCobranca = new Endereco();
@@ -376,9 +384,9 @@
 						promitente.cpfCnpjResponsavel = txCpfCnpjResponsavel.text;
 					}
 					
-					if(promitenteEditar != null)
+					if(codigoPromitente == null)
 					{
-						promitenteService.add(promitente);
+						promitenteService.save(promitente);
 					}
 					else
 					{
@@ -395,8 +403,8 @@
 			public function onResultListaSexo(event: ResultEvent): void
 			{
 				listaSexo = event.result as ArrayCollection;
-				retornoDominio = retornoDominio + 1;
-				if (retornoDominio == 2){
+				retornoServico = retornoServico + 1;
+				if (retornoServico == totalRetorno){
 					prepararTela(); 
 				}
 			}
@@ -405,8 +413,8 @@
 			public function onResultListaEstadoCivil(event: ResultEvent): void
 			{
 				listaEstadoCivil = event.result as ArrayCollection;
-				retornoDominio = retornoDominio + 1;
-				if (retornoDominio == 2){
+				retornoServico = retornoServico + 1;
+				if (retornoServico == totalRetorno){
 					prepararTela();
 				}
 			}
@@ -424,15 +432,34 @@
 				limparTela();
 				if (!retornarPromitente)
 				{
-					Alert.show("Promitente salvo com sucesso");
+					if (codigoPromitente == null)
+					{
+						Alert.show("Promitente cadastrado com sucesso!");
+					}
+					else
+					{
+						Alert.show("Promitente alterado com sucesso!");
+					}
+					fechar();
+					//Disparando o evento para atualizar o grid na tela de consulta
+					dispatchEvent(new Event(ATUALIZAR));
 				}
 				else
 				{
-					promitenteEditar = promitente;
-					
+					promitenteRetornar = promitente;
+					//Disparando evento para preencher os dados do promitente na tela de Proposta
 					dispatchEvent(new Event(SALVAR));
 				}
 			}	
+			
+			public function onResultFindById(event:ResultEvent):void
+			{
+				promitente = event.result as Promitente;
+				retornoServico = retornoServico + 1;
+				if (retornoServico == totalRetorno){
+					prepararTela();
+				}
+			}
 			
 			//Ocorreu uma falha ao chamar algum servico servico.
 			public function onFault(event:FaultEvent):void
@@ -489,15 +516,16 @@
 			
 			private function titleWindow_close(evt:CloseEvent):void 
 			{
-				voltar();
+				fechar();
 			}
 		]]>
 	</mx:Script>
 	
 	<mx:RemoteObject id="promitenteService" showBusyCursor="true" fault="onFault(event)" destination="promitenteService">
-		<mx:method name="add" result="onResultSave(event)" fault="onFault(event)"/>
+		<mx:method name="save" result="onResultSave(event)" fault="onFault(event)"/>
 		<mx:method name="update" result="onResultSave(event)" fault="onFault(event)"/>
 		<mx:method name="remove" result="onResultRemove(event)" fault="onFault(event)"/>
+		<mx:method name="findById" result="onResultFindById(event)" fault="onFault(event)"/>
 	</mx:RemoteObject>
 
 	<mx:RemoteObject id="dominioService" showBusyCursor="true" fault="onFault(event)" destination="dominioService">
@@ -526,7 +554,7 @@
 	<mx:DateFormatter id="df" formatString="DD/MM/YYYY"/>
 	
 	
-	<mx:Button label="{resourceManager.getString('MessagemResource_pt_BR', 'tela.button.cancelar')}" click="voltar();" id="btCancelar" icon="@Embed('../../../../img/button/cancel.png')" x="647.5" y="475.9" buttonMode="true" styleName="Button" height="29" width="99.5"/>
+	<mx:Button label="{resourceManager.getString('MessagemResource_pt_BR', 'tela.button.cancelar')}" click="fechar();" id="btCancelar" icon="@Embed('../../../../img/button/cancel.png')" x="647.5" y="475.9" buttonMode="true" styleName="Button" height="29" width="99.5"/>
 	<mx:Button label="{resourceManager.getString('MessagemResource_pt_BR', 'tela.button.salvar')}" id="btSalvar" click="salvar();" icon="@Embed('../../../../img/button/add.png')"  x="537.5" y="475.95" buttonMode="true" tabIndex="24" styleName="Button" height="29.05"  width="99.5"/>
 	<mx:TabNavigator x="10" y="42" width="737" height="422.90002" backgroundColor="#EFF5FB" id="tabPromitente" selectedIndex="0" creationPolicy="all">
 		<mx:Canvas label="Informações" width="100%" height="100%">
