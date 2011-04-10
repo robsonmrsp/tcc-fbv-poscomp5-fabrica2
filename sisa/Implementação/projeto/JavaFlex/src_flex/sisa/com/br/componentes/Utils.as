@@ -1,8 +1,8 @@
 package sisa.com.br.componentes
 {
 	import mx.collections.ArrayCollection;
+	import mx.containers.TitleWindow;
 	import mx.controls.Alert;
-	import mx.core.Application;
 	import mx.core.UIComponent;
 	import mx.events.ValidationResultEvent;
 	import mx.rpc.events.FaultEvent;
@@ -19,17 +19,18 @@ package sisa.com.br.componentes
 		{
 		}
 
-		public static function validarForm(app: Application ): Boolean
+		public static function validarForm(validacaoArr: Array): Boolean
 		{
-			var validacaoArr: Array = new Array;
+/* 			var validacaoArr: Array = new Array;
 			
 			//Procura por todos os objetos de validação
-			for each (var child:UIComponent in app.getChildren()) {
+			for each (var child:UIComponent in tela.getChildren()) {
 				if (child is Validator){
+					Alert.show("Encontrou um Validator");
 					validacaoArr.push(child);
 				}
 			} 
-		    //esta variavel sera reponsável por armazenar os result dos erros
+ */		    //esta variavel sera reponsável por armazenar os result dos erros
 		    var errosArray:Array = Validator.validateAll(validacaoArr);
 		    //verifica se o formulario é válido. Ele será válido se: todos os campos necessários forem preenchidos
 		    var formValido:Boolean = errosArray.length == 0;
@@ -103,9 +104,9 @@ package sisa.com.br.componentes
 			return -1;
 		}
 			
-		public static function getIndexLista(lista: ArrayCollection, valor: String): int{
+		public static function getIndexLista(lista: ArrayCollection, propriedade: String, valor: String): int{
 			for ( var cont:int = 0; cont < lista.length; cont++ ) {
-				if (lista[cont]['data'] == valor) {
+				if (lista[cont][propriedade] == valor) {
 			      return cont;
 			    }
 			  }
