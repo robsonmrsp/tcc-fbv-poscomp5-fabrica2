@@ -48,7 +48,7 @@ public class VendedorServiceImpl implements VendedorService {
 		try {	
 			return this.vendedorRepository.findById(vendedor);
 		} catch (Exception e) {
-			throw new Exception("N‹o foi poss’vel procurar pela ID."+e.getMessage());
+			throw new Exception("Não foi possível pesquisar."+e.getMessage());
 		}
 	}
 
@@ -74,48 +74,7 @@ public class VendedorServiceImpl implements VendedorService {
 		try {	
 			return this.vendedorRepository.consultaVendedor(vendedor);
 		} catch (Exception e) {
-			throw new Exception("Não foi possível localizar." +e.getMessage());
+			throw new Exception("Erro ao consultar " +e.getMessage());
 		}
-	}
-
-	public Vendedor consultaVendedor(String vendedor) throws Exception {
-		try {	
-			Vendedor vendedorLogado = null;
-			vendedorLogado =  this.vendedorRepository.consultaVendedor(vendedor);
-			
-			if( vendedorLogado == null){
-				
-				throw new Exception("Usu‡rio ou senha incorreta");
-			}else{
-			
-			/*if( utils.isVendedorLogado(vendedorLogado.getCd_vend()))
-				{
-					  //usu‡rio j‡ est‡ logado
-					  throw new Exception("Usu‡rio j‡ logado");
-				} else {
-				 
-					//usu‡rio logado com sucesso
-					//registro atributos na sess‹o
-					FlexContext.getFlexClient().setAttribute("vendedor", vendedorLogado.getId());
-					 
-					//registro esse usu‡rio na lista dos usu‡rios logados
-					VendedorUtils.vendedorsLogados.put(vendedorLogado.getId(), vendedorLogado.getLogin());
-					 
-					//retorno o objeto inteiro desse usu‡rio para ser armazenado no Flex para consultas posteriores
-					return vendedorLogado;
-				 
-				}*/
-			}
-			
-		} catch (Exception e) {
-			throw new Exception("Nï¿½o foi possï¿½vel procurar pela ID."+e.getMessage());
-		}
-		return null;
-	}
-
-	public void pingSessao()
-	{
-		
-		
 	}
 }
