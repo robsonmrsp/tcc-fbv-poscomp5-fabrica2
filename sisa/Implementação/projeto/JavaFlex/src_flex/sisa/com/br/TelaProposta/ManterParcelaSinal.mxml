@@ -23,6 +23,8 @@
 		
 		[Bindable]
 		private var listaTipoPagto: ArrayCollection;
+
+		private var validatorArr: Array = new Array;
 		
         private function CreationComplete():void{
         	
@@ -33,19 +35,26 @@
         	txValor.text = nf.format(parcelaSinal.valor);
         	dtVencimento.data = parcelaSinal.dataVencimento;
         	
-        	
+ 			validatorArr.push(nvTipoPagto);
+			validatorArr.push(vlDocumento);
+			validatorArr.push(nvValor);
+			validatorArr.push(dvDtVenc);
+       	
             // Centraliza o pop-up.
             PopUpManager.centerPopUp(this);
         }
         
 		private function btnOk_Click(e: MouseEvent):void
 		{
-			parcelaSinal.tipoPagto = cbTipoPagto.selectedItem.codigo;
-			parcelaSinal.numeroDocumento = txNumeroDoc.text;
-			parcelaSinal.valor = parseFloat(txValor.text.replace(".", "").replace(",","."));
-			parcelaSinal.dataVencimento = dtVencimento.selectedDate;
-			
-			dispatchEvent(new Event(OK))
+			if (Utils.validarForm(validatorArr))
+			{
+				parcelaSinal.tipoPagto = cbTipoPagto.selectedItem.codigo;
+				parcelaSinal.numeroDocumento = txNumeroDoc.text;
+				parcelaSinal.valor = parseFloat(txValor.text.replace(".", "").replace(",","."));
+				parcelaSinal.dataVencimento = dtVencimento.selectedDate;
+				
+				dispatchEvent(new Event(OK))
+			}
 		}
           
         // Este metodo é usado para fechar o pop-up.
@@ -81,6 +90,29 @@
 
 	<mx:DateFormatter id="df" formatString="DD/MM/YYYY"/>
 
+	<mx:NumberValidator id="nvTipoPagto" source="{cbTipoPagto}" property="selectedIndex"
+		minValue="0"
+		lowerThanMinError="Selecione o tipo de pagto" />
+		
+	<mx:Validator id="vlDocumento" source="{txNumeroDoc}" property="text"
+		required="true"
+		requiredFieldError="Informe o número do documento" />
+		
+	<mx:NumberValidator id="nvValor" source="{txValor}" property="text"
+		required="true"
+		requiredFieldError="Informe o valor da parcela"
+		decimalSeparator=","
+		thousandsSeparator="."
+		precision="2"
+		precisionError="Número inválido"
+		decimalPointCountError="Número inválido"	
+		invalidFormatCharsError="Número inválido" />
+
+	<mx:DateValidator id="dvDtVenc" source="{dtVencimento}" property="selectedDate"
+		required="true"
+		requiredFieldError="Informe a data do vencimento"
+		inputFormat="DD/MM/YYYY"  />
+		
 	<mx:RemoteObject id="dominioService" showBusyCursor="true" fault="onFault(event)" destination="dominioService">
 		<mx:method name="listarTipoPagto" result="onResultListaTipoPagto(event)" fault="onFault(event)"/>
 	</mx:RemoteObject>
@@ -89,16 +121,16 @@
 		<mx:FormItem label="Parcela:">
 			<mx:Text text="00" id="txParcela"/>
 		</mx:FormItem>
-		<mx:FormItem label="Tipo de Pagto.:">
-			<mx:ComboBox id="cbTipoPagto" dataProvider="{listaTipoPagto}" labelField="descricao"></mx:ComboBox>
+		<mx:FormItem label="Tipo de Pagto.:" required="true">
+			<mx:ComboBox id="cbTipoPagto" dataProvider="{listaTipoPagto}" labelField="descricao" prompt="Selecione o tipo de pagto."></mx:ComboBox>
 		</mx:FormItem>
-		<mx:FormItem label="Núm. do Documento:">
+		<mx:FormItem label="Núm. do Documento:" required="true">
 			<mx:TextInput id="txNumeroDoc" maxChars="10" width="120"/>
 		</mx:FormItem>
-		<mx:FormItem label="Valor:">
+		<mx:FormItem label="Valor:" required="true">
 			<mx:TextInput width="102" id="txValor" maxChars="13" textAlign="right"/>
 		</mx:FormItem>
-		<mx:FormItem label="Data de Vencimento:">
+		<mx:FormItem label="Data de Vencimento:" required="true">
 			<mx:DateField width="103" id="dtVencimento" showToday="true" dayNames="['D','S','T','Q','Q','S','S']" monthNames="['Janeiro','Fevereiro','Março','Abril',
 'Maio','Junho','Julho','Agosto','Setembro','Outubro',
 'Novembro','Dezembro']" disabledDays="[0,6]" editable="true" yearNavigationEnabled="true" restrict="0-9/" formatString="DD/MM/YYYY"/>

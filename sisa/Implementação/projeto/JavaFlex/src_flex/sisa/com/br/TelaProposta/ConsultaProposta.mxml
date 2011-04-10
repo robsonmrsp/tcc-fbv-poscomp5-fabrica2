@@ -109,6 +109,9 @@
 			public function getList():void
 			{
 				propostaService.getList();
+				btExibir.enabled = false;
+				btAutorizarProposta.enabled = false;
+				btCancelarProposta.enabled = false;
 			}
 			
 			//Função que será executada após a conclusão do método getList
@@ -215,10 +218,18 @@
 				Alert.show(event.fault.message);
 			}
 			
-			public function cadastrarProposta():void{
-            	
+			public function cadastrarProposta():void
+            {	
             	telaProposta = ManterProposta(PopUpManager.createPopUp(UIComponent(this.parentApplication), sisa.com.br.TelaProposta.ManterProposta, true));
             	PopUpManager.centerPopUp(telaProposta);
+			}
+			
+			public function exibirProposta(): void
+			{
+				telaProposta = ManterProposta(PopUpManager.createPopUp(UIComponent(this.parentApplication), sisa.com.br.TelaProposta.ManterProposta, true));
+            	telaProposta.acao = "C";
+            	telaProposta.propostaExibir = grProposta.selectedItem as Proposta;
+            	PopUpManager.centerPopUp(telaProposta);            	
 			}
 			
 			private function cancelarProposta(): void
@@ -265,8 +276,9 @@
 			private function changeRowSelected(event:Event):void
 			{
 				propostaSelecionada = (event.target.selectedItem as Proposta);
+				btExibir.enabled = true;
 				btAutorizarProposta.enabled = (propostaSelecionada.situacao == "P");
-				btCancelarProposta.enabled = ((propostaSelecionada.situacao == "P") || (proposta.situacao == "A"));
+				btCancelarProposta.enabled = ((propostaSelecionada.situacao == "P") || (propostaSelecionada.situacao == "A"));
 			}
 
 			//evento ao fechar do Alert
@@ -282,7 +294,6 @@
 							propostaService.autorizar(propostaSelecionada);
 							break;
 					}
-					propostaService.update(propostaSelecionada);
 				}
 			}
 			
@@ -340,7 +351,7 @@
 		</mx:DataGrid>
 	</mx:Panel>
 	<mx:Button label="{resourceManager.getString('MessagemResource_pt_BR', 'tela.button.nova')}" id="btCadastrar" icon="@Embed(source='../../../../img/button/add.png')" x="10" y="312" width="99" buttonMode="true" tabIndex="8" enabled="true" styleName="Button" click="cadastrarProposta()"/>
-	<mx:Button label="{resourceManager.getString('MessagemResource_pt_BR', 'tela.button.alterar')}" id="btAlterar" icon="@Embed('../../../../img/button/alter.png')" x="117" y="312" buttonMode="true" tabIndex="9" styleName="Button" width="99" enabled="false"/>
+	<mx:Button label="{resourceManager.getString('MessagemResource_pt_BR', 'tela.button.exibir')}" id="btExibir" icon="@Embed(source='../../../../img/button/search.png')" x="117" y="312" buttonMode="true" tabIndex="9" styleName="Button" width="99" enabled="false" click="exibirProposta()"/>
 	<mx:Button label="{resourceManager.getString('MessagemResource_pt_BR', 'tela.button.cancelarProposta')}" enabled="false" id="btCancelarProposta" icon="@Embed('../../../../img/button/cancel.png')" x="331" y="312" buttonMode="true" tabIndex="11" styleName="Button" width="99" click="cancelarProposta()"/>
 	<mx:Button label="Autorizar" enabled="false" id="btAutorizarProposta" icon="@Embed(source='../../../../img/button/10.png')" x="224" y="312" buttonMode="true" tabIndex="11" styleName="Button" width="99" click="autorizarProposta()"/>
 	<mx:Label x="10" y="10" text="Loteamento:" width="82"/>
