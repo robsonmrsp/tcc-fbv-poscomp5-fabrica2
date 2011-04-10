@@ -11,5 +11,7 @@ package sisa.com.br.entidade
 		public var numeroDocumento: String;
 		public var valor: Number;
 		public var dataVencimento: Date;
+		//variável usada apenas na parte flex. Auxilia na desabilitação do botão de editar a parcela
+		public var editar: Boolean = true; 
 	}
 }
