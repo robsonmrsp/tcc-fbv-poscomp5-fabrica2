@@ -29,6 +29,9 @@ public class PromitenteHibernateDao extends HibernateDaoSupport implements Promi
 		"promitente");
 		if (promitente != null) {
 		
+			if (promitente.getCodigo() != null) {
+				criteria.add(Restrictions.eq("promitente.codigo", promitente.getCodigo()));
+			}
 			if (promitente.getCpfCnpj() != null) {
 				criteria.add(Restrictions.eq("promitente.cpfCnpj", promitente.getCpfCnpj()));
 			}
@@ -62,5 +65,4 @@ public class PromitenteHibernateDao extends HibernateDaoSupport implements Promi
 		getHibernateTemplate().saveOrUpdate(promitente);
 		return promitente;
 	}
-
 }
