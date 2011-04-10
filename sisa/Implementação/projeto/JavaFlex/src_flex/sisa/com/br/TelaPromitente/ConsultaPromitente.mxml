@@ -31,8 +31,18 @@
 			public function consultaPromitente():void
 			{	  
 				this.promitente = new Promitente();
-				 
-				if (idNomePromitente.text != "")
+				
+				if (idCodigo.text != "")
+				{
+					promitente.codigo = idCodigo.text;
+					promitenteService.find(promitente);
+				}
+				else if (idCodigo.text != "")
+				{
+					promitente.cpfCnpj = idCpfCnpj.text;
+					promitenteService.find(promitente);
+				}
+				else if (idNomePromitente.text != "")
 				{ 			 
 				  promitente.nome = idNomePromitente.text;
 				  promitenteService.find(promitente);
@@ -65,16 +75,31 @@
 			{            		
             	telaPromitente = MantemPromitente(PopUpManager.createPopUp(UIComponent(this.parentApplication), sisa.com.br.TelaPromitente.MantemPromitente, true));
             	//Enviando objeto selecionado para tela seguinte
-            	telaPromitente.promitenteEditar = idGridPromitente.selectedItem as Promitente;  
+            	telaPromitente.promitenteRetornar = idGridPromitente.selectedItem as Promitente;  
             	PopUpManager.centerPopUp(telaPromitente);
+			}
+			
+			public function cadastrarPromitente():void
+			{
+            	telaPromitente = MantemPromitente(PopUpManager.createPopUp(UIComponent(this.parentApplication), sisa.com.br.TelaPromitente.MantemPromitente, true));
+            	//Prepara para esperar o evento para atualizar o grid
+            	telaPromitente.addEventListener(MantemPromitente.ATUALIZAR, atualizarGrid);
+            	PopUpManager.centerPopUp(telaPromitente);
+			}
+
+			//evento chamado ao salvar o promitente na tela de manterPromitente
+			private function atualizarGrid(e: Event): void
+			{
+				consultaPromitente();
 			}
 			
 			public function alterarPromitente():void
 			{   
-				    		
             	telaPromitente = MantemPromitente(PopUpManager.createPopUp(UIComponent(this.parentApplication), sisa.com.br.TelaPromitente.MantemPromitente, true));
-            	//Enviando objeto selecionado para tela seguinte
-            	telaPromitente.promitenteEditar = idGridPromitente.selectedItem as Promitente;  
+            	//Prepara para esperar o evento para atualizar o grid
+            	telaPromitente.addEventListener(MantemPromitente.ATUALIZAR, atualizarGrid);
+            	//Enviando código do promitente selecionado para tela de promitente
+            	telaPromitente.codigoPromitente = (idGridPromitente.selectedItem as Promitente).codigo;  
             	PopUpManager.centerPopUp(telaPromitente);
             	
 			}
@@ -100,12 +125,6 @@
 				Alert.show(event.fault.message);
 			}
 			
-			public function cadastrarPromitente():void{
-            	
-            	telaPromitente = MantemPromitente(PopUpManager.createPopUp(UIComponent(this.parentApplication), sisa.com.br.TelaPromitente.MantemPromitente, true));
-            	PopUpManager.centerPopUp(telaPromitente);
-			}
-			
 		]]>
 	</mx:Script>
 	<mx:RemoteObject id="promitenteService" showBusyCursor="true" fault="onFault(event)" destination="promitenteService">
@@ -115,15 +134,15 @@
 		</mx:method>
 	</mx:RemoteObject>
 	
-	<mx:Label x="24" y="10.3" text="{resourceManager.getString('MessagemResource_pt_BR', 'tela.promitente.campo.nome')}"/>
-	<mx:TextInput x="139" y="9.95" maxChars="100" id="idNomePromitente" width="608" tabIndex="2" enabled="true" />
+	<mx:Label x="24" y="63.65" text="{resourceManager.getString('MessagemResource_pt_BR', 'tela.promitente.campo.nome')}"/>
+	<mx:TextInput x="139" y="63.35" maxChars="100" id="idNomePromitente" width="548" tabIndex="2" enabled="true" />
 	
-	<mx:Label x="25" y="49.7" text="{resourceManager.getString('MessagemResource_pt_BR', 'tela.promitente.campo.codigo')}"/>
-	<mx:TextInput x="139" y="49.35" maxChars="100" id="idCodigo" width="277" tabIndex="2" enabled="true" />
+	<mx:Label x="24" y="10.3" text="{resourceManager.getString('MessagemResource_pt_BR', 'tela.promitente.campo.codigo')}"/>
+	<mx:TextInput x="139" y="9.95" maxChars="5" id="idCodigo" width="111" tabIndex="2" enabled="true" />
 	
 	<mx:Image x="897.95" y="8.75" width="76.05" height="74.95796" source="@Embed(source='../../../../img/telas/aluno.png')"/>
 	
-	<mx:Button x="790" y="8.3" label="{resourceManager.getString('MessagemResource_pt_BR', 'tela.button.pesquisa')}" icon="@Embed(source='../../../../img/button/search.png')" width="99.95" height="24" id="btBuscar" click="consultaPromitente();" buttonMode="true" tabIndex="4" enabled="true" styleName="Button"/>
+	<mx:Button x="746" y="61.7" label="{resourceManager.getString('MessagemResource_pt_BR', 'tela.button.pesquisa')}" icon="@Embed(source='../../../../img/button/search.png')" width="99.95" height="24" id="btBuscar" click="consultaPromitente();" buttonMode="true" tabIndex="4" enabled="true" styleName="Button"/>
 	
 	<mx:Panel x="10" y="91.7" width="966" height="204.25" layout="absolute" title="{resourceManager.getString('MessagemResource_pt_BR', 'tela.consulta.promitente.title.lista')}" horizontalAlign="center">
 		<mx:DataGrid id="idGridPromitente" x="0" y="0" width="946" height="158.25" dataProvider="{listaPromitente}" doubleClick="{detalharPromitente()}" doubleClickEnabled="true" tabIndex="7" tabEnabled="false">
@@ -138,5 +157,7 @@
 	<mx:Button label="{resourceManager.getString('MessagemResource_pt_BR', 'tela.button.novo')}" id="btCadastrar" icon="@Embed(source='../../../../img/button/add.png')" x="10" y="312" width="99" buttonMode="true" tabIndex="8" enabled="true" styleName="Button" click="cadastrarPromitente()"/>
 	<mx:Button label="{resourceManager.getString('MessagemResource_pt_BR', 'tela.button.alterar')}" id="btAlterar" icon="@Embed('../../../../img/button/alter.png')" x="117" y="312" buttonMode="true" tabIndex="9" styleName="Button" width="99" click="alterarPromitente()"/>
 	<mx:Button label="{resourceManager.getString('MessagemResource_pt_BR', 'tela.button.excluir')}" enabled="true" id="btExcluir" icon="@Embed('../../../../img/button/cancel.png')" x="224" y="312" buttonMode="true" tabIndex="11" styleName="Button" width="99" click="removerPromitente();"/>
+	<mx:Label x="24" y="37.3" text="{resourceManager.getString('MessagemResource_pt_BR', 'tela.promitente.campo.cpfCnpj')}"/>
+	<mx:TextInput x="139" y="36.95" maxChars="14" id="idCpfCnpj" width="170" tabIndex="2" enabled="true" />
 
 </mx:TitleWindow>
