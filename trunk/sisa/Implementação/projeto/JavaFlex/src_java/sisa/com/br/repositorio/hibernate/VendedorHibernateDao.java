@@ -27,11 +27,11 @@ public class VendedorHibernateDao extends HibernateDaoSupport implements Vendedo
 	}
 	
 	public Vendedor findById(Vendedor vendedor) throws Exception {
-		String id = vendedor.getCd_vend();
-		vendedor = (Vendedor) getHibernateTemplate().get(Vendedor.class, vendedor.getCd_vend());
+		String nome = vendedor.getNo_fantasia();
+		vendedor = (Vendedor) getHibernateTemplate().get(Vendedor.class, vendedor.getNo_fantasia());
 		
 		if (vendedor == null)
-			throw new Exception("O vendedor com a ID: "+id+" do(a) "+Vendedor.class.getSimpleName()+" não foi encontrado.");
+			throw new Exception("O vendedor com o nome: "+nome+" do(a) "+Vendedor.class.getSimpleName()+" não foi encontrado.");
 		return vendedor;
 	}
 
@@ -51,15 +51,14 @@ public class VendedorHibernateDao extends HibernateDaoSupport implements Vendedo
 	}
 
 	public List<Vendedor> consultaVendedor(Vendedor vendedor) throws Exception {
-		Criteria criteria = getSession().createCriteria(Vendedor.class,
-				"vendedor");
+		Criteria criteria = getSession().createCriteria(Vendedor.class,	"vendedor");
 		if (vendedor != null) {
 
 			if (vendedor.getCd_vend() != null) {
 				criteria.add(Restrictions.like("vendedor.cd_vend", vendedor.getCd_vend(), MatchMode.START));
 			}
 			if (vendedor.getDs_razao_nome() != null) {
-				criteria.add(Restrictions.like("usuario.nome", vendedor.getDs_razao_nome(), MatchMode.START));
+				criteria.add(Restrictions.like("vendedor.ds_razao_nome", vendedor.getDs_razao_nome().toUpperCase(), MatchMode.START));
 			}
 		}
 		//	        
