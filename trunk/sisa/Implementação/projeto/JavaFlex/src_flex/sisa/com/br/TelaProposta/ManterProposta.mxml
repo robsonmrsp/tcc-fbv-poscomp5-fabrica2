@@ -90,6 +90,8 @@
 			{
 				proposta = propostaExibir;
 			}
+			
+			PopUpManager.centerPopUp(this);
 		}
 		
 		//Carrega a tela para exibição com a proposta selecionada em Consultar Proposta
@@ -605,6 +607,7 @@
 		//método de retorno do serviço de Proposta
 		private function onResultProposta(e: ResultEvent): void
 		{
+			dispatchEvent(new Event(ManterProposta.ATUALIZAR));
 			if (acao == "I")
 			{
 				Alert.show("Proposta cadastrada com sucesso!");
@@ -613,7 +616,6 @@
 			{
 				Alert.show("Proposta alterada com sucesso!");
 			}
-			dispatchEvent(new Event(ATUALIZAR));
 		}
 
 		//método de retorno das falhas nos serviços

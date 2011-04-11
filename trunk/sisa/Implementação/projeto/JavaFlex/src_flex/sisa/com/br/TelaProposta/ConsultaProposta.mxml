@@ -27,7 +27,8 @@
 			import mx.core.Application;
 			import mx.collections.ArrayCollection;
 			
-			public var telaProposta:ManterProposta;
+			private var telaProposta:ManterProposta;
+			
 			public var proposta:Proposta;
 			[Bindable]
 			private var listaProposta:ArrayCollection;
@@ -221,8 +222,15 @@
 			public function cadastrarProposta():void
             {	
             	telaProposta = ManterProposta(PopUpManager.createPopUp(UIComponent(this.parentApplication), sisa.com.br.TelaProposta.ManterProposta, true));
-            	telaProposta.addEventListener(ManterProposta.ATUALIZAR, getList);
-            	PopUpManager.centerPopUp(telaProposta);
+            	telaProposta.addEventListener(ManterProposta.ATUALIZAR, atualizarGrid);
+            	
+			}
+
+			//evento chamado ao salvar o promitente na tela de manterProposta
+			private function atualizarGrid(e: Event): void
+			{
+				getList();
+				PopUpManager.removePopUp(telaProposta);
 			}
 			
 			public function exibirProposta(): void
