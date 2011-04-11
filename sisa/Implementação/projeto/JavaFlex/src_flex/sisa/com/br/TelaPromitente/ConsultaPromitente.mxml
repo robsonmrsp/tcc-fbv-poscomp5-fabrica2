@@ -100,15 +100,12 @@
             	telaPromitente.addEventListener(MantemPromitente.ATUALIZAR, atualizarGrid);
             	//Enviando código do promitente selecionado para tela de promitente
             	telaPromitente.codigoPromitente = (idGridPromitente.selectedItem as Promitente).codigo;  
-            	PopUpManager.centerPopUp(telaPromitente);
             	
 			}
 			
 			public function removerPromitente():void{
 				if(idGridPromitente.selectedItem != null){
-					 this.promitente = new Promitente();
-					 this.promitente.codigo = idGridPromitente.selectedItem.codigo;
-					 promitenteService.remove(promitente);
+					 promitenteService.remove(idGridPromitente.selectedItem as Promitente);
 				}
 			}
 			
@@ -124,6 +121,28 @@
 			{												
 				Alert.show(event.fault.message);
 			}
+
+			private function formatar(item: Object, column:DataGridColumn): String
+			{
+				var doc: String = item[column.dataField];
+				var docForm: String = "";
+				
+				if (doc.length == 11) //CPF
+				{
+					docForm = doc.substr(0, 3) + "." + doc.substr(3, 3) + "." + doc.substr(6, 3) + "-" + doc.substr(9);
+				}
+				else if (doc.length == 14) //CNPJ
+				{
+					docForm = doc.substr(0, 2) + "." + doc.substr(2, 3) + "." + doc.substr(5, 3) +
+								"/" + doc.substr(8, 4) + "-" + doc.substr(12);
+				}
+				else
+				{
+					docForm = doc;
+				}
+				
+				return docForm;
+			}	
 			
 		]]>
 	</mx:Script>
@@ -149,7 +168,7 @@
 			<mx:columns>
 				<mx:DataGridColumn headerText="{resourceManager.getString('MessagemResource_pt_BR', 'tela.consulta.promitente.campo.grid.codigo')}" dataField="codigo" width="80"/>
 				<mx:DataGridColumn headerText="{resourceManager.getString('MessagemResource_pt_BR', 'tela.consulta.promitente.campo.grid.nome')}" dataField="nome" />
-				<mx:DataGridColumn headerText="{resourceManager.getString('MessagemResource_pt_BR', 'tela.consulta.promitente.campo.grid.cpfCNPJ')}" dataField="cpfCnpj" width="180" />
+				<mx:DataGridColumn headerText="{resourceManager.getString('MessagemResource_pt_BR', 'tela.consulta.promitente.campo.grid.cpfCNPJ')}" dataField="cpfCnpj" labelFunction="formatar" width="180" />
 			</mx:columns>
 		</mx:DataGrid>
 
