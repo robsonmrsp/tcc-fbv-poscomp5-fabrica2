@@ -87,7 +87,9 @@
 				{
 					// Centraliza o pop-up.
             		PopUpManager.centerPopUp(this);
-				}							
+				}	
+				
+				PopUpManager.centerPopUp(this);						
 			}
 			
 			private function prepararTela():void
@@ -383,6 +385,10 @@
 						promitente.nomeResponsavel = txNomeResponsavel.text;
 						promitente.cpfCnpjResponsavel = txCpfCnpjResponsavel.text;
 					}
+					else
+					{
+						promitente.dependente = "N";
+					}
 					
 					if(codigoPromitente == null)
 					{
@@ -429,6 +435,7 @@
 			//Função que será executada após a conclusão do método save
 			public function onResultSave(event:ResultEvent):void
 			{	
+				dispatchEvent(new Event(ATUALIZAR));
 				limparTela();
 				if (!retornarPromitente)
 				{
@@ -442,7 +449,6 @@
 					}
 					fechar();
 					//Disparando o evento para atualizar o grid na tela de consulta
-					dispatchEvent(new Event(ATUALIZAR));
 				}
 				else
 				{
