@@ -55,10 +55,10 @@ public class VendedorHibernateDao extends HibernateDaoSupport implements Vendedo
 		if (vendedor != null) {
 
 			if (vendedor.getCd_vend() != null) {
-				criteria.add(Restrictions.like("vendedor.cd_vend", vendedor.getCd_vend(), MatchMode.START));
+				criteria.add(Restrictions.like("vendedor.cd_vend", vendedor.getCd_vend(), MatchMode.ANYWHERE));
 			}
 			if (vendedor.getDs_razao_nome() != null) {
-				criteria.add(Restrictions.like("vendedor.ds_razao_nome", vendedor.getDs_razao_nome().toUpperCase(), MatchMode.START));
+				criteria.add(Restrictions.like("vendedor.ds_razao_nome", vendedor.getDs_razao_nome().toUpperCase(), MatchMode.ANYWHERE));
 			}
 		}
 		//	        
