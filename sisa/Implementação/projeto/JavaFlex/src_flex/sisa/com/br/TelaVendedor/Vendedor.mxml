@@ -142,7 +142,6 @@
 			
 			//validar os campos obrigatórios
 			public function validarCamposObrigatorios():Boolean{
-				Alert.show(idSituacao.selectedItem.data);
 				//Vendedor
 				if(idCod.text == ""){
 					Alert.show("Campo Código Vendedor obrigatório");
