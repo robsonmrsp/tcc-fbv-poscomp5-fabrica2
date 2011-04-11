@@ -221,6 +221,7 @@
 			public function cadastrarProposta():void
             {	
             	telaProposta = ManterProposta(PopUpManager.createPopUp(UIComponent(this.parentApplication), sisa.com.br.TelaProposta.ManterProposta, true));
+            	telaProposta.addEventListener(ManterProposta.ATUALIZAR, getList);
             	PopUpManager.centerPopUp(telaProposta);
 			}
 			
