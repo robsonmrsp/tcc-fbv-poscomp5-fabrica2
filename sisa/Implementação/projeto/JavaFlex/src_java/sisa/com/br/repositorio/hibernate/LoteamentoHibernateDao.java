@@ -66,7 +66,10 @@ public class LoteamentoHibernateDao extends HibernateDaoSupport implements
 	}
 	
 	public Loteamento update(Loteamento loteamento) throws Exception {
-		getHibernateTemplate().update(loteamento);
+		
+		Loteamento aux = (Loteamento) getHibernateTemplate().load(Loteamento.class,loteamento.getNu_lotm());
+		aux.setDs_lotm(loteamento.getDs_lotm());
+		getHibernateTemplate().update(aux);
 		return loteamento;
 	}
 	
