@@ -56,6 +56,7 @@ public class LoteHibernateDao extends HibernateDaoSupport implements
 		criteria.add(Restrictions.like("lote.nu_quadra",lote.getNu_quadra(),MatchMode.EXACT));
 		criteria.add(Restrictions.like("lote.nu_lote",lote.getNu_lote(),MatchMode.EXACT));
 		
+		
 		resposta = (Lote) criteria.uniqueResult();
 				
 		if(resposta != null){
@@ -89,6 +90,10 @@ public class LoteHibernateDao extends HibernateDaoSupport implements
 			}
 			if(lote.getNu_quadra() != null){
 				criteria.add(Restrictions.like("lote.nu_quadra",lote.getNu_quadra(), MatchMode.ANYWHERE));
+			}
+			if (lote.getSituacao() != null)
+			{
+				criteria.add(Restrictions.eq("lote.situacao", lote.getSituacao()));
 			}
 		}
 		return criteria.list();
