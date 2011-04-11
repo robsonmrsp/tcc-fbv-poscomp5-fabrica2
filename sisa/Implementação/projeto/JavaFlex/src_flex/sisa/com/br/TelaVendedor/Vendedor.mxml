@@ -8,7 +8,8 @@
     
 	<mx:Script>
 		<![CDATA[
-			//import sisa.com.br.entidade.EnderecoSisa;			
+			//import sisa.com.br.entidade.EnderecoSisa;	
+			import sisa.com.br.componentes.Utils;		
 			import sisa.com.br.entidade.Endereco;
 			import mx.controls.Alert;
 			import mx.rpc.events.FaultEvent;
@@ -26,13 +27,49 @@
 			//Variavel publica para receber objeto da tela de consulta
 			public var vendedor:VendedorSisa = null;
 			
+			[Bindable]
+			private var listaSituacao: ArrayCollection = new ArrayCollection(
+				[{label: "Ativo", data: "A"}, 
+				 {label: "Inativo", data: "I"}]);
+			
+			[Bindable]
+			private var listaUf: ArrayCollection = new ArrayCollection(
+				[{label: "Acre", data: "AC"}, 
+				 {label: "Alagoas", data: "AL"}, 
+				 {label: "Amazonas", data: "AM"}, 
+				 {label: "Amapá", data: "AP"}, 
+				 {label: "Bahia", data: "BA"}, 
+				 {label: "Ceára", data: "CE"}, 
+				 {label: "Distrito Federal", data: "DF"}, 
+				 {label: "Espirito Santo", data: "ES"}, 
+				 {label: "Goiás", data: "GO"}, 
+				 {label: "Maranhão", data: "MA"}, 
+				 {label: "Minas Gerais", data: "MG"}, 
+				 {label: "Mato Grosso do Sul", data: "MS"}, 
+				 {label: "Mato Grosso", data: "MT"}, 
+				 {label: "Pará", data: "PA"}, 
+				 {label: "Paraiba", data: "PB"}, 
+				 {label: "Pernambuco", data: "PE"}, 
+				 {label: "Piauí", data: "PI"}, 
+				 {label: "Paraná", data: "PR"}, 
+				 {label: "Rio de Janeiro", data: "RJ"}, 
+				 {label: "Rio Grande do Norte", data: "RN"}, 
+				 {label: "Rondônia", data: "RO"}, 
+				 {label: "Roraima", data: "RR"}, 
+				 {label: "Rio Grande do Sul", data: "RS"}, 
+				 {label: "Santa Catarina", data: "SC"}, 
+				 {label: "Sergipe", data: "SE"}, 
+				 {label: "São Paulo", data: "SP"}, 
+				 {label: "Tocantins", data: "TO"}]
+				);
+			
 			public function iniciarTela():void 
 			{
 				if(vendedor != null){
 					idNome.text = vendedor.ds_razao_nome;
 					idCPF.text = vendedor.nu_cgc_cpf;
 					idTelefone.text = vendedor.nu_fone;
-					idSituacao.text = vendedor.situacao;
+					idSituacao.selectedIndex = Utils.getIndexLista(listaSituacao, 'data', vendedor.situacao);
 					idNomeFantasia.text = vendedor.no_fantasia;
 					idCod.text = vendedor.cd_vend;
 					
@@ -41,7 +78,7 @@
 					idNrLogradouro.text = vendedor.endereco.numero.toString();
 					idBairro.text = vendedor.endereco.bairro;
 					idCidade.text = vendedor.endereco.cidade;
-					idUf.text = vendedor.endereco.uf;
+					idUf.selectedIndex = Utils.getIndexLista(listaUf, 'data', vendedor.endereco.uf);
 					idCEP.text = vendedor.endereco.cep;
 				}
 			}
@@ -87,9 +124,9 @@
 				vendedorSisa.nu_cgc_cpf = idCPF.text;
 				vendedorSisa.nu_fone = idTelefone.text;
 				vendedorSisa.no_fantasia = idNomeFantasia.text;
-				vendedorSisa.situacao = idSituacao.text;
+				vendedorSisa.situacao = idSituacao.selectedItem.data;
 				
-				enderecoSisa.uf = idUf.text;
+				enderecoSisa.uf = idUf.selectedItem.data;
 				enderecoSisa.bairro = idBairro.text;
 				enderecoSisa.complemento = idComplemento.text;
 				enderecoSisa.logradouro = idLogradouro.text;
@@ -105,6 +142,7 @@
 			
 			//validar os campos obrigatórios
 			public function validarCamposObrigatorios():Boolean{
+				Alert.show(idSituacao.selectedItem.data);
 				//Vendedor
 				if(idCod.text == ""){
 					Alert.show("Campo Código Vendedor obrigatório");
@@ -126,7 +164,7 @@
 					Alert.show("Campo Nome Fantasia obrigatório");
 					return false;
 				}
-				if(idSituacao.text == ""){
+				if(idSituacao.selectedItem.data == ""){
 					Alert.show("Campo Situação obrigatório");
 					return false;
 				}
@@ -139,7 +177,7 @@
 					Alert.show("Campo Cidade obrigatório");
 					return false;
 				}
-				if(idUf.text == ""){
+				if(idUf.selectedItem.data == ""){
 					Alert.show("Campo UF obrigatório");
 					return false;
 				}
@@ -199,8 +237,9 @@
 	</mx:FormItem>
 	
 	<mx:Label x="386"  y="66"  text="Situação:"/>
-	<mx:FormItem id="idSituacaoItem" x="446" y="65.65" width="100" required="true" height="22" errorString="Campo Obrigatório">
-		<mx:TextInput x="446" y="65.65"  id="idSituacao" width="73" tabIndex="4" enabled="true" maxChars="1"/>
+	<mx:FormItem id="idSituacaoItem" x="446" y="65.65" width="100" required="true" height="26" errorString="Campo Obrigatório">
+		<!--<mx:TextInput x="446" y="65.65"  id="idSituacao" width="73" tabIndex="4" enabled="true" maxChars="1"/>-->
+		<mx:ComboBox x="446" y="65.65"  id="idSituacao" width="80" tabIndex="4" dataProvider="{listaSituacao}" textAlign="left"></mx:ComboBox>
 	</mx:FormItem>
 	
 	<mx:Label x="12" y="126" text="Nome Fantasia:"/>
@@ -220,7 +259,7 @@
 	<mx:TextInput x="786"  y="185.65" id="idNrLogradouro" width="54" tabIndex="7"  enabled="true"  height="22"  maxChars="11"/>
 
 	<mx:Label x="10"  y="214"  text="Complemento:"/>
-	<mx:TextInput x="101" y="212"  id="idComplemento" width="211" tabIndex="8" enabled="true" maxChars="45"/>
+	<mx:TextInput x="115" y="212"  id="idComplemento" width="199" tabIndex="8" enabled="true" maxChars="45"/>
 	
 	<mx:Label x="320"  y="214"  text="Bairro:"/>
 	<mx:TextInput x="367" y="212"  id="idBairro" width="205" tabIndex="9" enabled="true" maxChars="100"/>
@@ -231,8 +270,9 @@
 	</mx:FormItem>
 	
 	<mx:Label x="71"  y="242.35"  text="UF:"/>
-	<mx:FormItem x="101" y="242"  id="idUfItem" width="232" required="true" height="22" errorString="Campo Obrigatório">
-		<mx:TextInput x="101" y="242"  id="idUf" width="211" tabIndex="11" enabled="true" maxChars="100"/>
+	<mx:FormItem x="101" y="242"  id="idUfItem" width="232" required="true" height="27" errorString="Campo Obrigatório">
+		<!--<mx:TextInput x="101" y="242" id="idUf" width="211" tabIndex="11" enabled="true" maxChars="100"/>-->
+		<mx:ComboBox x="101" y="245" width="136" id="idUf" dataProvider="{listaUf}" tabIndex="11" textAlign="left"></mx:ComboBox>
 	</mx:FormItem>
 	<mx:Label x="331"  y="242.35"  text="CEP:"/>
 	<mx:TextInput x="367" y="242"  id="idCEP" width="196.5" tabIndex="12" enabled="true" maxChars="8"/>
