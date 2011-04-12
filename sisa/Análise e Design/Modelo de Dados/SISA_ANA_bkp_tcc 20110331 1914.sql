@@ -37,7 +37,7 @@ CREATE TABLE `endereco` (
   `no_cidade` varchar(100) NOT NULL,
   PRIMARY KEY (`cd_endereco`),
   KEY `fk_bairro_endereco` (`ds_bairro`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `endereco`
@@ -45,7 +45,8 @@ CREATE TABLE `endereco` (
 
 /*!40000 ALTER TABLE `endereco` DISABLE KEYS */;
 INSERT INTO `endereco` (`cd_endereco`,`nu_cep`,`ds_logradouro`,`nr_endereco`,`ds_complemento`,`ds_bairro`,`cd_uf`,`no_cidade`) VALUES 
- (1,'54500000','Estrada do Bongi','1155','AP-210','Prado','PE','RECIFE');
+ (1,'54500000','Estrada do Bongi','1155','AP-210','Prado','PE','RECIFE'),
+ (5,'54500000','Estrada do Bongi','1155','AP-210','Prado','PE','RECIFE');
 /*!40000 ALTER TABLE `endereco` ENABLE KEYS */;
 
 
@@ -167,7 +168,6 @@ CREATE TABLE `lote` (
   `valorm2` decimal(15,2) NOT NULL,
   PRIMARY KEY (`cd_lote`),
   UNIQUE KEY `uk_lote` (`nu_lotm`,`nu_quadra`,`nu_lote`),
-  KEY `fk_lote_loteamento` (`nu_lotm`),
   CONSTRAINT `fk_lote_loteamento` FOREIGN KEY (`nu_lotm`) REFERENCES `loteamento` (`nu_lotm`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 
@@ -177,16 +177,16 @@ CREATE TABLE `lote` (
 
 /*!40000 ALTER TABLE `lote` DISABLE KEYS */;
 INSERT INTO `lote` (`cd_lote`,`nu_lotm`,`nu_quadra`,`nu_lote`,`ds_conf_frente`,`ds_conf_fundo`,`ds_conf_direita`,`ds_conf_esquerda`,`nu_area`,`nu_dist_esquina`,`situacao`,`ds_dim_frente`,`ds_dim_fundo`,`ds_dim_direita`,`ds_dim_esquerda`,`valorm2`) VALUES 
- (1,'001','004','006','R.72','LOTE 12','LOTE 05','LOTE 7','235.86','0.00','V','11,50','11,50','23,00','23,00','108.00'),
- (2,'001','006','008','R.74','LOTE 9','LOTE 7','ENG CEDRO','364.40','0.00','V','23,34','11,30','20,00','23,34','108.00'),
- (3,'001','008','009','R.76','LOTE 19','LOTE 8','LOTE 10','200.00','0.00','V','10,00','10,00','20,00','20,00','108.00'),
- (4,'001','009','014','R.76','LOTE 11','LOTE 13','LOTE 15','200.00','0.00','V','10,00','10,00','20,00','20,00','108.00'),
- (5,'001','010','022','AVENIDA 3','LOTE 30','LOTE 23','LOTE 21','200.00','0.00','V','10,00','10,00','20,00','20,00','108.00'),
- (6,'001','015','001','R.64','LOTE 15,16','LOTE 2','ZV-1','200.00','0.00','L','10,00','10,00','20,00','20,00','150.00'),
+ (1,'001','004','006','R.72','LOTE 12','LOTE 05','LOTE 7','235.86','0.00','P','11,50','11,50','23,00','23,00','108.00'),
+ (2,'001','006','008','R.74','LOTE 9','LOTE 7','ENG CEDRO','364.40','0.00','P','23,34','11,30','20,00','23,34','108.00'),
+ (3,'001','008','009','R.76','LOTE 19','LOTE 8','LOTE 10','200.00','0.00','L','10,00','10,00','20,00','20,00','108.00'),
+ (4,'001','009','014','R.76','LOTE 11','LOTE 13','LOTE 15','200.00','0.00','L','10,00','10,00','20,00','20,00','108.00'),
+ (5,'001','010','022','AVENIDA 3','LOTE 30','LOTE 23','LOTE 21','200.00','0.00','P','10,00','10,00','20,00','20,00','108.00'),
+ (6,'001','015','001','R.64','LOTE 15,16','LOTE 2','ZV-1','200.00','0.00','P','10,00','10,00','20,00','20,00','150.00'),
  (7,'001','015','002','R.64','LOTE 14,15','LOTE 3','LOTE 1','200.00','0.00','L','10,00','10,00','20,00','20,00','150.00'),
- (8,'001','015','003','R.64','LOTE 13,14','LOTE 4','LOTE 2','200.00','0.00','L','10,00','10,00','20,00','20,00','150.00'),
+ (8,'001','015','003','R.64','LOTE 13,14','LOTE 4','LOTE 2','200.00','0.00','P','10,00','10,00','20,00','20,00','150.00'),
  (9,'001','015','004','R.64','LOTE 12,13','LOTE 5','LOTE 3','200.00','0.00','L','10,00','10,00','20,00','20,00','150.00'),
- (10,'001','015','005','R.64','LOTE 11,12','LOTE 6','LOTE 4','200.00','0.00','L','10,00','10,00','20,00','20,00','150.00');
+ (10,'001','015','005','R.64','LOTE 11,12','LOTE 6','LOTE 4','200.00','0.00','P','10,00','10,00','20,00','20,00','150.00');
 /*!40000 ALTER TABLE `lote` ENABLE KEYS */;
 
 
@@ -231,9 +231,13 @@ CREATE TABLE `lotes_proposta` (
 
 /*!40000 ALTER TABLE `lotes_proposta` DISABLE KEYS */;
 INSERT INTO `lotes_proposta` (`nu_proposta`,`cd_lote`) VALUES 
+ ('11111',1),
+ ('12222',2),
+ ('33333',3),
+ ('44444',5),
  ('1',6),
  ('1',8),
- ('2',8);
+ ('2',10);
 /*!40000 ALTER TABLE `lotes_proposta` ENABLE KEYS */;
 
 
@@ -253,13 +257,22 @@ CREATE TABLE `parcelas_sinal_proposta` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `uk_ParcelaSinal` (`nu_proposta`,`nu_parcela`),
   CONSTRAINT `fk_proposta_sinal` FOREIGN KEY (`nu_proposta`) REFERENCES `proposta` (`nu_proposta`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `parcelas_sinal_proposta`
 --
 
 /*!40000 ALTER TABLE `parcelas_sinal_proposta` DISABLE KEYS */;
+INSERT INTO `parcelas_sinal_proposta` (`id`,`nu_proposta`,`nu_parcela`,`tipo_pagto`,`num_doc`,`valor`,`data_vencimento`) VALUES 
+ (1,'11111',1,'B','12212121','1000.00','2011-04-08 00:00:00'),
+ (2,'11111',3,'B','444444','1000.00','2011-06-08 00:00:00'),
+ (3,'11111',2,'B','333333','1000.00','2011-05-08 00:00:00'),
+ (4,'12222',2,'B','123457','1967.76','2011-05-10 00:00:00'),
+ (5,'12222',1,'B','123456','1967.76','2011-04-10 00:00:00'),
+ (6,'33333',1,'B','324234234','1080.00','2011-04-11 00:00:00'),
+ (7,'33333',2,'B','4234234','1080.00','2011-05-11 00:00:00'),
+ (10,'44444',1,'B','12112','2160.00','2011-04-11 00:00:00');
 /*!40000 ALTER TABLE `parcelas_sinal_proposta` ENABLE KEYS */;
 
 
@@ -306,7 +319,7 @@ CREATE TABLE `promitente` (
   `cd_end_cobr` int(11) NOT NULL,
   `nu_fone_cobr` varchar(11) DEFAULT NULL,
   `ds_profissao` varchar(20) DEFAULT NULL,
-  `situacao` varchar(1) NOT NULL DEFAULT 'A',
+  `situacao` varchar(1) NOT NULL DEFAULT 'I',
   `nacionalidade` varchar(50) DEFAULT NULL,
   `cd_end_residencial` int(11) NOT NULL,
   `nome_responsavel` varchar(40) DEFAULT NULL,
@@ -325,8 +338,8 @@ CREATE TABLE `promitente` (
 
 /*!40000 ALTER TABLE `promitente` DISABLE KEYS */;
 INSERT INTO `promitente` (`cd_pro`,`nome_promitente`,`dominio_estado_civil`,`dominio_sexo`,`nu_rg`,`ds_org_emiss`,`dt_exp_rg`,`nu_cgc_cpf`,`dt_nasc`,`fl_dep`,`nu_fone_res`,`cd_end_cobr`,`nu_fone_cobr`,`ds_profissao`,`situacao`,`nacionalidade`,`cd_end_residencial`,`nome_responsavel`,`nu_cgc_cpf_responsavel`,`no_conjuge`) VALUES 
- ('1','SILVIO ALMEIDA DA SILVA','S','M','5560670','SSP-PE','1995-05-01 00:00:00','031.583.084-01','1978-10-02 00:00:00','N','34313256',1,'34322225','AUTONOMO','A','BRASILEIRO',1,NULL,NULL,NULL),
- ('2','LEONARDO RODRIGO','S','M','5560679','SSP-PE','1998-05-03 00:00:00','031.583.084-01','1980-10-02 00:00:00','N','34313266',1,'34322225','AUTONOMO','A','BRASILEIRO',1,NULL,NULL,NULL);
+ ('1','SILVIO ALMEIDA DA SILVA','S','M','5560670','SSP-PE','1995-05-01 00:00:00','03158308401','1978-10-02 00:00:00','N','34313256',1,'34322225','AUTONOMO','A','BRASILEIRO',1,NULL,NULL,NULL),
+ ('2','LEONARDO RODRIGO TESTE','S','M','5560679','SSP-PE','1998-05-03 00:00:00','03158308401','1980-10-02 00:00:00','N','4313266',5,'4322225','AUTONOMO','A','BRASILEIRO',1,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `promitente` ENABLE KEYS */;
 
 
@@ -338,22 +351,22 @@ DROP TABLE IF EXISTS `proposta`;
 CREATE TABLE `proposta` (
   `nu_proposta` varchar(5) NOT NULL,
   `cd_promitente` varchar(5) NOT NULL,
-  `vl_vista` decimal(15,2) NOT NULL,
-  `vl_sinal` decimal(15,2) NOT NULL,
-  `qt_prest` int(11) NOT NULL,
-  `vl_prest` decimal(15,2) NOT NULL,
-  `ds_obs` varchar(60) NOT NULL,
+  `vl_vista` decimal(15,2) DEFAULT NULL,
+  `vl_sinal` decimal(15,2) DEFAULT NULL,
+  `qt_prest` int(11) DEFAULT NULL,
+  `vl_prest` decimal(15,2) DEFAULT NULL,
+  `ds_obs` varchar(60) DEFAULT NULL,
   `situacao` varchar(1) NOT NULL,
   `cd_vend` varchar(3) NOT NULL,
   `dt_emissao` datetime NOT NULL,
-  `dt_pri_prest` datetime NOT NULL,
+  `dt_pri_prest` datetime DEFAULT NULL,
   `fl_pagto_avista` varchar(1) NOT NULL,
   `nu_lotm` varchar(3) NOT NULL,
   PRIMARY KEY (`nu_proposta`),
   KEY `fk_promitente_proposta` (`cd_promitente`),
   KEY `fk_financiamento_proposta` (`qt_prest`),
-  KEY `fk_vendedor_proposta` (`cd_vend`),
   KEY `fk_loteamento_proposta` (`nu_lotm`),
+  KEY `fk_vendedor_proposta` (`cd_vend`),
   CONSTRAINT `fk_financiamento_proposta` FOREIGN KEY (`qt_prest`) REFERENCES `financiamento` (`qtd_parcelas`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_loteamento_proposta` FOREIGN KEY (`nu_lotm`) REFERENCES `loteamento` (`nu_lotm`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_promitente_proposta` FOREIGN KEY (`cd_promitente`) REFERENCES `promitente` (`cd_pro`) ON DELETE NO ACTION ON UPDATE NO ACTION,
@@ -366,8 +379,12 @@ CREATE TABLE `proposta` (
 
 /*!40000 ALTER TABLE `proposta` DISABLE KEYS */;
 INSERT INTO `proposta` (`nu_proposta`,`cd_promitente`,`vl_vista`,`vl_sinal`,`qt_prest`,`vl_prest`,`ds_obs`,`situacao`,`cd_vend`,`dt_emissao`,`dt_pri_prest`,`fl_pagto_avista`,`nu_lotm`) VALUES 
- ('1','1','0.00','15000.00',60,'600.00','','A','003','2010-12-05 00:00:00','2011-01-10 00:00:00','N','001'),
- ('2','2','0.00','15000.00',60,'600.00','','A','003','2010-12-05 00:00:00','2011-01-10 00:00:00','N','001');
+ ('1','1','51000.00','15000.00',60,'600.00','','A','003','2010-12-05 00:00:00','2011-01-10 00:00:00','N','001'),
+ ('11111','2','25472.88','3000.00',72,'439.34','Teste','A','008','2011-04-08 00:00:00','2011-07-08 00:00:00','N','001'),
+ ('12222','1','39355.20','3935.52',36,'1176.28','','P','035','2011-04-10 00:00:00','2011-06-10 00:00:00','N','001'),
+ ('2','2','51000.00','15000.00',60,'600.00','','C','003','2010-12-05 00:00:00','2011-01-10 00:00:00','N','001'),
+ ('33333','2','21600.00','2160.00',36,'645.60','Teste','C','004','2011-04-11 00:00:00','2011-06-10 00:00:00','N','001'),
+ ('44444','2','21600.00','2160.00',56,'455.09','','P','004','2011-04-11 00:00:00','2011-05-11 00:00:00','N','001');
 /*!40000 ALTER TABLE `proposta` ENABLE KEYS */;
 
 
@@ -377,15 +394,16 @@ INSERT INTO `proposta` (`nu_proposta`,`cd_promitente`,`vl_vista`,`vl_sinal`,`qt_
 
 DROP TABLE IF EXISTS `transacao`;
 CREATE TABLE `transacao` (
-  `id_transacao` int(11) NOT NULL AUTO_INCREMENT,
+  `id_transacao` int(11) NOT NULL,
   `titulo` varchar(50) NOT NULL,
   `nome` varchar(50) NOT NULL,
   `url` varchar(200) DEFAULT NULL,
   `ordem` tinyint(4) NOT NULL,
   `ativa` varchar(1) NOT NULL,
   `idpai` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id_transacao`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`id_transacao`),
+  KEY `fk_transacao_transacao` (`idpai`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `transacao`
@@ -396,17 +414,17 @@ INSERT INTO `transacao` (`id_transacao`,`titulo`,`nome`,`url`,`ordem`,`ativa`,`i
  (1,'Administração','Administracao','administracao',1,'S',0),
  (2,'Usuario','Usuario','Usuario',1,'S',1),
  (3,'Perfil','Perfil','Perfil',2,'S',1),
- (4,'Transacao','Transacao','Transacao',3,'S',1),
+ (4,'Transação','Transacao','Transacao',3,'S',1),
  (5,'Cadastros','Cadastros','Cadastros',2,'S',0),
  (6,'Loteamento','Loteamento','Loteamento',1,'S',5),
  (7,'Lote','Lote','Lote',2,'S',5),
  (8,'Vendedor','Vendedor','Vendedor',3,'S',5),
  (9,'Promitente','Promitente','Promitente',4,'S',5),
  (10,'Proposta','Proposta','Proposta',5,'S',5),
- (11,'Relatórios','Relatorios','Relatorios',3,'S',0),
- (12,'Relatório Proposta','Relatório Proposta','Relatório Proposta',1,'S',11),
- (13,'Relatório Proposta em Formulário Específico','Relatório Proposta em Formulário Específico','Relatório Proposta em Formulário Específico',2,'S',11),
- (14,'Boleto Bancário','Boleto Bancário','Boleto Bancário',3,'S',11);
+ (11,'RelatÃ³rios','Relatorios','Relatorios',3,'S',0),
+ (12,'RelatÃ³rio Proposta','RelatÃ³rio Proposta','RelatÃ³rio Proposta',1,'S',11),
+ (13,'RelatÃ³rio Proposta em FormulÃ¡rio EspecÃ­fico','RelatÃ³rio Proposta em FormulÃ¡rio EspecÃ­fico','RelatÃ³rio Proposta em FormulÃ¡rio EspecÃ­fico',2,'S',11),
+ (14,'Boleto BancÃ¡rio','Boleto BancÃ¡rio','Boleto BancÃ¡rio',3,'S',11);
 /*!40000 ALTER TABLE `transacao` ENABLE KEYS */;
 
 
@@ -420,8 +438,8 @@ CREATE TABLE `transacao_perfil` (
   `id_transacao` int(11) NOT NULL,
   PRIMARY KEY (`id_perfil`,`id_transacao`),
   KEY `fk_transacao_transacaoperfil` (`id_transacao`),
-  CONSTRAINT `fk_perfil_transacao` FOREIGN KEY (`id_perfil`) REFERENCES `perfil` (`id_perfil`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_transacao_perfil` FOREIGN KEY (`id_transacao`) REFERENCES `transacao` (`id_transacao`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `fk_perfil_transacaoperfil` FOREIGN KEY (`id_perfil`) REFERENCES `perfil` (`id_perfil`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_transacao_transacaoperfil` FOREIGN KEY (`id_transacao`) REFERENCES `transacao` (`id_transacao`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -435,15 +453,25 @@ INSERT INTO `transacao_perfil` (`id_perfil`,`id_transacao`) VALUES
  (1,3),
  (1,4),
  (1,5),
+ (3,5),
  (1,6),
+ (3,6),
  (1,7),
+ (3,7),
  (1,8),
+ (3,8),
  (1,9),
+ (3,9),
  (1,10),
+ (3,10),
  (1,11),
+ (3,11),
  (1,12),
+ (3,12),
  (1,13),
- (1,14);
+ (3,13),
+ (1,14),
+ (3,14);
 /*!40000 ALTER TABLE `transacao_perfil` ENABLE KEYS */;
 
 
@@ -458,7 +486,7 @@ CREATE TABLE `usuario` (
   `nome` varchar(50) NOT NULL,
   `senha` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`id_usuario`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `usuario`
@@ -466,7 +494,8 @@ CREATE TABLE `usuario` (
 
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
 INSERT INTO `usuario` (`id_usuario`,`login`,`nome`,`senha`) VALUES 
- (1,'admin','Administrador','a');
+ (1,'admin','Administrador','a'),
+ (2,'rui','Rui Sampaio','123');
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
 
 
@@ -479,9 +508,9 @@ CREATE TABLE `usuario_perfil` (
   `id_usuario` int(11) NOT NULL,
   `id_perfil` int(11) NOT NULL,
   PRIMARY KEY (`id_usuario`,`id_perfil`),
-  KEY `fk_perfil_usuarioperfil` (`id_perfil`),
-  CONSTRAINT `fk_perfil_usuario` FOREIGN KEY (`id_perfil`) REFERENCES `perfil` (`id_perfil`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_usuario_perfil` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  KEY `fk_perfil_perfilusuario` (`id_perfil`),
+  CONSTRAINT `fk_perfil_perfilusuario` FOREIGN KEY (`id_perfil`) REFERENCES `perfil` (`id_perfil`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_usuario_perfilusuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -490,7 +519,9 @@ CREATE TABLE `usuario_perfil` (
 
 /*!40000 ALTER TABLE `usuario_perfil` DISABLE KEYS */;
 INSERT INTO `usuario_perfil` (`id_usuario`,`id_perfil`) VALUES 
- (1,1);
+ (1,1),
+ (2,2),
+ (2,3);
 /*!40000 ALTER TABLE `usuario_perfil` ENABLE KEYS */;
 
 
