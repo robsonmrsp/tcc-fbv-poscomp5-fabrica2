@@ -299,7 +299,9 @@
 		private function calcularSaldo(): void
 		{
 			var total: Number = parseFloat(txValorTotal.text.replace(".", "").replace(",","."));
-			var sinal: Number = parseFloat(txSinal.text.replace(".", "").replace(",","."));
+			var sinal: Number = 0.0;
+			if (txSinal.text != "")
+				sinal = parseFloat(txSinal.text.replace(".", "").replace(",","."));
 			
 			txSaldo.text = nf.format(total - sinal);
 		}
@@ -337,6 +339,11 @@
 						proposta.financiamento = cbFinanciamento.selectedItem as Financiamento;
 						proposta.valorParcela = parseFloat(txValorPrestacao.text.replace(".", "").replace(",", "."));
 						proposta.dataPrimeiraParcela = dtPrimVencimento.selectedDate;
+					}
+					else
+					{
+						proposta.valorParcela = 0.0;
+						proposta.valorSinal = 0.0;
 					}		
 					proposta.observacao = txObservacao.text;
 					proposta.situacao = "P";
@@ -657,6 +664,8 @@
 				nvQtdParcelaFinanciamento.enabled = true;
 				dvDtPrimVenc.enabled = true;
 				nvQtdeDocPrenchidos.enabled = (cbQtdeParcelasSinal.selectedIndex != -1);
+				calcularTotal();
+				calcularSaldo();
 			}
 			else
 			{
@@ -670,6 +679,12 @@
 				nvQtdParcelaFinanciamento.enabled = false;
 				dvDtPrimVenc.enabled = false;
 				nvQtdeDocPrenchidos.enabled = false;
+				txSinal.text = "";
+				listaParcelasSinal.removeAll();
+				cbQtdeParcelasSinal.selectedIndex - 1;
+				cbFinanciamento.selectedIndex = -1;
+				txValorPrestacao.text = "";
+				dtPrimVencimento.selectedDate = null;
 			}
 		}
 

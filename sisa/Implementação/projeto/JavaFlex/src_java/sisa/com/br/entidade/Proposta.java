@@ -8,15 +8,15 @@ public class Proposta {
 
 	private String numero; 
 	private Promitente promitente; 
-	private double valorVista; 
-	private double valorSinal; 
+	private Double valorVista; 
+	private Double valorSinal; 
 	private Financiamento financiamento; 
 	private String observacao; 
 	private String situacao; 
 	private Vendedor vendedor; 
 	private Date dataEmissao; 
 	private Date dataPrimeiraParcela; 
-	private double valorParcela; 
+	private Double valorParcela; 
 	private String pagamentoVista;  //S: Sim - N: Não
 	private Loteamento loteamento;
 	private Set<Lote> lotes = new HashSet<Lote>();
@@ -34,16 +34,16 @@ public class Proposta {
 	public void setPromitente(Promitente promitente) {
 		this.promitente = promitente;
 	}
-	public double getValorVista() {
+	public Double getValorVista() {
 		return valorVista;
 	}
-	public void setValorVista(double valorVista) {
+	public void setValorVista(Double valorVista) {
 		this.valorVista = valorVista;
 	}
-	public double getValorSinal() {
+	public Double getValorSinal() {
 		return valorSinal;
 	}
-	public void setValorSinal(double valorSinal) {
+	public void setValorSinal(Double valorSinal) {
 		this.valorSinal = valorSinal;
 	}
 	public Financiamento getFinanciamento() {
@@ -83,10 +83,10 @@ public class Proposta {
 	public void setDataPrimeiraParcela(Date dataPrimeiraParcela) {
 		this.dataPrimeiraParcela = dataPrimeiraParcela;
 	}
-	public double getValorParcela() {
+	public Double getValorParcela() {
 		return valorParcela;
 	}
-	public void setValorParcela(double valorParcela) {
+	public void setValorParcela(Double valorParcela) {
 		this.valorParcela = valorParcela;
 	}
 	public String getPagamentoVista() {
