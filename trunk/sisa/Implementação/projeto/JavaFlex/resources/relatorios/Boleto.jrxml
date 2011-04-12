@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Boleto" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="466"/>
+	<property name="ireport.y" value="491"/>
 	<parameter name="P_NR_BOLETO" class="java.lang.String"/>
 	<parameter name="P_NR_PARCELA_BOLETO" class="java.lang.String"/>
 	<parameter name="P_DT_VENCIMENTO" class="java.lang.String"/>
@@ -25,8 +25,7 @@ from tcc.parcelas_sinal_proposta
     parcelas_sinal_proposta.nu_proposta = proposta.nu_proposta
   inner join tcc.promitente on
     promitente.cd_pro = proposta.cd_promitente
-where parcelas_sinal_proposta.nu_proposta =$P{P_NR_PROPOSTA}
-]]>
+where parcelas_sinal_proposta.nu_proposta =$P{P_NR_PROPOSTA}]]>
 	</queryString>
 	<field name="nome_promitente" class="java.lang.String"/>
 	<field name="nu_cgc_cpf" class="java.lang.String"/>
@@ -537,7 +536,7 @@ banco sacado.]]></text>
 				<textElement>
 					<font size="9"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_NR_BOLETO}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{num_doc}]]></textFieldExpression>
 			</textField>
 			<image>
 				<reportElement x="17" y="302" width="102" height="21"/>
@@ -559,14 +558,14 @@ banco sacado.]]></text>
 				<textElement>
 					<font size="9"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_VL_BOLETO}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{valor}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="159" y="643" width="85" height="13"/>
 				<textElement>
 					<font size="9"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_DT_VENCIMENTO}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{data_vencimento}]]></textFieldExpression>
 			</textField>
 			<line>
 				<reportElement x="8" y="606" width="532" height="1"/>
