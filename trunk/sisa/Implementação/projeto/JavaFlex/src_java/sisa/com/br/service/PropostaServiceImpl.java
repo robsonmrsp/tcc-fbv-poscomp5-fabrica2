@@ -28,6 +28,7 @@ public class PropostaServiceImpl implements PropostaService {
 			if (findById(proposta.getNumero()) != null){
 				throw new Exception("Proposta com o número '" + proposta.getNumero() + "' já cadastrada!");
 			}
+			
 			for(Lote lote: proposta.getLotes())
 			{
 				lote.setSituacao("P");
@@ -79,6 +80,12 @@ public class PropostaServiceImpl implements PropostaService {
 	@Override
 	public Proposta update(Proposta proposta) throws Exception {
 		try {
+			
+			if (proposta.getValorSinal() == 0.0)
+				proposta.setValorSinal(null);
+			if (proposta.getValorParcela() == 0.0)
+				proposta.setValorParcela(null);
+
 			return this.propostaRepository.save(proposta);
 		} catch (Exception e) {
 			throw new Exception("Não foi possível atualizar a proposta: " + e.getMessage());
@@ -88,6 +95,12 @@ public class PropostaServiceImpl implements PropostaService {
 	@Override
 	public void cancelar(Proposta proposta) throws Exception {
 		try {
+			
+			if (proposta.getValorSinal() == 0.0)
+				proposta.setValorSinal(null);
+			if (proposta.getValorParcela() == 0.0)
+				proposta.setValorParcela(null);
+
 			proposta.setSituacao("C");
 			for(Lote lote: proposta.getLotes())
 			{
@@ -102,6 +115,12 @@ public class PropostaServiceImpl implements PropostaService {
 	@Override
 	public void autorizar(Proposta proposta) throws Exception {
 		try {
+			
+			if (proposta.getValorSinal() == 0.0)
+				proposta.setValorSinal(null);
+			if (proposta.getValorParcela() == 0.0)
+				proposta.setValorParcela(null);
+
 			proposta.setSituacao("A");
 			this.propostaRepository.update(proposta);
 		} catch (Exception e) {
