@@ -394,16 +394,15 @@ INSERT INTO `proposta` (`nu_proposta`,`cd_promitente`,`vl_vista`,`vl_sinal`,`qt_
 
 DROP TABLE IF EXISTS `transacao`;
 CREATE TABLE `transacao` (
-  `id_transacao` int(11) NOT NULL,
+  `id_transacao` int(11) NOT NULL AUTO_INCREMENT,
   `titulo` varchar(50) NOT NULL,
   `nome` varchar(50) NOT NULL,
   `url` varchar(200) DEFAULT NULL,
   `ordem` tinyint(4) NOT NULL,
   `ativa` varchar(1) NOT NULL,
   `idpai` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id_transacao`),
-  KEY `fk_transacao_transacao` (`idpai`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`id_transacao`)
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `transacao`
@@ -414,17 +413,17 @@ INSERT INTO `transacao` (`id_transacao`,`titulo`,`nome`,`url`,`ordem`,`ativa`,`i
  (1,'Administração','Administracao','administracao',1,'S',0),
  (2,'Usuario','Usuario','Usuario',1,'S',1),
  (3,'Perfil','Perfil','Perfil',2,'S',1),
- (4,'Transação','Transacao','Transacao',3,'S',1),
+ (4,'Transacao','Transacao','Transacao',3,'S',1),
  (5,'Cadastros','Cadastros','Cadastros',2,'S',0),
  (6,'Loteamento','Loteamento','Loteamento',1,'S',5),
  (7,'Lote','Lote','Lote',2,'S',5),
  (8,'Vendedor','Vendedor','Vendedor',3,'S',5),
  (9,'Promitente','Promitente','Promitente',4,'S',5),
  (10,'Proposta','Proposta','Proposta',5,'S',5),
- (11,'RelatÃ³rios','Relatorios','Relatorios',3,'S',0),
- (12,'RelatÃ³rio Proposta','RelatÃ³rio Proposta','RelatÃ³rio Proposta',1,'S',11),
- (13,'RelatÃ³rio Proposta em FormulÃ¡rio EspecÃ­fico','RelatÃ³rio Proposta em FormulÃ¡rio EspecÃ­fico','RelatÃ³rio Proposta em FormulÃ¡rio EspecÃ­fico',2,'S',11),
- (14,'Boleto BancÃ¡rio','Boleto BancÃ¡rio','Boleto BancÃ¡rio',3,'S',11);
+ (11,'Relatórios','Relatorios','Relatorios',3,'S',0),
+ (12,'Relatório Proposta','Relatório Proposta','Relatório Proposta',1,'S',11),
+ (13,'Relatório Proposta em Formulário Específico','Relatório Proposta em Formulário Específico','Relatório Proposta em Formulário Específico',2,'S',11),
+ (14,'Boleto Bancário','Boleto Bancário','Boleto Bancário',3,'S',11);
 /*!40000 ALTER TABLE `transacao` ENABLE KEYS */;
 
 
@@ -438,8 +437,8 @@ CREATE TABLE `transacao_perfil` (
   `id_transacao` int(11) NOT NULL,
   PRIMARY KEY (`id_perfil`,`id_transacao`),
   KEY `fk_transacao_transacaoperfil` (`id_transacao`),
-  CONSTRAINT `fk_perfil_transacaoperfil` FOREIGN KEY (`id_perfil`) REFERENCES `perfil` (`id_perfil`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_transacao_transacaoperfil` FOREIGN KEY (`id_transacao`) REFERENCES `transacao` (`id_transacao`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `fk_perfil_transacao` FOREIGN KEY (`id_perfil`) REFERENCES `perfil` (`id_perfil`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_transacao_perfil` FOREIGN KEY (`id_transacao`) REFERENCES `transacao` (`id_transacao`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -453,25 +452,31 @@ INSERT INTO `transacao_perfil` (`id_perfil`,`id_transacao`) VALUES
  (1,3),
  (1,4),
  (1,5),
+ (2,5),
  (3,5),
  (1,6),
+ (2,6),
  (3,6),
  (1,7),
+ (2,7),
  (3,7),
  (1,8),
+ (2,8),
  (3,8),
  (1,9),
+ (2,9),
  (3,9),
  (1,10),
+ (2,10),
  (3,10),
  (1,11),
- (3,11),
+ (2,11),
  (1,12),
- (3,12),
+ (2,12),
  (1,13),
- (3,13),
+ (2,13),
  (1,14),
- (3,14);
+ (2,14);
 /*!40000 ALTER TABLE `transacao_perfil` ENABLE KEYS */;
 
 
@@ -486,7 +491,7 @@ CREATE TABLE `usuario` (
   `nome` varchar(50) NOT NULL,
   `senha` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`id_usuario`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `usuario`
@@ -495,7 +500,9 @@ CREATE TABLE `usuario` (
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
 INSERT INTO `usuario` (`id_usuario`,`login`,`nome`,`senha`) VALUES 
  (1,'admin','Administrador','a'),
- (2,'rui','Rui Sampaio','123');
+ (2,'leto','Leto','a'),
+ (3,'mauri','Mauriceia','123'),
+ (4,'maguelo','Maguelo','123');
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
 
 
@@ -508,9 +515,9 @@ CREATE TABLE `usuario_perfil` (
   `id_usuario` int(11) NOT NULL,
   `id_perfil` int(11) NOT NULL,
   PRIMARY KEY (`id_usuario`,`id_perfil`),
-  KEY `fk_perfil_perfilusuario` (`id_perfil`),
-  CONSTRAINT `fk_perfil_perfilusuario` FOREIGN KEY (`id_perfil`) REFERENCES `perfil` (`id_perfil`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_usuario_perfilusuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  KEY `fk_perfil_usuarioperfil` (`id_perfil`),
+  CONSTRAINT `fk_perfil_usuario` FOREIGN KEY (`id_perfil`) REFERENCES `perfil` (`id_perfil`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_usuario_perfil` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -520,8 +527,8 @@ CREATE TABLE `usuario_perfil` (
 /*!40000 ALTER TABLE `usuario_perfil` DISABLE KEYS */;
 INSERT INTO `usuario_perfil` (`id_usuario`,`id_perfil`) VALUES 
  (1,1),
- (2,2),
- (2,3);
+ (2,1),
+ (3,2);
 /*!40000 ALTER TABLE `usuario_perfil` ENABLE KEYS */;
 
 
